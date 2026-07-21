@@ -1,0 +1,322 @@
+{% extends 'base.html' %}
+{% load currency_filters %}
+
+{% block title %}Explore Furniture | FurniFlex{% endblock %}
+
+{% block page_skeleton %}
+<!-- Top Banner Shimmer -->
+<div class="py-5 text-center" style="background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%); min-height: 280px; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+    <div class="skeleton-shimmer mb-3" style="width: 180px; height: 18px; border-radius: 4px; background: rgba(177, 139, 94, 0.2);"></div>
+    <div class="skeleton-shimmer mb-3" style="width: 420px; height: 48px; border-radius: 8px; background: rgba(255, 255, 255, 0.1);"></div>
+    <div class="skeleton-shimmer" style="width: 280px; height: 16px; border-radius: 4px; background: rgba(255, 255, 255, 0.05);"></div>
+</div>
+
+<div class="container py-5">
+    <!-- Filter bar shimmers -->
+    <div class="row g-3 mb-5 justify-content-between align-items-center">
+        <div class="col-md-8 d-flex gap-3 flex-wrap">
+            <span class="skeleton-shimmer" style="width: 120px; height: 45px; border-radius: 4px;"></span>
+            <span class="skeleton-shimmer" style="width: 140px; height: 45px; border-radius: 4px;"></span>
+            <span class="skeleton-shimmer" style="width: 100px; height: 45px; border-radius: 4px;"></span>
+        </div>
+        <div class="col-md-3">
+            <span class="skeleton-shimmer" style="width: 100%; height: 45px; border-radius: 4px;"></span>
+        </div>
+    </div>
+
+    <!-- Product Grid Shimmers -->
+    <div class="row g-4">
+        {% for i in "123456" %}
+        <div class="col-lg-4 col-md-6">
+            <div class="card border-0 w-100" style="background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
+                <div class="skeleton-shimmer" style="width: 100%; height: 260px;"></div>
+                <div class="card-body p-4 d-flex flex-column">
+                    <span class="skeleton-shimmer mb-2" style="width: 180px; height: 24px; border-radius: 4px;"></span>
+                    <span class="skeleton-shimmer mb-3" style="width: 100%; height: 14px; border-radius: 4px;"></span>
+                    <span class="skeleton-shimmer mb-4" style="width: 80%; height: 14px; border-radius: 4px;"></span>
+                    <div class="d-flex gap-3 mb-4">
+                        <span class="skeleton-shimmer" style="width: 80px; height: 16px; border-radius: 4px;"></span>
+                        <span class="skeleton-shimmer" style="width: 60px; height: 16px; border-radius: 4px;"></span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-auto">
+                        <span class="skeleton-shimmer" style="width: 90px; height: 28px; border-radius: 4px;"></span>
+                        <span class="skeleton-shimmer" style="width: 80px; height: 36px; border-radius: 6px;"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<!-- Premium Hero Section -->
+<section class="py-5 text-white position-relative overflow-hidden" style="background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%); min-height: 280px; display: flex; align-items: center; border-bottom: 1px solid rgba(177, 139, 94, 0.15);">
+    <div class="absolute-bg-pattern" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: radial-gradient(rgba(177, 139, 94, 0.15) 1px, transparent 1px); background-size: 24px 24px; opacity: 0.8;"></div>
+    <div class="container py-4 position-relative z-3 text-center">
+        <span class="text-primary text-uppercase fw-bold mb-2 d-inline-block" style="letter-spacing: 3px; font-size: 0.9rem; font-family: 'Outfit', sans-serif;">EXPLORE OUR CATALOGUE</span>
+        <h1 class="display-4 fw-bold mb-3 text-white" style="font-family: 'Outfit', sans-serif;">Curated Designer <span class="text-primary">Collections</span></h1>
+        <p class="mb-4 mx-auto" style="max-width: 650px; color: #b5b5b5; font-weight: 300; font-family: 'Outfit', sans-serif; font-size: 1rem; line-height: 1.6;">Find the perfect, luxury-grade furniture pieces to match your lifestyle and custom design desires.</p>
+        
+        <nav aria-label="breadcrumb" class="d-flex justify-content-center" style="--bs-breadcrumb-divider-color: rgba(255, 255, 255, 0.45);">
+            <ol class="breadcrumb mb-0 bg-transparent p-0">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none" style="color: #b18b5e !important; font-weight: 600; transition: color 0.2s;">Home</a></li>
+                <li class="breadcrumb-item active text-white" aria-current="page" style="opacity: 0.85;">Products</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+
+<div class="py-5" style="background-color: var(--light-bg);">
+    <div class="container">
+
+        <!-- Premium Search & Filter Bar -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <form method="GET" action="{% url 'product_list' %}" id="filterSearchForm" class="bg-white p-3 rounded-4 shadow-sm border d-flex flex-column flex-md-row gap-3 align-items-center">
+                    <!-- Hidden Category Field -->
+                    <input type="hidden" name="category" id="selectedCategoryInput" value="{{ selected_category|default:'All' }}">
+
+                    <!-- Search Input -->
+                    <div class="input-group flex-grow-1" style="border-radius: 12px; overflow: hidden; border: 1px solid rgba(177, 139, 94, 0.25);">
+                        <span class="input-group-text bg-white border-0 text-muted ps-3">
+                            <i class="fas fa-search" style="color: #b18b5e;"></i>
+                        </span>
+                        <input type="text" name="q" value="{{ search_query }}" class="form-control border-0 py-3 ps-2 shadow-none" placeholder="Search luxury furniture by name, material, or design..." style="font-family: 'Outfit', sans-serif; font-size: 0.95rem;">
+                        {% if search_query %}
+                        <a href="{% url 'product_list' %}?category={{ selected_category }}" class="btn bg-transparent border-0 text-muted d-flex align-items-center justify-content-center pe-3" style="box-shadow: none;">
+                            <i class="fas fa-times-circle fs-6"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+
+                    <!-- Category Selector Dropdown -->
+                    <div class="dropdown w-100 w-md-auto" style="min-width: 200px;">
+                        <button class="btn btn-outline-secondary w-100 py-3 px-4 d-flex align-items-center justify-content-between dropdown-toggle" type="button" id="categoryFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="border: 1px solid rgba(177, 139, 94, 0.25); background-color: #fdfaf7; color: #b18b5e; font-weight: 600; font-family: 'Outfit', sans-serif; border-radius: 12px; transition: all 0.25s ease;">
+                            <span>
+                                <i class="fas fa-filter me-2" style="font-size: 0.85rem;"></i>
+                                {{ selected_category|default:"All"|capfirst }}
+                            </span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 p-2 mt-2 w-100" aria-labelledby="categoryFilterDropdown" style="border-radius: 14px; min-width: 200px;">
+                            <li>
+                                <a class="dropdown-item py-2 px-3 rounded-3 {% if not selected_category or selected_category|lower == 'all' %}active bg-primary text-white{% endif %}" href="#" onclick="selectCategory('All'); return false;" style="font-family: 'Outfit', sans-serif; font-size: 0.9rem;">
+                                    All Categories
+                                </a>
+                            </li>
+                            {% for cat in categories %}
+                            <li>
+                                <a class="dropdown-item py-2 px-3 rounded-3 mt-1 {% if selected_category|lower == cat|lower %}active bg-primary text-white{% endif %}" href="#" onclick="selectCategory('{{ cat }}'); return false;" style="font-family: 'Outfit', sans-serif; font-size: 0.9rem;">
+                                    {{ cat|capfirst }}
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <!-- Submit Action Button -->
+                    <button type="submit" class="btn btn-primary px-4 py-3 w-100 w-md-auto fw-semibold d-flex align-items-center justify-content-center gap-2" style="border-radius: 12px; min-width: 140px; font-family: 'Outfit', sans-serif;">
+                        <i class="fas fa-sliders-h"></i> Apply
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            function selectCategory(categoryName) {
+                document.getElementById('selectedCategoryInput').value = categoryName;
+                document.getElementById('filterSearchForm').submit();
+            }
+        </script>
+
+        <div class="row g-4">
+            {% if products %}
+                {% for product in products %}
+                <div class="col-lg-3 col-md-6 d-flex">
+                    <div class="card premium-product-card w-100 border-0">
+                        <!-- Image Container -->
+                        <div class="premium-card-img-wrap">
+                            <a href="{% url 'product_detail' product.pk %}" class="text-decoration-none">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                            {% else %}
+                                <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Default Image">
+                            {% endif %}
+                            </a>
+                            <!-- Category Badge -->
+                            <span class="premium-category-badge">{{ product.category }}</span>
+                            <!-- Stock Indicator -->
+                            {% if product.stock > 0 %}
+                            <span class="premium-stock-badge"><i class="fas fa-check-circle me-1"></i>In Stock</span>
+                            {% else %}
+                            <span class="premium-stock-badge out-of-stock"><i class="fas fa-times-circle me-1"></i>Currently Unavailable</span>
+                            {% endif %}
+                        </div>
+
+                        <!-- Card Body -->
+                        <div class="card-body d-flex flex-column p-4">
+                            <a href="{% url 'product_detail' product.pk %}" class="text-decoration-none text-dark">
+                                <h5 class="card-title fw-bold mb-2" style="min-height: 48px; line-height: 1.4;">{{ product.name }}</h5>
+                            </a>
+                            <p class="card-text text-muted small mb-3" style="min-height: 40px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{{ product.description }}</p>
+
+                            <!-- Product Specs -->
+                            <div class="premium-specs mb-3">
+                                {% if product.material %}
+                                <div class="spec-item">
+                                    <i class="fas fa-layer-group"></i>
+                                    <span>{{ product.material }}</span>
+                                </div>
+                                {% endif %}
+                                {% if product.color %}
+                                <div class="spec-item">
+                                    <i class="fas fa-palette"></i>
+                                    <span>{{ product.color }}</span>
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Price & Action -->
+                            <div class="mt-auto">
+                                <div class="premium-price-row">
+                                    <div>
+                                        <span class="premium-price">{{ product.price_per_month|convert_currency:request }}</span>
+                                        <span class="premium-price-period">/month</span>
+                                    </div>
+                                    <a href="{% url 'product_detail' product.pk %}" class="btn btn-primary btn-sm px-4 py-2">
+                                        Rent <i class="fas fa-arrow-right ms-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12 text-center py-5">
+                    <i class="fas fa-couch fa-4x text-light-emphasis mb-3"></i>
+                    <h3>No products found yet!</h3>
+                    <p class="text-muted">Check back later or add some from the admin panel.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Premium Product Card */
+    .premium-product-card {
+        background: #fff;
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    }
+
+    .premium-product-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Image */
+    .premium-card-img-wrap {
+        position: relative;
+        overflow: hidden;
+        height: 240px;
+    }
+
+    .premium-card-img-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+
+    .premium-product-card:hover .premium-card-img-wrap img {
+        transform: scale(1.06);
+    }
+
+    /* Category Badge */
+    .premium-category-badge {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        background: rgba(255, 255, 255, 0.95);
+        color: var(--primary-color);
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        padding: 5px 14px;
+        border-radius: 30px;
+    }
+
+    /* Stock Badge */
+    .premium-stock-badge {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        background: rgba(25, 135, 84, 0.9);
+        color: #fff;
+        font-size: 0.65rem;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 20px;
+    }
+
+    .premium-stock-badge.out-of-stock {
+        background: rgba(220, 53, 69, 0.9);
+    }
+
+    /* Specs Row */
+    .premium-specs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .spec-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.75rem;
+        color: #777;
+        background: #f8f7f5;
+        padding: 4px 10px;
+        border-radius: 6px;
+    }
+
+    .spec-item i {
+        color: var(--primary-color);
+        font-size: 0.65rem;
+    }
+
+    /* Price Row */
+    .premium-price-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 12px;
+        border-top: 1px solid #f0eeeb;
+    }
+
+    .premium-price {
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: var(--secondary-color);
+    }
+
+    .premium-price-period {
+        font-size: 0.78rem;
+        color: #999;
+        font-weight: 400;
+    }
+
+    .premium-deposit {
+        font-size: 0.7rem;
+        color: #999;
+        margin-top: 2px;
+    }
+</style>
+{% endblock %}

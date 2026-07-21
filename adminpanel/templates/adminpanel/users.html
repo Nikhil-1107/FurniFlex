@@ -1,0 +1,200 @@
+{% extends 'adminpanel/admin_base.html' %}
+
+{% block title %}Manage Users | FurniFlex Admin Portal{% endblock %}
+
+{% block admin_skeleton %}
+<div class="d-flex justify-content-between align-items-center mb-5">
+    <div>
+        <div class="skeleton-shimmer mb-2" style="width: 250px; height: 38px; border-radius: 6px;"></div>
+        <div class="skeleton-shimmer" style="width: 440px; height: 16px; border-radius: 4px;"></div>
+    </div>
+    <div class="skeleton-shimmer" style="width: 150px; height: 45px; border-radius: 8px;"></div>
+</div>
+
+<div class="card border-0 p-4 mb-4 shadow-sm rounded-4" style="background: white;">
+    <div class="row g-3 align-items-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="skeleton-shimmer" style="width: 100%; height: 42px; border-radius: 8px;"></div>
+        </div>
+    </div>
+</div>
+
+<div class="card border-0 p-4 shadow-sm rounded-4" style="background: white;">
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th style="width: 60px;"><div class="skeleton-shimmer" style="width: 40px; height: 16px; border-radius: 4px;"></div></th>
+                    <th><div class="skeleton-shimmer" style="width: 120px; height: 16px; border-radius: 4px;"></div></th>
+                    <th><div class="skeleton-shimmer" style="width: 100px; height: 16px; border-radius: 4px;"></div></th>
+                    <th><div class="skeleton-shimmer" style="width: 90px; height: 16px; border-radius: 4px;"></div></th>
+                    <th><div class="skeleton-shimmer" style="width: 80px; height: 16px; border-radius: 4px;"></div></th>
+                    <th><div class="skeleton-shimmer" style="width: 60px; height: 16px; border-radius: 4px;"></div></th>
+                    <th class="text-end"><div class="skeleton-shimmer ms-auto" style="width: 85px; height: 16px; border-radius: 4px;"></div></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in "12345" %}
+                <tr>
+                    <td><div class="skeleton-shimmer" style="width: 40px; height: 40px; border-radius: 50%;"></div></td>
+                    <td>
+                        <div class="skeleton-shimmer mb-1" style="width: 130px; height: 16px; border-radius: 4px;"></div>
+                        <div class="skeleton-shimmer" style="width: 90px; height: 12px; border-radius: 4px;"></div>
+                    </td>
+                    <td><div class="skeleton-shimmer" style="width: 150px; height: 16px; border-radius: 4px;"></div></td>
+                    <td><div class="skeleton-shimmer" style="width: 80px; height: 16px; border-radius: 4px;"></div></td>
+                    <td><div class="skeleton-shimmer" style="width: 80px; height: 22px; border-radius: 12px;"></div></td>
+                    <td><div class="skeleton-shimmer" style="width: 40px; height: 16px; border-radius: 4px;"></div></td>
+                    <td class="text-end">
+                        <div class="d-flex justify-content-end gap-2">
+                            <div class="skeleton-shimmer" style="width: 32px; height: 32px; border-radius: 6px;"></div>
+                            <div class="skeleton-shimmer" style="width: 32px; height: 32px; border-radius: 6px;"></div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block admin_content %}
+<div class="d-flex justify-content-between align-items-center mb-5">
+    <div>
+        <h1 class="fw-bold m-0" style="font-family: 'Outfit', sans-serif;">Registered Customers</h1>
+        <p class="text-muted m-0 mt-1">Review active subscriber accounts, loyalty achievements, and rental engagement</p>
+    </div>
+    <div>
+        <a href="{% url 'admin_user_add' %}" class="btn btn-brand">
+            <i class="fas fa-user-plus me-2"></i> Add New Customer
+        </a>
+    </div>
+</div>
+
+<!-- Premium Filter & Search Bar -->
+<div class="admin-card mb-4 p-4">
+    <form method="get" class="row g-3 align-items-center">
+        <!-- Search Input -->
+        <div class="col-md-10">
+            <div class="input-group">
+                <span class="input-group-text bg-white border-end-0 text-muted"><i class="fas fa-search"></i></span>
+                <input type="text" name="q" class="form-control border-start-0 ps-0" placeholder="Search customer username or email..." value="{{ search_query }}">
+            </div>
+        </div>
+        <!-- Action Buttons -->
+        <div class="col-md-2 d-flex gap-2">
+            <button type="submit" class="btn btn-brand w-100 py-2">Search</button>
+            <a href="{% url 'admin_users' %}" class="btn btn-outline-secondary w-100 py-2 d-flex align-items-center justify-content-center" title="Reset Search"><i class="fas fa-rotate-left"></i></a>
+        </div>
+    </form>
+</div>
+
+<div class="admin-table-container">
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Customer Name</th>
+                    <th>Email Address</th>
+                    <th>Joined Date</th>
+                    <th>Active Rentals</th>
+                    <th>Loyalty Balance</th>
+                    <th style="width: 150px; text-align: right;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if users %}
+                    {% for user in users %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-uppercase me-3" 
+                                     style="
+                                        width: 44px; 
+                                        height: 44px; 
+                                        background: linear-gradient(135deg, #fdfaf7 0%, #f4e9dc 100%); 
+                                        border: 1px solid rgba(177, 139, 94, 0.2); 
+                                        color: var(--primary-color); 
+                                        font-family: 'Outfit', sans-serif;
+                                        font-weight: 700;
+                                        font-size: 1.1rem;
+                                        box-shadow: 0 4px 12px rgba(177, 139, 94, 0.1);
+                                        text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+                                     ">
+                                    {{ user.username|slice:":1" }}
+                                </div>
+                                <div>
+                                    <span class="fw-bold text-dark d-block mb-1">{{ user.username }}</span>
+                                    {% if user.is_staff %}
+                                        <span class="badge bg-warning-subtle text-warning small text-uppercase" style="font-size: 0.65rem;">Staff Member</span>
+                                    {% elif user.profile.tier %}
+                                        <span class="badge" style="font-size: 0.6rem; background-color: {{ user.profile.tier.bg_color }} !important; color: {{ user.profile.tier.color }} !important; border: 1px solid {{ user.profile.tier.border }} !important; padding: 0.25em 0.5em; border-radius: 30px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
+                                            <i class="fas {{ user.profile.tier.icon }} me-1"></i>{{ user.profile.tier.name }}
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="text-muted fw-semibold">{{ user.email|default:"N/A" }}</span>
+                        </td>
+                        <td class="small text-muted">
+                            {{ user.date_joined|date:"F d, Y" }}
+                        </td>
+                        <td class="fw-bold text-dark">
+                            {% if user.active_rentals_count > 0 %}
+                                <span class="badge bg-success-subtle text-success px-3 py-2 rounded-3 small">
+                                    {{ user.active_rentals_count }} <span>Active</span>
+                                </span>
+                            {% else %}
+                                <span class="text-muted small">0 subscriptions</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <span class="fw-bold text-primary me-2">{{ user.loyalty_points }} PTS</span>
+                                <span class="text-muted small">(₹{{ user.loyalty_points|yesno:" ,0" }} value)</span>
+                            </div>
+                        </td>
+                        <td style="text-align: right;">
+                            <a href="{% url 'admin_user_edit' user.pk %}" class="btn btn-outline-secondary btn-sm px-3 rounded-2 me-2"><i class="fas fa-pen"></i></a>
+                            <button type="button" class="btn btn-outline-danger btn-sm px-3 rounded-2" data-bs-toggle="modal" data-bs-target="#deleteModal{{ user.id }}"><i class="fas fa-trash"></i></button>
+                            
+                            <!-- Delete Confirmation Modal -->
+                            <div class="modal fade" id="deleteModal{{ user.id }}" tabindex="-1" aria-hidden="true" style="text-align: left;">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content border-0 shadow-lg">
+                                        <div class="modal-header border-0 pb-0">
+                                            <h5 class="modal-title fw-bold text-uppercase" style="color: #333;">Delete Account</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body py-4" style="color: #666;">
+                                            Are you sure you want to permanently delete customer account <strong>{{ user.username }}</strong>? This will remove all their profile data. This action cannot be undone.
+                                        </div>
+                                        <div class="modal-footer border-0 pt-0">
+                                            <button type="button" class="btn btn-light px-4 py-2" data-bs-dismiss="modal">Cancel</button>
+                                            <form action="{% url 'admin_user_delete' user.pk %}" method="post" class="d-inline delete-form" data-name="{{ user.username }}">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-danger px-4 py-2">Delete Account</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-5">
+                            <i class="fas fa-users fa-3x mb-3 text-light-emphasis d-block"></i>
+                            No users registered on the platform yet.
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

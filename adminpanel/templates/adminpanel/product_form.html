@@ -1,0 +1,147 @@
+{% extends 'adminpanel/admin_base.html' %}
+
+{% block title %}{{ action }} Product | FurniFlex Admin Portal{% endblock %}
+
+{% block admin_skeleton %}
+<div class="mb-5">
+    <div class="skeleton-shimmer" style="width: 140px; height: 18px; border-radius: 4px;"></div>
+    <div class="skeleton-shimmer mt-3 mb-2" style="width: 280px; height: 38px; border-radius: 6px;"></div>
+    <div class="skeleton-shimmer" style="width: 380px; height: 16px; border-radius: 4px;"></div>
+</div>
+
+<div class="card border-0 p-4 p-md-5 shadow-sm rounded-4" style="background: white;">
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="skeleton-shimmer mb-2" style="width: 100px; height: 14px; border-radius: 4px;"></div>
+            <div class="skeleton-shimmer" style="width: 100%; height: 50px; border-radius: 8px;"></div>
+        </div>
+        <div class="col-md-6">
+            <div class="skeleton-shimmer mb-2" style="width: 110px; height: 14px; border-radius: 4px;"></div>
+            <div class="skeleton-shimmer" style="width: 100%; height: 50px; border-radius: 8px;"></div>
+        </div>
+        <div class="col-md-4">
+            <div class="skeleton-shimmer mb-2" style="width: 80px; height: 14px; border-radius: 4px;"></div>
+            <div class="skeleton-shimmer" style="width: 100%; height: 50px; border-radius: 8px;"></div>
+        </div>
+        <div class="col-md-4">
+            <div class="skeleton-shimmer mb-2" style="width: 90px; height: 14px; border-radius: 4px;"></div>
+            <div class="skeleton-shimmer" style="width: 100%; height: 50px; border-radius: 8px;"></div>
+        </div>
+        <div class="col-md-4">
+            <div class="skeleton-shimmer mb-2" style="width: 85px; height: 14px; border-radius: 4px;"></div>
+            <div class="skeleton-shimmer" style="width: 100%; height: 50px; border-radius: 8px;"></div>
+        </div>
+        <div class="col-md-6">
+            <div class="skeleton-shimmer mb-2" style="width: 70px; height: 14px; border-radius: 4px;"></div>
+            <div class="skeleton-shimmer" style="width: 100%; height: 50px; border-radius: 8px;"></div>
+        </div>
+        <div class="col-md-6">
+            <div class="skeleton-shimmer mb-2" style="width: 90px; height: 14px; border-radius: 4px;"></div>
+            <div class="skeleton-shimmer" style="width: 100%; height: 50px; border-radius: 8px;"></div>
+        </div>
+        <div class="col-12">
+            <div class="skeleton-shimmer mb-2" style="width: 140px; height: 14px; border-radius: 4px;"></div>
+            <div class="skeleton-shimmer" style="width: 100%; height: 120px; border-radius: 8px;"></div>
+        </div>
+        <div class="col-12 mt-5">
+            <div class="d-flex gap-3">
+                <div class="skeleton-shimmer" style="width: 150px; height: 48px; border-radius: 8px;"></div>
+                <div class="skeleton-shimmer" style="width: 120px; height: 48px; border-radius: 8px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block admin_content %}
+<div class="mb-5">
+    <a href="{% url 'admin_products' %}" class="text-primary text-decoration-none small fw-bold">
+        <i class="fas fa-arrow-left me-1"></i> Back to Products
+    </a>
+    <h1 class="fw-bold mt-2" style="font-family: 'Outfit', sans-serif;">{{ action }} Product</h1>
+    <p class="text-muted m-0 mt-1">Fill in the specifications for your luxury furniture listing</p>
+</div>
+
+<div class="card admin-card p-4 p-md-5">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row g-4">
+            <!-- Row 1: Product Name & Category -->
+            <div class="col-md-6">
+                <label class="form-label fw-bold text-muted small text-uppercase mb-2">Product Name *</label>
+                <input type="text" class="form-control" name="name" value="{{ product.name }}" required placeholder="e.g. Royal Oak Dining Set" style="height: 55px; border-radius: 8px; border: 1px solid #eee; padding-left: 15px;">
+            </div>
+            
+            <div class="col-md-6">
+                <label class="form-label fw-bold text-muted small text-uppercase mb-2">Category *</label>
+                <select class="form-select" name="category" required style="height: 55px; border-radius: 8px; font-size: 1rem; border: 1px solid #eee; padding-left: 15px;">
+                    <option value="" disabled selected>Select Category</option>
+                    {% for choice in categories %}
+                    <option value="{{ choice.0 }}" {% if product.category == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <!-- Row 2: Price Per Month & Material -->
+            <div class="col-md-6">
+                <label class="form-label fw-bold text-muted small text-uppercase mb-2">Price Per Month (₹) *</label>
+                <input type="number" step="0.01" class="form-control" name="price_per_month" value="{{ product.price_per_month }}" required placeholder="e.g. 1299" style="height: 55px; border-radius: 8px; border: 1px solid #eee; padding-left: 15px;">
+            </div>
+            
+            <div class="col-md-6">
+                <label class="form-label fw-bold text-muted small text-uppercase mb-2">Material</label>
+                <input type="text" class="form-control" name="material" value="{{ product.material }}" placeholder="e.g. Teak Wood" style="height: 55px; border-radius: 8px; border: 1px solid #eee; padding-left: 15px;">
+            </div>
+            
+            <!-- Row 3: Color & Initial Stock Quantity -->
+            <div class="col-md-6">
+                <label class="form-label fw-bold text-muted small text-uppercase mb-2">Color</label>
+                <input type="text" class="form-control" name="color" value="{{ product.color }}" placeholder="e.g. Walnut Brown" style="height: 55px; border-radius: 8px; border: 1px solid #eee; padding-left: 15px;">
+            </div>
+            
+            <div class="col-md-6">
+                <label class="form-label fw-bold text-muted small text-uppercase mb-2">Initial Stock Quantity *</label>
+                <input type="number" class="form-control" name="stock" value="{{ product.stock|default:10 }}" required placeholder="e.g. 10" style="height: 55px; border-radius: 8px; border: 1px solid #eee; padding-left: 15px;">
+            </div>
+            
+            <!-- Row 4: Available Durations & Tip Alert Box -->
+            <div class="col-md-6">
+                <label class="form-label fw-bold text-muted small text-uppercase mb-2">Available Durations (Separated by Commas) *</label>
+                <input type="text" class="form-control" name="available_durations" value="{{ product.available_durations|default:'3,6,12' }}" required placeholder="e.g. 3,6,12" style="height: 55px; border-radius: 8px; border: 1px solid #eee; padding-left: 15px;">
+            </div>
+            
+            <div class="col-md-6 d-flex align-items-end">
+                <div class="alert alert-info py-2 px-3 m-0 w-100 rounded-3 border-0 d-flex align-items-center justify-content-center" style="background-color: #fdfaf7; color: #b18b5e; height: 55px; border: 1px dashed rgba(177, 139, 94, 0.25) !important;">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <span class="small" style="font-family: 'Outfit', sans-serif; font-weight: 500;">Specify months separating with commas (e.g., 3,6,12).</span>
+                </div>
+            </div>
+            
+            <!-- Row 5: Product Image Upload -->
+            <div class="col-12">
+                <label class="form-label fw-bold text-muted small text-uppercase mb-2">Product Image</label>
+                <div class="border p-4 text-center rounded-3 bg-light" style="border-style: dashed !important; border-width: 2px !important; border-color: rgba(177, 139, 94, 0.2) !important;">
+                    {% if product.image %}
+                        <div class="mb-3">
+                            <img src="{{ product.image.url }}" class="rounded-3 shadow-sm" style="max-height: 150px; object-fit: cover;">
+                        </div>
+                    {% endif %}
+                    <input type="file" class="form-control bg-white" name="image" accept="image/*" style="height: auto; padding: 12px; border-radius: 8px; border: 1px solid #eee;">
+                    <span class="text-muted small d-block mt-2">Recommended size: 800x600 px. Supports JPEG, PNG, WebP.</span>
+                </div>
+            </div>
+            
+            <!-- Row 6: Product Description -->
+            <div class="col-12">
+                <label class="form-label fw-bold text-muted small text-uppercase mb-2">Product Description *</label>
+                <textarea class="form-control" name="description" rows="5" required placeholder="Write product highlights, size specifications, care instructions..." style="border-radius: 8px; border: 1px solid #eee; padding: 15px 20px;">{{ product.description }}</textarea>
+            </div>
+            
+            <div class="col-12 d-flex justify-content-end mt-4">
+                <a href="{% url 'admin_products' %}" class="btn btn-outline-secondary px-5 py-3 me-3 rounded-3 fw-bold">Cancel</a>
+                <button type="submit" class="btn btn-brand px-5 py-3 rounded-3 fw-bold">{{ action }} Product</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

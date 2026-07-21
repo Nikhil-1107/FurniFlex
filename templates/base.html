@@ -1,0 +1,1114 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}FurniFlex | Modern Furniture Rental{% endblock %}</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ MEDIA_URL }}logo.png">
+    
+    <!-- Google Fonts Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Playfair+Display:wght@700;900&family=Dancing+Script:wght@700&display=block" rel="stylesheet">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "wtf973h9nj");
+</script>
+    
+    <style>
+        :root {
+            --primary-color: #b18b5e; /* Warm Earthy Brown */
+            --secondary-color: #2c2c2c; /* Deep Charcoal */
+            --accent-color: #f4e9dc; /* Cream/Beige */
+            --dark-bg: #1a1a1a;
+            --light-bg: #fdfaf7;
+        }
+        
+        html {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--light-bg);
+            color: #333;
+            transition: background-color 0.3s ease;
+            overflow-x: hidden;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main {
+            flex-grow: 1;
+        }
+
+        h1, h2, h3, .navbar-brand {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 160px 0;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            position: relative;
+        }
+        
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(transparent, var(--light-bg));
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            border-radius: 0; /* Square/Elegant buttons */
+            padding: 12px 30px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary:hover {
+            background-color: #8e6f4a;
+            border-color: #8e6f4a;
+        }
+        
+        .product-card {
+            border: none;
+            border-radius: 0;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        }
+
+        .navbar {
+            background-color: white !important;
+            padding: 20px 0;
+        }
+
+        .navbar-dark .nav-link {
+            color: var(--secondary-color) !important;
+            font-weight: 500;
+        }
+
+        .navbar-brand {
+            color: var(--secondary-color) !important;
+            font-size: 1.8rem;
+        }
+
+        .text-primary {
+            color: var(--primary-color) !important;
+        }
+
+        .bg-primary {
+            background-color: var(--primary-color) !important;
+        }
+        
+        /* Modern Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* Premium Notification Bell & Pulse Animation */
+        .notification-bell-btn:hover {
+            transform: scale(1.08) rotate(15deg);
+            background-color: var(--primary-color) !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 15px rgba(177, 139, 94, 0.3);
+        }
+        
+        .animate-pulse {
+            animation: pulse-glow 1.5s infinite alternate;
+        }
+
+        @keyframes pulse-glow {
+            0% {
+                box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
+            }
+            100% {
+                box-shadow: 0 0 0 8px rgba(220, 53, 69, 0);
+            }
+        }
+
+
+        
+        /* Premium language selector button styles */
+        .language-selector-btn {
+            background-color: #f4e9dc;
+            color: #b18b5e;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+        .language-selector-btn:hover, .language-selector-btn:focus {
+            transform: translateY(-2px) scale(1.05);
+            background-color: var(--primary-color) !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 15px rgba(177, 139, 94, 0.35);
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <!-- Navbar Include -->
+    {% include 'includes/navbar.html' %}
+
+    <!-- Messages Popup (Toast Style) -->
+    <div id="message-container" class="position-fixed top-0 end-0 p-3 mt-5" style="z-index: 9999;">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="custom-toast animate-slide-in text-white bg-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'primary' }}{% endif %} shadow-lg border-0 mb-3" role="alert" aria-live="assertive" aria-atomic="true" style="min-width: 300px; border-radius: 0;">
+                <div class="d-flex align-items-center p-3">
+                    <div class="toast-icon me-3">
+                        {% if message.tags == 'success' %}
+                            <i class="fas fa-check-circle fs-4"></i>
+                        {% elif message.tags == 'error' or message.tags == 'danger' %}
+                            <i class="fas fa-exclamation-circle fs-4"></i>
+                        {% else %}
+                            <i class="fas fa-info-circle fs-4"></i>
+                        {% endif %}
+                    </div>
+                    <div class="toast-content flex-grow-1">
+                        <div class="fw-bold text-uppercase small tracking-wider mb-1">{{ message.tags|default:'Message' }}</div>
+                        <div class="small">{{ message }}</div>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white ms-3" onclick="this.parentElement.parentElement.remove()" aria-label="Close"></button>
+                </div>
+                <div class="toast-progress"></div>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <style>
+        .custom-toast {
+            position: relative;
+            overflow: hidden;
+            background: var(--secondary-color);
+            transition: all 0.5s ease;
+        }
+        
+        .animate-slide-in {
+            animation: slideInRight 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.3);
+            animation: progress 3s linear forwards;
+        }
+
+        @keyframes progress {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
+
+        .tracking-wider {
+            letter-spacing: 1.5px;
+        }
+
+        /* Global Reusable Skeleton Loader Styles */
+        .global-skeleton-loader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #faf8f5;
+            opacity: 1;
+            pointer-events: auto;
+            overflow: hidden;
+            z-index: 1000;
+            transition: opacity 0.28s ease;
+        }
+
+        .global-content-hidden {
+            opacity: 0;
+            pointer-events: none;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .skeleton-shimmer {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(110deg, #ebe4d9 0%, #f8f3eb 42%, #ded2c0 76%);
+            background-size: 220% 100%;
+            animation: skeletonShimmerGlobal 1.15s ease-in-out infinite;
+        }
+
+        .skeleton-shimmer::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            transform: translateX(-100%);
+            animation: skeletonSweepGlobal 1.15s ease-in-out infinite;
+        }
+
+        @keyframes skeletonShimmerGlobal {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        @keyframes skeletonSweepGlobal {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toasts = document.querySelectorAll('.custom-toast');
+            toasts.forEach(toast => {
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateX(20px)';
+                    setTimeout(() => {
+                        toast.remove();
+                    }, 500);
+                }, 3000); // Fade after 3 seconds
+            });
+        });
+    </script>
+
+    <!-- Main Content -->
+    <main style="position: relative; min-height: 70vh;">
+        {% if request.resolver_match.url_name != 'home' %}
+        <div id="globalSkeletonLoader" class="global-skeleton-loader" role="status" aria-live="polite" aria-label="Loading content">
+            <span class="visually-hidden">Loading...</span>
+            {% block page_skeleton %}
+            <div class="container py-5">
+                <!-- Shimmering page title skeleton -->
+                <div class="skeleton-shimmer mb-5" style="width: 250px; height: 42px; border-radius: 8px;"></div>
+                
+                <!-- Shimmering content skeleton -->
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="p-4" style="background: white; border-radius: 16px; border: 1px solid rgba(0,0,0,0.02); box-shadow: 0 10px 30px rgba(0,0,0,0.01);">
+                            <div class="skeleton-shimmer mb-3" style="width: 100%; height: 200px; border-radius: 12px;"></div>
+                            <div class="skeleton-shimmer mb-2" style="width: 80%; height: 20px; border-radius: 4px;"></div>
+                            <div class="skeleton-shimmer" style="width: 50%; height: 16px; border-radius: 4px;"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-4" style="background: white; border-radius: 16px; border: 1px solid rgba(0,0,0,0.02); box-shadow: 0 10px 30px rgba(0,0,0,0.01);">
+                            <div class="skeleton-shimmer mb-3" style="width: 100%; height: 200px; border-radius: 12px;"></div>
+                            <div class="skeleton-shimmer mb-2" style="width: 80%; height: 20px; border-radius: 4px;"></div>
+                            <div class="skeleton-shimmer" style="width: 50%; height: 16px; border-radius: 4px;"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-4" style="background: white; border-radius: 16px; border: 1px solid rgba(0,0,0,0.02); box-shadow: 0 10px 30px rgba(0,0,0,0.01);">
+                            <div class="skeleton-shimmer mb-3" style="width: 100%; height: 200px; border-radius: 12px;"></div>
+                            <div class="skeleton-shimmer mb-2" style="width: 80%; height: 20px; border-radius: 4px;"></div>
+                            <div class="skeleton-shimmer" style="width: 50%; height: 16px; border-radius: 4px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endblock %}
+        </div>
+        {% endif %}
+        
+        <div id="mainContentWrapper" class="{% if request.resolver_match.url_name != 'home' %}global-content-hidden{% endif %}" style="transition: opacity 0.28s ease;">
+            {% block content %}{% endblock %}
+            <!-- Footer Include inside the wrapper to load and transition together -->
+            {% include 'includes/footer.html' %}
+        </div>
+    </main>
+
+    <script>
+        (function() {
+            document.addEventListener('DOMContentLoaded', function() {
+                var loader = document.getElementById('globalSkeletonLoader');
+                var wrapper = document.getElementById('mainContentWrapper');
+                if (loader && wrapper) {
+                    setTimeout(function() {
+                        loader.style.opacity = '0';
+                        loader.style.transition = 'opacity 0.28s ease';
+                        
+                        // Prepare wrapper transition
+                        wrapper.style.opacity = '0';
+                        wrapper.classList.remove('global-content-hidden');
+                        
+                        // Force repaint/reflow to guarantee transition execution
+                        wrapper.offsetHeight;
+                        
+                        wrapper.style.opacity = '1';
+                        
+                        setTimeout(function() {
+                            if (loader.parentNode) {
+                                loader.parentNode.removeChild(loader);
+                            }
+                        }, 280);
+                    }, 450); // Premium visual load duration
+                }
+            });
+        })();
+    </script>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script>
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+    <script>
+        // Prevent font flicker for brand text
+        document.fonts.ready.then(function() {
+            document.body.classList.add('fonts-loaded');
+        });
+    </script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Intercept user storefront logout form
+            document.body.addEventListener('submit', function(e) {
+                const form = e.target;
+                if (form.classList.contains('logout-form')) {
+                    e.preventDefault(); // Prevent standard submission
+                    
+                    Swal.fire({
+                        title: 'Confirm Logout',
+                        text: 'Are you sure you want to log out of your FurniFlex account?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#b18b5e', // Gold
+                        cancelButtonColor: '#2c2c2c', // Charcoal
+                        confirmButtonText: 'Yes, Logout',
+                        cancelButtonText: 'Cancel',
+                        background: '#fdfaf7',
+                        color: '#2c2c2c',
+                        fontFamily: "'Outfit', sans-serif"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit(); // Submit
+                        }
+                    });
+                }
+            });
+
+            // Clear notifications unread badge immediately and send AJAX to server on dropdown show
+            const notificationDropdown = document.getElementById('notificationDropdownContainer');
+            if (notificationDropdown) {
+                notificationDropdown.addEventListener('show.bs.dropdown', function() {
+                    const unreadBadge = document.getElementById('notificationUnreadBadge');
+                    const headerBadge = document.getElementById('notificationHeaderBadge');
+                    const scrollContainer = notificationDropdown.querySelector('.notifications-scroll');
+                    const totalCount = scrollContainer ? parseInt(scrollContainer.dataset.totalCount || 0) : 0;
+                    
+                    // Immediately hide the red indicator & header count badge in frontend
+                    if (unreadBadge) {
+                        unreadBadge.style.transition = 'all 0.3s ease';
+                        unreadBadge.style.opacity = '0';
+                        unreadBadge.style.transform = 'translate(100%, -50%) scale(0)';
+                        setTimeout(() => unreadBadge.remove(), 300);
+                    }
+                    if (headerBadge) {
+                        headerBadge.style.transition = 'all 0.3s ease';
+                        headerBadge.style.opacity = '0';
+                        setTimeout(() => headerBadge.remove(), 300);
+                    }
+                    
+                    // Send AJAX post to server to record that they have cleared all notifications
+                    fetch('/clear-notifications/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: 'count=' + encodeURIComponent(totalCount)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Notifications cleared successfully:', data);
+                    })
+                    .catch(error => {
+                        console.error('AJAX error clearing notifications:', error);
+                    });
+                });
+            }
+
+            // Clear All notifications click handler
+            const clearAllBtn = document.getElementById('clearAllNotificationsBtn');
+            if (clearAllBtn && notificationDropdown) {
+                clearAllBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    fetch('/clear-all-notifications/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            const scrollContainer = notificationDropdown.querySelector('.notifications-scroll');
+                            if (scrollContainer) {
+                                scrollContainer.innerHTML = `
+                                    <div class="px-4 py-5 text-center text-muted animate-fade-in">
+                                        <i class="fas fa-bell-slash fs-1 mb-3 opacity-25"></i>
+                                        <p class="small m-0">No new alerts at this moment.</p>
+                                    </div>
+                                `;
+                                scrollContainer.setAttribute('data-total-count', '0');
+                            }
+                            clearAllBtn.style.transition = 'all 0.3s ease';
+                            clearAllBtn.style.opacity = '0';
+                            setTimeout(() => clearAllBtn.remove(), 300);
+                            
+                            const unreadBadge = document.getElementById('notificationUnreadBadge');
+                            const headerBadge = document.getElementById('notificationHeaderBadge');
+                            if (unreadBadge) unreadBadge.remove();
+                            if (headerBadge) headerBadge.remove();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error clearing all notifications:', error);
+                    });
+                });
+            }
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+
+    <script type="text/javascript">
+        // Custom Offline Translation Dictionary — COMPLETE SITE COVERAGE
+        const translationDictionary = {
+            // Navbar & General UI Strings
+            "Home": "मुख्य पृष्ठ",
+            "Explore Furniture": "फर्नीचर खोजें",
+            "About Us": "हमारे बारे में",
+            "Contact": "संपर्क करें",
+            "Login": "लॉगिन",
+            "Get Started": "शुरू करें",
+            "My Profile": "मेरी प्रोफाइल",
+            "My Rentals": "मेरे किराए",
+            "Support Tickets": "सहायता टिकट",
+            "Logout": "लॉगआउट",
+            "Confirm Logout": "लॉगआउट की पुष्टि करें",
+            "Are you sure you want to log out of your FurniFlex account?": "क्या आप निश्चित रूप से अपने फर्नीफ्लेक्स खाते से लॉग आउट करना चाहते हैं?",
+            "Yes, Logout": "हाँ, लॉगआउट",
+            "Cancel": "रद्द करें",
+            "Go to My Rentals": "मेरे किराए पर जाएं",
+            
+            // Notifications & Notifications Dropdown Strings
+            "Notifications": "सूचनाएं",
+            "Clear All": "सभी हटाएं",
+            "No new alerts at this moment.": "इस समय कोई नई सूचना नहीं है।",
+            "Welcome to FurniFlex": "फर्नीफ्लेक्स में आपका स्वागत है",
+            "Rent beautiful, luxury designer collections today. Browse our trending catalogue!": "आज ही सुंदर, लक्ज़री डिज़ाइनर संग्रह किराए पर लें। हमारे ट्रेंडिंग कैटलॉग ब्राउज़ करें!",
+            "Points Earned!": "अंक अर्जित किए!",
+            "Rental Expiring Soon": "किराया जल्द ही समाप्त हो रहा है",
+            "Rental Overdue": "किराया अतिदेय",
+            "Ticket Registered": "टिकट पंजीकृत",
+            "Ticket In Progress": "टिकट प्रगति पर है",
+            "Ticket Resolved": "टिकट हल हो गया",
+            "Loyalty Reward Active": "वफादारी इनाम सक्रिय",
+            "New User Discount (20% Off 1st Month)": "नए उपयोगकर्ता की छूट (पहले महीने पर 20% की छूट)",
+            
+            // Slider / Home Hero Strings
+            "LUXURY COLLECTION 2024": "लक्जरी संग्रह 2024",
+            "EXCLUSIVE DESIGNS": "विशेष डिजाइन",
+            "MODERN DINING": "आधुनिक डाइनिंग",
+            "SMART WORKSPACE": "स्मार्ट कार्यक्षेत्र",
+            "Elevate Your Living Space": "अपने रहने की जगह को बेहतर बनाएं",
+            "Discover premium sofas that redefine comfort and style in your home.": "अपने घर में आराम और शैली को फिर से परिभाषित करने वाले प्रीमियम सोफों की खोज करें।",
+            "Shop Living Room": "लिविंग रूम खरीदें",
+            "Rest in Pure Luxury": "शुद्ध विलासिता में आराम करें",
+            "Transform your bedroom into a sanctuary with our designer bed collections.": "हमारे designer बेड संग्रह के साथ अपने बेडरूम को एक अभयारण्य में बदलें।",
+            "Explore Bedrooms": "बेडरूम खोजें",
+            "Dine with Elegance": "सुरुचिपूर्ण ढंग से भोजन करें",
+            "Curated dining sets designed for memorable moments and sophisticated hosting.": "यादगार पलों और परिष्कृत मेजबानी के लिए डिज़ाइन किए गए क्यूरेटेड डाइनिंग सेट।",
+            "View Dining Sets": "डाइनिंग सेट देखें",
+            "Power Your Productivity": "अपनी उत्पादकता बढ़ाएं",
+            "Premium office furniture that blends ergonomic comfort with executive style.": "प्रीमियम कार्यालय फर्नीचर जो कार्यकारी शैली के साथ एर्गोनोमिक आराम को जोड़ता है।",
+            "Setup Office": "कार्यालय सेटअप करें",
+            
+            // Features / Highlights Section Strings
+            "Why Choose FurniFlex?": "फर्नीफ्लेक्स क्यों चुनें?",
+            "Experience the freedom of flexible furniture rental with premium service at every step.": "हर कदम पर प्रीमियम सेवा के साथ लचीले फर्नीचर किराए पर लेने की स्वतंत्रता का अनुभव करें।",
+            "Free Delivery": "मुफ़्त डिलीवरी",
+            "We bring your chosen furniture right to your doorstep at no extra cost, with professional setup.": "हम आपके चुने हुए फर्नीचर को बिना किसी अतिरिक्त लागत के, पेशेवर सेटअप के साथ आपके दरवाजे पर लाते हैं।",
+            "Flexible Plans": "लचीली योजनाएं",
+            "Choose monthly or yearly plans that fit your lifestyle. Swap or return whenever you need.": "ऐसी मासिक या वार्षिक योजनाएँ चुनें जो आपकी जीवनशैली के अनुकूल हों। जब भी आपको आवश्यकता हो बदलें या वापस करें।",
+            "Premium Quality": "प्रीमियम गुणवत्ता",
+            "Every piece is curated for style and durability, ensuring a luxurious experience in your home.": "आपके घर में एक शानदार अनुभव सुनिश्चित करते हुए, हर टुकड़े को शैली और स्थायित्व के लिए क्यूरेट किया गया है।",
+            
+            // Products List & Details Strings
+            "Featured Collections": "विशेष रुप से प्रदर्शित संग्रह",
+            "View All": "सभी देखें",
+            "In Stock": "स्टॉक में है",
+            "Currently Unavailable": "वर्तमान में अनुपलब्ध",
+            "Rent": "किराए पर लें",
+            "/month": "/माह",
+            "No products found yet!": "अभी तक कोई उत्पाद नहीं मिला!",
+            "Check back later or add some from the admin panel.": "बाद में दोबारा देखें या एडमिन पैनल से कुछ जोड़ें।",
+            "EXPLORE OUR CATALOGUE": "हमारे कैटलॉग का अन्वेषण करें",
+            "Curated Designer Collections": "क्यूरेटेड डिजाइनर संग्रह",
+            "Find the perfect, luxury-grade furniture pieces to match your lifestyle and custom design desires.": "अपनी जीवनशैली और कस्टम डिज़ाइन इच्छाओं से मेल खाने के लिए सही, लक्जरी-ग्रेड फर्नीचर टुकड़े खोजें।",
+            "Products": "उत्पाद",
+            "Explore Our Collection": "हमारे संग्रह का अन्वेषण करें",
+            "Filter by Category": "श्रेणी के अनुसार फ़िल्टर करें",
+            "All Categories": "सभी श्रेणियां",
+            "Sort by Price": "कीमत के अनुसार क्रमबद्ध करें",
+            "Low to High": "कम से अधिक",
+            "High to Low": "अधिक से कम",
+            "Search products...": "उत्पाद खोजें...",
+            "Search luxury furniture by name, material, or design...": "नाम, सामग्री या डिज़ाइन द्वारा लक्जरी फर्नीचर खोजें...",
+            "Rent Now": "अभी किराए पर लें",
+            "Product Details": "उत्पाद विवरण",
+            "Dimensions": "आयाम",
+            "Material": "सामग्री",
+            "Color": "रंग",
+            "Rental Order Summary": "किराया ऑर्डर सारांश",
+            "Total Cost": "कुल लागत",
+            "Proceed to Payment": "भुगतान के लिए आगे बढ़ें",
+            "Go to Checkout": "चेकआउट पर जाएं",
+            "Apply": "लागू करें",
+            "AVAILABILITY": "उपलब्धता",
+            "Availability": "उपलब्धता",
+            "MATERIAL": "सामग्री",
+            "COLOR": "रंग",
+            "DESCRIPTION": "विवरण",
+            "Description": "विवरण",
+            
+            // Product Detail Page Strings
+            "Quality Guarantee": "गुणवत्ता की गारंटी",
+            "Every piece is sanitized and inspected for premium quality.": "प्रीमियम गुणवत्ता के लिए प्रत्येक टुकड़े को साफ और निरीक्षण किया जाता है।",
+            "Free Maintenance": "मुफ़्त रखरखाव",
+            "Zero-cost repairs and maintenance for the entire rental period.": "पूरी किराया अवधि के लिए शून्य-लागत मरम्मत और रखरखाव।",
+            "Easy Relocation": "आसान स्थानांतरण",
+            "Moving houses? We'll relocate your furniture for free within the city.": "घर बदल रहे हैं? हम आपके किराए के फर्नीचर को मुफ्त में पैक और स्थानांतरित करेंगे।",
+            "Upgrade Anytime": "कभी भी अपग्रेड करें",
+            "Swap your furniture for a new design at any point in your tenure.": "अपनी शैली प्राथमिकताओं में बदलाव के साथ उत्पादों को बदलें या अपग्रेड करें।",
+            "Select Rental Duration": "किराए की अवधि चुनें",
+            "SELECT RENTAL DURATION": "किराए की अवधि चुनें",
+            "RENT THIS ITEM": "यह आइटम किराए पर लें",
+            "VIEW MY RENTALS": "मेरे किराए देखें",
+            "Currently Active Rental": "वर्तमान में सक्रिय किराया",
+            "You already have an active subscription for this premium piece. Enjoy styling your dream home!": "आपके पास पहले से ही इस प्रीमियम पीस के लिए एक सक्रिय सदस्यता है। अपने सपनों के घर को सजाने का आनंद लें!",
+            "You Might Also Like": "आपको यह भी पसंद आ सकता है",
+            "Mo": "माह",
+            "Free delivery within 2-3 business days": "2-3 कार्य दिवसों के भीतर मुफ्त वितरण",
+            
+            // Seeded Category Strings (Database Values)
+            "Bed": "बेड",
+            "Table": "मेज",
+            "Appliances": "उपकरण",
+            "Living": "लिविंग",
+            "Office": "कार्यालय",
+            "Dining": "डाइनिंग",
+            "Sofa": "सोफा",
+            "All": "सभी",
+            
+            // Product names are kept in English (not translated)
+            
+            // Seeded Product Description Strings (Database Values)
+            "Space-saving bunk bed with safety rails and ladder, ideal for shared rooms.": "सुरक्षा रेल और सीढ़ी के साथ जगह बचाने वाला बंक बेड, साझा कमरों के लिए आदर्श।",
+            "Space-saving bunk bed with safety rails and ladder, ideal for shared rooms.\r\n": "सुरक्षा रेल और सीढ़ी के साथ जगह बचाने वाला बंक बेड, साझा कमरों के लिए आदर्श।",
+            "Minimal bedside table with drawer storage and compact modern design.": "दराज भंडारण और कॉम्पैक्ट आधुनिक डिजाइन के साथ न्यूनतम बेडसाइड टेबल।",
+            "Elegant dressing table with large mirror, storage drawers, and premium finish.": "बड़े दर्पण, दराज और प्रीमियम फिनिश के साथ सुरुचिपूर्ण ड्रेसिंग टेबल।",
+            "Spacious wardrobe with hanging section, drawers, and premium finish.": "लटकने वाले अनुभाग, दराज और प्रीमियम फिनिश के साथ विशाल अलमारी।",
+            "Compact study table with storage shelves for students and remote work setups.": "छात्रों और दूरदराज के काम के सेटअप के लिए स्टोरेज शेल्फ के साथ कॉम्पैक्ट स्टडी टेबल।",
+            "Modern TV console with storage cabinets and open shelves for media accessories.": "मीडिया एक्सेसरीज़ के लिए स्टोरेज कैबिनेट और खुली अलमारियों के साथ आधुनिक टीवी कंसोल।",
+            "Modern center coffee table with a tempered glass top and sleek metal frame. Perfect for living rooms and contemporary interiors.": "टेम्पर्ड ग्लास टॉप और स्लीक मेटल फ्रेम के साथ आधुनिक सेंटर कॉफी टेबल। लिविंग रूम और समकालीन अंदरूनी हिस्सों के लिए बिल्कुल सही।",
+            "Elegant premium wooden dining set with a spacious table and six cushioned chairs. Designed for modern homes with a luxury walnut finish and durable construction.": "विशाल मेज और छह गद्देदार कुर्सियों के साथ सुरुचिपूर्ण प्रीमियम लकड़ी का डाइनिंग सेट। लक्जरी अखरोट फिनिश और टिकाऊ निर्माण के साथ आधुनिक घरों के लिए डिज़ाइन किया गया।",
+            "King-size bed with hydraulic storage and premium headboard design.": "हाइड्रोलिक स्टोरेज और प्रीमियम हेडबोर्ड डिज़ाइन के साथ किंग-साइज़ बेड।",
+            "Spacious L-shaped sofa with premium cushioning and modern styling.": "प्रीमियम कुशनिंग और आधुनिक स्टाइल के साथ विशाल एल-आकार का सोफा।",
+            "A luxurious and comfortable velvet sofa, perfect for your living room.": "एक शानदार और आरामदायक मखमली सोफा, जो आपके लिविंग रूम के लिए बिल्कुल सही है।",
+            "Modern minimalist bed frame with a comfortable premium mattress.": "एक आरामदायक प्रीमियम गद्दे के साथ आधुनिक न्यूनतम बेड फ्रेम।",
+            "A sleek dining table with 4 chairs, ideal for family dinners.": "4 कुर्सियों के साथ एक चिकना डाइनिंग टेबल, पारिवारिक रात्रिभोज के लिए आदर्श।",
+            "Support your back with our premium ergonomic office chair.": "हमारे प्रीमियम एर्गोनोमिक ऑफिस चेयर के साथ अपनी पीठ को सहारा दें।",
+
+            // Materials & Colors (Database values)
+            "Metal + Wood": "धातु + लकड़ी",
+            "Solid Wood": "ठोस लकड़ी",
+            "Wood + Mirror": "लकड़ी + दर्पण",
+            "Engineered Wood": "इंजीनियर लकड़ी",
+            "Wood + Metal Frame": "लकड़ी + धातु फ्रेम",
+            "Tempered Glass + Wooden Frame": "टेम्पर्ड ग्लास + लकड़ी का फ्रेम",
+            "Solid Wood with cushioned chairs": "गद्देदार कुर्सियों के साथ ठोस लकड़ी",
+            "Premium Fabric + Wooden Frame": "प्रीमियम फैब्रिक + लकड़ी का फ्रेम",
+            "Wooden + Grey": "लकड़ी + स्लेटी",
+            "Light Oak": "लाइट ओक",
+            "White + Oak": "सफेद + ओक",
+            "Dark Walnut": "डार्क वॉलनट",
+            "Oak Brown": "ओक ब्राउन",
+            "White + Walnut": "सफेद + वॉलनट",
+            "Black + Glass Finish": "काला + ग्लास फिनिश",
+            "Walnut Brown": "अखरोट भूरा",
+            "Light Grey": "हल्का स्लेटी",
+            "Wood": "लकड़ी",
+            "Velvet": "मखमली",
+            "Metal": "धातु",
+            "Leather": "चमड़ा",
+            "Green": "हरा",
+            "Grey": "स्लेटी",
+            "Blue": "नीला",
+            "Black": "काला",
+            "Brown": "भूरा",
+            "White": "सफेद",
+            "Yellow": "पीला",
+            "Red": "लाल",
+            
+            // About Page
+            "About FurniFlex": "फर्नीफ्लेक्स के बारे में",
+            "Our Story": "हमारी कहानी",
+            "Crafting Luxury Lifestyles": "लक्जरी जीवन शैली का निर्माण",
+            
+            // Contact Page
+            "Get in Touch": "संपर्क में रहें",
+            "We're here to help you design your dream space.": "हम आपके सपनों के स्थान को डिजाइन करने में आपकी मदद करने के लिए यहां हैं।",
+            "Send Message": "संदेश भेजें",
+            "Your Name": "आपका नाम",
+            "Your Email": "आपका ईमेल",
+            "Subject": "विषय",
+            "Message": "संदेश",
+            
+            // Category badges from screen
+            "TABLE": "मेज",
+            "APPLIANCES": "उपकरण",
+            "LIVING": "लिविंग",
+            "OFFICE": "कार्यालय",
+            "BED": "बेड",
+            "SOFA": "सोफा",
+            "DINING": "डाइनिंग",
+            "Collections": "संग्रह",
+            "Curated Designer": "क्यूरेटेड डिजाइनर",
+            "Elevate Your": "अपने को बेहतर बनाएं",
+            "Living Space": "रहने की जगह",
+            "Rest in": "आराम करें",
+            "Pure Luxury": "शुद्ध विलासिता में",
+            "Dine with": "भोजन करें",
+            "Elegance": "सुरुचिपूर्ण ढंग से",
+            "Power Your": "अपनी बढ़ाएं",
+            "Productivity": "उत्पादकता",
+            "Limited Time Offer": "सीमित समय का प्रस्ताव",
+            "Ready to furnish your": "अपने सपनों के घर को",
+            "dream home?": "सजाने के लिए तैयार हैं?",
+            "Experience the perfect blend of luxury and flexibility. Join the FurniFlex community today and get 20% off your first month's rental.": "विलासिता और लचीलेपन का सही मिश्रण अनुभव करें। आज ही FurniFlex समुदाय से जुड़ें और अपने पहले महीने के किराए पर 20% की छूट पाएं।",
+            "Get Started Today": "आज ही शुरू करें",
+            "View Collection": "संग्रह देखें",
+            "THE FURNIFLEX STORY": "फर्नीफ्लेक्स की कहानी",
+            "Redefining Modern Living": "आधुनिक जीवन को फिर से परिभाषित करना",
+            "We're on a mission to make beautiful, luxurious homes accessible to everyone, with flexible rental plans tailored to your lifestyle.": "हम लचीली किराया योजनाओं के साथ सबको सुंदर, शानदार घर उपलब्ध कराने के मिशन पर हैं।",
+            "OUR NARRATIVE": "हमारी कथा",
+            "Furniture that moves with you.": "फर्नीचर जो आपके साथ चलता है।",
+            "Founded 2026": "स्थापना 2026",
+            "Disrupting traditional home furniture.": "पारंपरिक घरेलू फर्नीचर में क्रांति।",
+            "Curated Designer Catalog": "क्यूरेटेड डिजाइनर कैटलॉग",
+            "Sustainable Choice": "टिकाऊ विकल्प",
+            "Complimentary Logistics": "निःशुल्क लॉजिस्टिक्स",
+            "Customer First Care": "ग्राहक प्रथम सेवा",
+            "OUR STRENGTHS": "हमारी शक्तियां",
+            "Built on Core Values": "मूल मूल्यों पर निर्मित",
+            "Every aspect of FurniFlex is designed to elevate your living experience without complications.": "FurniFlex का हर पहलू बिना जटिलताओं के आपके जीवन अनुभव को बेहतर बनाने के लिए डिज़ाइन किया गया है।",
+            "Luxury-Grade Design": "लक्जरी-ग्रेड डिजाइन",
+            "We curate only the finest materials, premium finishes, and ergonomically superior designs for your satisfaction.": "हम आपकी संतुष्टि के लिए केवल बेहतरीन सामग्री, प्रीमियम फिनिश और एर्गोनोमिक रूप से बेहतर डिज़ाइन चुनते हैं।",
+            "Ultimate Flexibility": "परम लचीलापन",
+            "Rent for 3, 6, or 12+ months. Swap designs when you want, extend plans easily, or own it outright if you fall in love.": "3, 6, या 12+ महीनों के लिए किराए पर लें। जब चाहें डिज़ाइन बदलें, योजनाएं आसानी से बढ़ाएं।",
+            "Zero-Risk Maintenance": "शून्य-जोखिम रखरखाव",
+            "Accidents happen, and we have your back. Our plans include absolute coverage for general wear-and-tear.": "दुर्घटनाएं होती हैं, और हम आपके साथ हैं। हमारी योजनाओं में सामान्य टूट-फूट के लिए पूर्ण कवरेज शामिल है।",
+            "OUR TIMELINE": "हमारी समयरेखा",
+            "The Journey of FurniFlex": "फर्नीफ्लेक्स की यात्रा",
+            "From a revolutionary design concept to styling thousands of modern homes across the country.": "एक क्रांतिकारी डिज़ाइन अवधारणा से देश भर में हजारों आधुनिक घरों को स्टाइल करने तक।",
+            "The Spark & Conception": "प्रेरणा और अवधारणा",
+            "Redefining Design Standards": "डिजाइन मानकों को फिर से परिभाषित करना",
+            "The Expansion & Scale": "विस्तार और पैमाना",
+            "CRAFTSMANSHIP": "कारीगरी",
+            "Sustainability Met by Quality": "गुणवत्ता से मिली स्थिरता",
+            "Circular Economy Champion": "चक्रीय अर्थव्यवस्था चैंपियन",
+            "Premium Solid Wood Materials": "प्रीमियम ठोस लकड़ी सामग्री",
+            "Ready to Create Your Dream Space?": "अपना सपनों का स्थान बनाने के लिए तैयार हैं?",
+            "EXPLORE FURNITURE": "फर्नीचर खोजें",
+            "CONNECT WITH US": "हमसे जुड़ें",
+            "Get In Touch": "संपर्क में रहें",
+            "Contact Info": "संपर्क जानकारी",
+            "Have questions about our rental plans, premium catalog, or custom installations? Reach out, we are here to support you!": "हमारी किराया योजनाओं, प्रीमियम कैटलॉग, या कस्टम इंस्टॉलेशन के बारे में प्रश्न हैं? संपर्क करें, हम आपकी मदद के लिए यहां हैं!",
+            "Our Head Office": "हमारा मुख्यालय",
+            "Call Us directly": "हमें सीधे कॉल करें",
+            "Email Support": "ईमेल सहायता",
+            "Follow Us": "हमें फॉलो करें",
+            "Send a Message": "एक संदेश भेजें",
+            "First Name": "पहला नाम",
+            "Last Name": "अंतिम नाम",
+            "Email Address": "ईमेल पता",
+            "Your Message": "आपका संदेश",
+            "COMMON INQUIRIES": "सामान्य पूछताछ",
+            "Frequently Asked Questions": "अक्सर पूछे जाने वाले प्रश्न",
+            "Get answers to the most common questions about ordering, delivery, and plans.": "ऑर्डरिंग, डिलीवरी और प्लान के बारे में सबसे आम सवालों के जवाब पाएं।",
+            "What is the minimum rental duration?": "न्यूनतम किराया अवधि क्या है?",
+            "Are delivery and assembly really free?": "क्या डिलीवरी और असेंबली वाकई मुफ्त है?",
+            "Can I swap or upgrade my furniture?": "क्या मैं अपना फर्नीचर बदल या अपग्रेड कर सकता हूं?",
+            "Message Sent Successfully!": "संदेश सफलतापूर्वक भेजा गया!",
+            "Done": "हो गया",
+            "/ month": "/ माह",
+            "month": "माह",
+            "Explore Furniture | FurniFlex": "फर्नीचर खोजें | फर्नीफ्लेक्स",
+            "Home | FurniFlex": "मुख्य पृष्ठ | फर्नीफ्लेक्स",
+            "About Us | FurniFlex": "हमारे बारे में | फर्नीफ्लेक्स",
+            "Contact Us | FurniFlex": "संपर्क करें | फर्नीफ्लेक्स",
+            "Why Choose": "क्यों चुनें",
+            "FurniFlex": "फर्नीफ्लेक्स",
+            "?": "?",
+            "Default Image": "डिफ़ॉल्ट छवि",
+            "Rent ": "किराए पर लें ",
+            "/mo": "/माह",
+
+            // My Rentals Page
+            "My Rentals | FurniFlex": "मेरे किराए | फर्नीफ्लेक्स",
+            "My": "मेरे",
+            "Manage your active furniture subscriptions and renewals.": "अपनी सक्रिय फर्नीचर सदस्यता और नवीनीकरण प्रबंधित करें।",
+            "Duration:": "अवधि:",
+            "Months": "महीने",
+            "Start Date": "शुरू तिथि",
+            "Next Renewal": "अगला नवीनीकरण",
+            "Payment Method": "भुगतान विधि",
+            "Delivery Address": "वितरण पता",
+            "Monthly Rent": "मासिक किराया",
+            "Complete Checkout": "चेकआउट पूरा करें",
+            "Support / Repair": "सहायता / मरम्मत",
+            "Renew Subscription": "सदस्यता नवीनीकरण",
+            "CURRENT RENTAL SUBSCRIPTION": "वर्तमान किराया सदस्यता",
+            "Monthly Rate:": "मासिक दर:",
+            "Current Next Renewal:": "वर्तमान अगला नवीनीकरण:",
+            "Renewal Period": "नवीनीकरण अवधि",
+            "1 Month Extension": "1 महीने का विस्तार",
+            "3 Months Extension": "3 महीने का विस्तार",
+            "6 Months Extension": "6 महीने का विस्तार",
+            "12 Months Extension": "12 महीने का विस्तार",
+            "Payment Mode": "भुगतान मोड",
+            "Online Secure Payment": "ऑनलाइन सुरक्षित भुगतान",
+            "Processed safely via Razorpay gateway": "Razorpay गेटवे के माध्यम से सुरक्षित रूप से प्रोसेस किया गया",
+            "Proceed": "आगे बढ़ें",
+            "No active rentals found": "कोई सक्रिय किराया नहीं मिला",
+            "Explore our catalog and find the perfect furniture for your space.": "हमारे कैटलॉग का अन्वेषण करें और अपने स्थान के लिए सही फर्नीचर खोजें।",
+            "Start Renting": "किराए पर लेना शुरू करें",
+            "Active": "सक्रिय",
+            "Pending": "लंबित",
+
+            // Profile Page
+            "My Profile | FurniFlex": "मेरी प्रोफाइल | फर्नीफ्लेक्स",
+            "Profile Settings": "प्रोफ़ाइल सेटिंग्स",
+            "Personal Information": "व्यक्तिगत जानकारी",
+            "Account Security": "खाता सुरक्षा",
+            "Change Password": "पासवर्ड बदलें",
+            "Current Password": "वर्तमान पासवर्ड",
+            "New Password": "नया पासवर्ड",
+            "Confirm New Password": "नए पासवर्ड की पुष्टि करें",
+            "Update Password": "पासवर्ड अपडेट करें",
+            "Update Profile": "प्रोफ़ाइल अपडेट करें",
+            "Delete Account": "खाता हटाएं",
+            "Danger Zone": "खतरनाक क्षेत्र",
+            "Permanently delete your account": "अपना खाता स्थायी रूप से हटाएं",
+            "First Name": "पहला नाम",
+            "Last Name": "अंतिम नाम",
+            "Email": "ईमेल",
+            "Phone": "फ़ोन",
+            "Username": "उपयोगकर्ता नाम",
+
+            // Support Tickets Page
+            "Support Tickets | FurniFlex": "सहायता टिकट | फर्नीफ्लेक्स",
+            "My Support Tickets": "मेरे सहायता टिकट",
+            "Track your furniture repair and support requests.": "अपने फर्नीचर मरम्मत और सहायता अनुरोधों को ट्रैक करें।",
+            "Ticket": "टिकट",
+            "Status": "स्थिति",
+            "Created": "बनाया गया",
+            "No support tickets found": "कोई सहायता टिकट नहीं मिला",
+            "Issue Type": "समस्या प्रकार",
+            "Submit Ticket": "टिकट जमा करें",
+            "Describe your issue": "अपनी समस्या का वर्णन करें",
+
+            // Checkout Page
+            "Checkout | FurniFlex": "चेकआउट | फर्नीफ्लेक्स",
+            "Checkout": "चेकआउट",
+            "Order Summary": "ऑर्डर सारांश",
+            "Delivery Details": "वितरण विवरण",
+            "Street Address": "सड़क का पता",
+            "City": "शहर",
+            "State": "राज्य",
+            "PIN Code": "पिन कोड",
+            "Place Order": "ऑर्डर दें",
+            "Pay Now": "अभी भुगतान करें",
+            "Subtotal": "उप-योग",
+            "Total": "कुल",
+            "Security Deposit": "सुरक्षा जमा",
+            "per month": "प्रति माह",
+            "Cash on Delivery": "कैश ऑन डिलीवरी",
+            "Online Payment": "ऑनलाइन भुगतान",
+
+            // Checkout Page
+            "Checkout Information": "चेकआउट जानकारी",
+            "Select Delivery Address": "डिलीवरी पता चुनें",
+            "Address": "पता",
+            "Add New Address": "नया पता जोड़ें",
+            "Choose Payment Option": "भुगतान विकल्प चुनें",
+            "Cash on Delivery (COD)": "कैश ऑन डिलीवरी (सीओडी)",
+            "Pay when item is delivered": "आइटम डिलीवर होने पर भुगतान करें",
+            "Pay securely via Razorpay": "रेज़रपे के माध्यम से सुरक्षित भुगतान करें",
+            "CONFIRM & CONTINUE": "पुष्टि करें और जारी रखें",
+            "Order Summary": "ऑर्डर सारांश",
+            "Monthly Rent": "मासिक किराया",
+            "Tenure Duration": "कार्यकाल की अवधि",
+            "Delivery": "डिलीवरी",
+            "FREE": "मुफ़्त",
+            "Total Amount to Paid": "कुल भुगतान राशि",
+            "Secure Transaction. Your details are safe with us.": "सुरक्षित लेनदेन। आपका विवरण हमारे पास सुरक्षित है।",
+            "Months": "महीने",
+            "Months Tenure": "महीने का कार्यकाल",
+            "months tenure subscription": "महीने के कार्यकाल की सदस्यता",
+            "/mo": "/माह",
+
+            // Login & Register Pages
+            "Sign In": "साइन इन",
+            "Sign Up": "साइन अप",
+            "Register": "रजिस्टर करें",
+            "Create Account": "खाता बनाएं",
+            "Create your account": "अपना खाता बनाएं",
+            "Already have an account?": "पहले से खाता है?",
+            "Don't have an account?": "खाता नहीं है?",
+            "Forgot Password?": "पासवर्ड भूल गए?",
+            "Password": "पासवर्ड",
+            "Confirm Password": "पासवर्ड की पुष्टि करें",
+            "Remember me": "मुझे याद रखें",
+            "Welcome Back": "वापस स्वागत है",
+            "Log in to your account": "अपने खाते में लॉग इन करें",
+
+            // Footer
+            "All rights reserved.": "सर्वाधिकार सुरक्षित।",
+            "Privacy Policy": "गोपनीयता नीति",
+            "Terms of Service": "सेवा की शर्तें",
+
+            // Product List Page
+            "CURRENTLY UNAVAILABLE": "वर्तमान में अनुपलब्ध",
+            "Explore Our Collection | FurniFlex": "हमारे संग्रह का अन्वेषण करें | फर्नीफ्लेक्स"
+        };
+
+        // Reverse translation dictionary for returning to English
+        const reverseDictionary = {};
+        const translationDictionaryLower = {};
+        for (let key in translationDictionary) {
+            reverseDictionary[translationDictionary[key]] = key;
+            translationDictionaryLower[key.toLowerCase()] = translationDictionary[key];
+        }
+
+        let isTranslating = false;
+
+        function translateDOM(targetLang) {
+            if (isTranslating) return;
+            isTranslating = true;
+
+            function walk(node) {
+                if (node.nodeType === Node.ELEMENT_NODE) {
+                    const tagName = node.tagName.toLowerCase();
+                    if (tagName === 'script' || tagName === 'style') return;
+                    
+                    // Translate standard placeholders
+                    const placeholder = node.getAttribute('placeholder');
+                    if (placeholder) {
+                        if (targetLang === 'hi') {
+                            const val = translationDictionaryLower[placeholder.toLowerCase()];
+                            if (val) node.setAttribute('placeholder', val);
+                        } else {
+                            const val = reverseDictionary[placeholder];
+                            if (val) node.setAttribute('placeholder', val);
+                        }
+                    }
+                    if (tagName === 'textarea' || tagName === 'input') return;
+                }
+                
+                if (node.nodeType === Node.TEXT_NODE) {
+                    let textValue = node.nodeValue.trim();
+                    if (textValue) {
+                        if (targetLang === 'hi') {
+                            const val = translationDictionaryLower[textValue.toLowerCase()];
+                            if (val) {
+                                node.nodeValue = node.nodeValue.replace(textValue, val);
+                            }
+                        } else {
+                            const val = reverseDictionary[textValue];
+                            if (val) {
+                                node.nodeValue = node.nodeValue.replace(textValue, val);
+                            }
+                        }
+                    }
+                } else {
+                    for (let i = 0; i < node.childNodes.length; i++) {
+                        walk(node.childNodes[i]);
+                    }
+                }
+            }
+
+            walk(document.body);
+
+            // Translate title tag safely
+            if (targetLang === 'hi') {
+                const exactVal = translationDictionaryLower[document.title.toLowerCase()];
+                if (exactVal) {
+                    document.title = exactVal;
+                } else {
+                    let titleParts = document.title.split(' | ');
+                    let modified = false;
+                    for (let i = 0; i < titleParts.length; i++) {
+                        let part = titleParts[i].trim();
+                        const partVal = translationDictionaryLower[part.toLowerCase()];
+                        if (partVal) {
+                            titleParts[i] = partVal;
+                            modified = true;
+                        }
+                    }
+                    if (modified) {
+                        document.title = titleParts.join(' | ');
+                    }
+                }
+            } else {
+                if (reverseDictionary[document.title]) {
+                    document.title = reverseDictionary[document.title];
+                } else {
+                    let titleParts = document.title.split(' | ');
+                    let modified = false;
+                    for (let i = 0; i < titleParts.length; i++) {
+                        let part = titleParts[i].trim();
+                        if (reverseDictionary[part]) {
+                            titleParts[i] = reverseDictionary[part];
+                            modified = true;
+                        }
+                    }
+                    if (modified) {
+                        document.title = titleParts.join(' | ');
+                    }
+                }
+            }
+
+            // Sync navbar display selector labels
+            const labels = document.querySelectorAll('#activeLanguageLabel');
+            labels.forEach(function(label) {
+                label.innerText = targetLang.toUpperCase();
+            });
+
+            document.documentElement.lang = targetLang;
+            isTranslating = false;
+        }
+
+        // MutationObserver to translate dynamically appended or mutated DOM elements
+        let translationObserver = null;
+        function startTranslationObserver(langCode) {
+            if (translationObserver) {
+                translationObserver.disconnect();
+            }
+
+            translationObserver = new MutationObserver(function(mutations) {
+                translationObserver.disconnect();
+                translateDOM(langCode);
+                translationObserver.observe(document.body, {
+                    childList: true,
+                    subtree: true
+                });
+            });
+
+            translationObserver.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        }
+
+        function changeLanguage(langCode) {
+            localStorage.setItem('preferredLanguage', langCode);
+            
+            // Apply DOM translations instantly
+            translateDOM(langCode);
+            startTranslationObserver(langCode);
+            
+            // Sync page lang property
+            document.documentElement.lang = langCode;
+        }
+
+        // Initial translation execution on page load
+        (function() {
+            const savedLang = localStorage.getItem('preferredLanguage') || 'en';
+            
+            // Immediate execution as early as possible
+            document.addEventListener('DOMContentLoaded', function() {
+                translateDOM(savedLang);
+                startTranslationObserver(savedLang);
+            });
+            
+            // Backup execution when loader elements complete
+            window.addEventListener('load', function() {
+                translateDOM(savedLang);
+            });
+            
+            // Setup listeners for home skeleton loading finish
+            window.addEventListener('furniflex:home-loader-complete', function() {
+                translateDOM(savedLang);
+            });
+        })();
+    </script>
+</body>
+</html>

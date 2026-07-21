@@ -1,0 +1,329 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Register | FurniFlex{% endblock %}
+
+{% block extra_css %}
+<!-- intl-tel-input CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css">
+<style>
+    .auth-wrapper {
+        min-height: calc(100vh - 80px);
+        display: flex;
+        background-color: #fff;
+        overflow: hidden;
+    }
+
+    .auth-image {
+        flex: 1;
+        background-image: url('{{ MEDIA_URL }}sofa.jpeg');
+        background-size: cover;
+        background-position: center;
+        display: none;
+        position: relative;
+    }
+
+    @media (min-width: 992px) {
+        .auth-image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px;
+        }
+    }
+
+    .auth-image-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.3) 100%);
+    }
+
+    .auth-image-content {
+        position: relative;
+        z-index: 2;
+        color: white;
+        max-width: 500px;
+        text-shadow: 0 2px 15px rgba(0,0,0,0.5);
+    }
+
+    .auth-image-content h1 {
+        font-size: 3.5rem;
+        font-weight: 900;
+        margin-bottom: 20px;
+        line-height: 1.1;
+        text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .auth-image-content p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        font-weight: 300;
+        letter-spacing: 0.5px;
+    }
+
+    .auth-form-container {
+        flex: 1.2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+        background-color: var(--light-bg);
+        overflow-y: auto;
+    }
+
+    .auth-card {
+        width: 100%;
+        max-width: 550px;
+        background: transparent;
+    }
+
+    .form-control, .iti {
+        width: 100%;
+    }
+
+    .form-control {
+        height: 50px;
+        background-color: white;
+        border: 1px solid #e1e1e1;
+        border-radius: 0;
+        padding: 0 20px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: none;
+        background-color: #fff;
+    }
+
+    textarea.form-control {
+        height: auto;
+        padding: 15px 20px;
+        line-height: 1.5;
+    }
+
+    .iti__flag-container {
+        padding: 2px;
+    }
+
+    .iti__flag {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+
+    .iti--allow-dropdown .iti__flag-container:hover .iti__selected-flag {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .auth-header {
+        margin-bottom: 30px;
+    }
+
+    .auth-header h2 {
+        font-size: 2.5rem;
+        color: var(--secondary-color);
+        margin-bottom: 10px;
+    }
+
+    .btn-register {
+        height: 55px;
+        font-size: 1rem;
+        letter-spacing: 2px;
+        margin-top: 20px;
+    }
+
+    .brand-accent {
+        font-family: 'Dancing Script', cursive;
+        color: var(--primary-color);
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .text-danger {
+        font-size: 0.8rem;
+    }
+
+    @media (max-width: 991px) {
+        .auth-form-container {
+            padding: 20px;
+        }
+        .auth-card {
+            max-width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block page_skeleton %}
+<div class="auth-wrapper d-flex" style="min-height: calc(100vh - 80px);">
+    <!-- Left Side Image Shimmer (Desktop only) -->
+    <div class="auth-image d-none d-lg-flex skeleton-shimmer align-items-center justify-content-center" style="flex: 1; background: #2c2c2c;">
+        <div class="text-center p-5">
+            <div class="skeleton-shimmer mb-3 mx-auto" style="width: 140px; height: 35px; border-radius: 4px; background: rgba(177, 139, 94, 0.2);"></div>
+            <div class="skeleton-shimmer mb-3 mx-auto" style="width: 320px; height: 55px; border-radius: 8px; background: rgba(255, 255, 255, 0.1);"></div>
+            <div class="skeleton-shimmer mx-auto" style="width: 250px; height: 18px; border-radius: 4px; background: rgba(255, 255, 255, 0.05);"></div>
+        </div>
+    </div>
+    <!-- Right Side Form Shimmer -->
+    <div class="auth-form-container d-flex align-items-center justify-content-center" style="flex: 1; padding: 40px; background-color: var(--light-bg);">
+        <div class="auth-card" style="width: 100%; max-width: 450px;">
+            <div class="auth-header mb-4">
+                <div class="skeleton-shimmer mb-2" style="width: 150px; height: 24px; border-radius: 4px;"></div>
+                <div class="skeleton-shimmer mb-3" style="width: 280px; height: 48px; border-radius: 8px;"></div>
+                <div class="skeleton-shimmer" style="width: 220px; height: 16px; border-radius: 4px;"></div>
+            </div>
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <div class="skeleton-shimmer" style="width: 100%; height: 55px; border-radius: 0;"></div>
+                </div>
+                <div class="col-md-6">
+                    <div class="skeleton-shimmer" style="width: 100%; height: 55px; border-radius: 0;"></div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="skeleton-shimmer" style="width: 100%; height: 55px; border-radius: 0;"></div>
+            </div>
+            <div class="mb-3">
+                <div class="skeleton-shimmer" style="width: 100%; height: 55px; border-radius: 0;"></div>
+            </div>
+            <div class="mb-3">
+                <div class="skeleton-shimmer" style="width: 100%; height: 55px; border-radius: 0;"></div>
+            </div>
+            <div class="mb-4">
+                <div class="skeleton-shimmer" style="width: 100%; height: 55px; border-radius: 0;"></div>
+            </div>
+            <div class="skeleton-shimmer mb-4" style="width: 100%; height: 55px; border-radius: 0;"></div>
+            <div class="skeleton-shimmer mx-auto" style="width: 200px; height: 18px; border-radius: 4px;"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-image">
+        <div class="auth-image-overlay"></div>
+        <div class="auth-image-content">
+            <span class="brand-accent">Join the Circle</span>
+            <h1>Your Home, Redefined</h1>
+            <p>Create an account to start your journey with FurniFlex. Experience luxury living without the long-term commitment.</p>
+        </div>
+    </div>
+    
+    <div class="auth-form-container">
+        <div class="auth-card fade-in-up">
+            <div class="auth-header">
+                <h2 class="fw-bold">Create Account</h2>
+                <p class="text-muted">Fill in your details to get started</p>
+            </div>
+            
+            <form method="post" id="registrationForm">
+                {% csrf_token %}
+                <div class="row">
+                    {% for field in form %}
+                    <div class="{% if field.name == 'address' %}col-12{% else %}col-md-6{% endif %} mb-3">
+                        <label for="{{ field.id_for_label }}" class="form-label small fw-bold text-uppercase tracking-wider">{{ field.label }}</label>
+                        {{ field }}
+                        {% for error in field.errors %}
+                        <div class="text-danger mt-1 fw-semibold">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <!-- Hidden input to store full international number -->
+                <input type="hidden" name="full_mobile" id="full_mobile">
+                
+                <div class="d-grid mb-4">
+                    <button type="submit" class="btn btn-primary btn-register shadow-sm">REGISTER NOW</button>
+                </div>
+                
+                <div class="text-center">
+                    <p class="text-muted small">Already a member? <a href="{% url 'login' %}" class="text-primary fw-bold text-decoration-none">Log in here</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- intl-tel-input JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add form-control class to all inputs
+        document.querySelectorAll('.auth-form-container input, .auth-form-container textarea, .auth-form-container select').forEach(el => {
+            el.classList.add('form-control');
+        });
+
+        // Strict numeric-only restriction for mobile number and pincode
+        const phoneInput = document.querySelector('input[name="mobile_no"]');
+        const pincodeInput = document.querySelector('input[name="pincode"]');
+
+        if (phoneInput) {
+            phoneInput.addEventListener('input', function() {
+                // Instantly strip all non-digit characters
+                this.value = this.value.replace(/\D/g, '');
+            });
+        }
+
+        if (pincodeInput) {
+            pincodeInput.addEventListener('input', function() {
+                // Instantly strip all non-digit characters
+                this.value = this.value.replace(/\D/g, '');
+            });
+        }
+
+        // Initialize intl-tel-input
+        if (phoneInput) {
+            const iti = window.intlTelInput(phoneInput, {
+                initialCountry: "auto",
+                geoIpLookup: function(success, failure) {
+                    fetch("https://ipapi.co/json")
+                        .then(res => res.json())
+                        .then(data => success(data.country_code))
+                        .catch(() => success("US"));
+                },
+                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+                separateDialCode: true,
+                preferredCountries: ["us", "gb", "in", "ae"]
+            });
+
+            // Auto-sync flag picker with country dropdown
+            phoneInput.addEventListener('countrychange', function() {
+                const countryData = iti.getSelectedCountryData();
+                if (countryData && countryData.iso2) {
+                    const isoToCountry = {
+                        'in': 'India',
+                        'us': 'United States',
+                        'gb': 'United Kingdom',
+                        'ae': 'UAE'
+                    };
+                    const europeanIsos = ['fr', 'de', 'es', 'it', 'nl', 'be', 'ch', 'se', 'no', 'dk', 'fi', 'ie', 'pl', 'pt', 'gr', 'cz', 'at'];
+                    const mapped = isoToCountry[countryData.iso2.toLowerCase()];
+                    const countrySelect = document.querySelector('select[name="country"]');
+                    if (countrySelect) {
+                        if (mapped) {
+                            countrySelect.value = mapped;
+                        } else if (europeanIsos.includes(countryData.iso2.toLowerCase())) {
+                            countrySelect.value = 'Europe';
+                        }
+                    }
+                }
+            });
+
+            // Handle form submission
+            const form = document.getElementById('registrationForm');
+            form.addEventListener('submit', function() {
+                const fullNumber = iti.getNumber();
+                document.getElementById('full_mobile').value = fullNumber;
+            });
+        }
+    });
+</script>
+{% endblock %}
+

@@ -1,0 +1,202 @@
+{% extends 'adminpanel/admin_base.html' %}
+
+{% block title %}{{ action }} Customer Account | FurniFlex Admin Portal{% endblock %}
+
+{% block extra_css %}
+<!-- intl-tel-input CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css">
+<style>
+    /* Premium input sizing matching register.html */
+    .form-control {
+        height: 55px;
+        background-color: white;
+        border: 1px solid #e1e1e1;
+        border-radius: 8px;
+        padding: 0 20px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: none;
+        background-color: #fff;
+    }
+
+    textarea.form-control {
+        height: auto;
+        padding: 15px 20px;
+    }
+
+    /* intl-tel-input width alignment */
+    .iti {
+        width: 100%;
+    }
+    
+    .iti__country-list {
+        background-color: #ffffff;
+        border: 1px solid #e1e1e1;
+        border-radius: 8px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        z-index: 1050;
+    }
+</style>
+{% endblock %}
+
+{% block admin_skeleton %}
+<div class="mb-5">
+    <div class="skeleton-shimmer" style="width: 140px; height: 18px; border-radius: 4px;"></div>
+    <div class="skeleton-shimmer mt-3 mb-2" style="width: 320px; height: 38px; border-radius: 6px;"></div>
+    <div class="skeleton-shimmer" style="width: 440px; height: 16px; border-radius: 4px;"></div>
+</div>
+
+<div class="card border-0 p-4 p-md-5 shadow-sm rounded-4" style="background: white;">
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="skeleton-shimmer mb-2" style="width: 100px; height: 14px; border-radius: 4px;"></div>
+            <div class="skeleton-shimmer" style="width: 100%; height: 55px; border-radius: 8px;"></div>
+        </div>
+        <div class="col-md-6">
+            <div class="skeleton-shimmer mb-2" style="width: 120px; height: 14px; border-radius: 4px;"></div>
+            <div class="skeleton-shimmer" style="width: 100%; height: 55px; border-radius: 8px;"></div>
+        </div>
+        <div class="col-md-6">
+            <div class="skeleton-shimmer mb-2" style="width: 110px; height: 14px; border-radius: 4px;"></div>
+            <div class="skeleton-shimmer" style="width: 100%; height: 55px; border-radius: 8px;"></div>
+        </div>
+        <div class="col-md-6">
+            <div class="skeleton-shimmer mb-2" style="width: 70px; height: 14px; border-radius: 4px;"></div>
+            <div class="skeleton-shimmer" style="width: 100%; height: 55px; border-radius: 8px;"></div>
+        </div>
+        <div class="col-md-6">
+            <div class="skeleton-shimmer mb-2" style="width: 80px; height: 14px; border-radius: 4px;"></div>
+            <div class="skeleton-shimmer" style="width: 100%; height: 55px; border-radius: 8px;"></div>
+        </div>
+        <div class="col-12">
+            <div class="skeleton-shimmer mb-2" style="width: 180px; height: 14px; border-radius: 4px;"></div>
+            <div class="skeleton-shimmer" style="width: 100%; height: 95px; border-radius: 8px;"></div>
+        </div>
+        <div class="col-md-6">
+            <div class="skeleton-shimmer mb-2" style="width: 150px; height: 14px; border-radius: 4px;"></div>
+            <div class="skeleton-shimmer" style="width: 100%; height: 55px; border-radius: 8px;"></div>
+        </div>
+        <div class="col-12 d-flex justify-content-end mt-5">
+            <div class="skeleton-shimmer" style="width: 120px; height: 48px; border-radius: 8px; margin-right: 15px;"></div>
+            <div class="skeleton-shimmer" style="width: 160px; height: 48px; border-radius: 8px;"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block admin_content %}
+<div class="mb-5">
+    <a href="{% url 'admin_users' %}" class="text-primary text-decoration-none small fw-bold">
+        <i class="fas fa-arrow-left me-1"></i> Back to Customers
+    </a>
+    <h1 class="fw-bold mt-2" style="font-family: 'Outfit', sans-serif;">{{ action }} Customer Account</h1>
+    <p class="text-muted m-0 mt-1">Configure profile details and authentication credentials for this user</p>
+</div>
+
+<div class="card admin-card p-4 p-md-5">
+    <form method="post" id="userForm">
+        {% csrf_token %}
+        <div class="row g-4">
+            <!-- Username -->
+            <div class="col-md-6">
+                <label class="form-label fw-bold text-muted small text-uppercase mb-2">Username *</label>
+                <input type="text" class="form-control" name="username" value="{{ user_obj.username }}" required placeholder="Enter username">
+            </div>
+            
+            <!-- Email -->
+            <div class="col-md-6">
+                <label class="form-label fw-bold text-muted small text-uppercase mb-2">Email Address *</label>
+                <input type="email" class="form-control" name="email" value="{{ user_obj.email }}" required placeholder="e.g. alex@example.com">
+            </div>
+            
+            <!-- Mobile Number -->
+            <div class="col-md-6">
+                <label class="form-label fw-bold text-muted small text-uppercase mb-2">Mobile Number *</label>
+                <input type="tel" class="form-control" name="mobile_no" value="{{ profile.mobile_no }}" required placeholder="10-digit mobile number">
+            </div>
+            
+            <!-- City -->
+            <div class="col-md-6">
+                <label class="form-label fw-bold text-muted small text-uppercase mb-2">City *</label>
+                <input type="text" class="form-control" name="city" value="{{ profile.city }}" required placeholder="e.g. New York">
+            </div>
+            
+            <!-- Pincode -->
+            <div class="col-md-6">
+                <label class="form-label fw-bold text-muted small text-uppercase mb-2">Pincode *</label>
+                <input type="text" class="form-control" name="pincode" value="{{ profile.pincode }}" required placeholder="6-digit pincode" maxlength="6">
+            </div>
+            
+            <!-- Address -->
+            <div class="col-12">
+                <label class="form-label fw-bold text-muted small text-uppercase mb-2">Full Delivery Address *</label>
+                <textarea class="form-control" name="address" rows="3" required placeholder="Full delivery address">{{ profile.address }}</textarea>
+            </div>
+            
+            <!-- Password -->
+            <div class="col-md-6">
+                <label class="form-label fw-bold text-muted small text-uppercase mb-2">
+                    {% if action == 'Edit' %}New Password (Leave blank to keep existing){% else %}Security Password *{% endif %}
+                </label>
+                <input type="password" class="form-control" name="password" {% if action == 'Add' %}required{% endif %} placeholder="••••••••">
+            </div>
+            
+            <!-- Confirm Password (Only for Add) -->
+            {% if action == 'Add' %}
+            <div class="col-md-6">
+                <label class="form-label fw-bold text-muted small text-uppercase mb-2">Confirm Password *</label>
+                <input type="password" class="form-control" name="confirm_password" required placeholder="••••••••">
+            </div>
+            {% endif %}
+            
+            <!-- Hidden input to store full international number -->
+            <input type="hidden" name="full_mobile" id="full_mobile">
+            
+            <div class="col-12 d-flex justify-content-end mt-5">
+                <a href="{% url 'admin_users' %}" class="btn btn-outline-secondary px-5 py-3 me-3 rounded-3 fw-bold">Cancel</a>
+                <button type="submit" class="btn btn-brand px-5 py-3 rounded-3 fw-bold">{{ action }} Customer</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- intl-tel-input JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const phoneInput = document.querySelector('input[name="mobile_no"]');
+        if (phoneInput) {
+            const iti = window.intlTelInput(phoneInput, {
+                initialCountry: "auto",
+                geoIpLookup: function(success, failure) {
+                    fetch("https://ipapi.co/json")
+                        .then(res => res.json())
+                        .then(data => success(data.country_code))
+                        .catch(() => success("US"));
+                },
+                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+                separateDialCode: true,
+                preferredCountries: ["us", "gb", "in", "ae"]
+            });
+
+            // If we are in edit mode, make sure the dynamic country code dials in correctly
+            const initialVal = phoneInput.value;
+            if (initialVal && initialVal.startsWith('+')) {
+                iti.setNumber(initialVal);
+            }
+
+            const form = document.getElementById('userForm');
+            form.addEventListener('submit', function() {
+                const fullNumber = iti.getNumber();
+                document.getElementById('full_mobile').value = fullNumber;
+            });
+        }
+    });
+</script>
+{% endblock %}

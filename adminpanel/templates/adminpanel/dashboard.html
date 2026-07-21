@@ -1,0 +1,551 @@
+{% extends 'adminpanel/admin_base.html' %}
+
+{% block title %}Dashboard | FurniFlex Admin Portal{% endblock %}
+
+{% block admin_skeleton %}
+<div class="d-flex justify-content-between align-items-center mb-5">
+    <div>
+        <div class="skeleton-shimmer mb-2" style="width: 250px; height: 38px; border-radius: 6px;"></div>
+        <div class="skeleton-shimmer" style="width: 320px; height: 16px; border-radius: 4px;"></div>
+    </div>
+    <div class="skeleton-shimmer animate-pulse" style="width: 180px; height: 50px; border-radius: 12px;"></div>
+</div>
+
+<!-- Stats Shimmer Grid -->
+<div class="row g-4 mb-5">
+    <div class="col-md-6 col-lg-3">
+        <div class="card border-0 p-4 shadow-sm rounded-4" style="background: white;">
+            <div class="skeleton-shimmer mb-3" style="width: 100px; height: 14px; border-radius: 4px;"></div>
+            <div class="skeleton-shimmer mb-3" style="width: 140px; height: 32px; border-radius: 6px;"></div>
+            <div class="skeleton-shimmer" style="width: 80px; height: 14px; border-radius: 4px;"></div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="card border-0 p-4 shadow-sm rounded-4" style="background: white;">
+            <div class="skeleton-shimmer mb-3" style="width: 110px; height: 14px; border-radius: 4px;"></div>
+            <div class="skeleton-shimmer mb-3" style="width: 80px; height: 32px; border-radius: 6px;"></div>
+            <div class="skeleton-shimmer" style="width: 90px; height: 14px; border-radius: 4px;"></div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="card border-0 p-4 shadow-sm rounded-4" style="background: white;">
+            <div class="skeleton-shimmer mb-3" style="width: 90px; height: 14px; border-radius: 4px;"></div>
+            <div class="skeleton-shimmer mb-3" style="width: 70px; height: 32px; border-radius: 6px;"></div>
+            <div class="skeleton-shimmer" style="width: 110px; height: 14px; border-radius: 4px;"></div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="card border-0 p-4 shadow-sm rounded-4" style="background: white;">
+            <div class="skeleton-shimmer mb-3" style="width: 100px; height: 14px; border-radius: 4px;"></div>
+            <div class="skeleton-shimmer mb-3" style="width: 60px; height: 32px; border-radius: 6px;"></div>
+            <div class="skeleton-shimmer" style="width: 100px; height: 14px; border-radius: 4px;"></div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Monthly Revenue Trend Graph Shimmer -->
+    <div class="col-lg-8">
+        <div class="card border-0 p-4 shadow-sm rounded-4 h-100" style="background: white;">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <div class="skeleton-shimmer mb-2" style="width: 200px; height: 24px; border-radius: 4px;"></div>
+                    <div class="skeleton-shimmer" style="width: 280px; height: 14px; border-radius: 4px;"></div>
+                </div>
+                <div class="skeleton-shimmer" style="width: 90px; height: 28px; border-radius: 14px;"></div>
+            </div>
+            <div class="skeleton-shimmer my-3" style="width: 100%; height: 240px; border-radius: 12px;"></div>
+        </div>
+    </div>
+    
+    <!-- Active Rentals Split Donut Shimmer -->
+    <div class="col-lg-4">
+        <div class="card border-0 p-4 shadow-sm rounded-4 h-100" style="background: white;">
+            <div class="skeleton-shimmer mb-2" style="width: 160px; height: 24px; border-radius: 4px;"></div>
+            <div class="skeleton-shimmer mb-4" style="width: 200px; height: 14px; border-radius: 4px;"></div>
+            
+            <div class="d-flex justify-content-center align-items-center py-3">
+                <div class="skeleton-shimmer" style="width: 180px; height: 180px; border-radius: 50%;"></div>
+            </div>
+            
+            <div class="mt-4">
+                <div class="d-flex justify-content-between mb-2">
+                    <div class="skeleton-shimmer" style="width: 80px; height: 16px; border-radius: 4px;"></div>
+                    <div class="skeleton-shimmer" style="width: 30px; height: 16px; border-radius: 4px;"></div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div class="skeleton-shimmer" style="width: 90px; height: 16px; border-radius: 4px;"></div>
+                    <div class="skeleton-shimmer" style="width: 30px; height: 16px; border-radius: 4px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block admin_content %}
+<div class="d-flex justify-content-between align-items-center mb-5">
+    <div>
+        <h1 class="fw-bold m-0" style="font-family: 'Outfit', sans-serif;">System Overview</h1>
+        <p class="text-muted m-0 mt-1">Real-time statistics and ecosystem activity</p>
+    </div>
+    <div>
+        <span class="badge bg-white text-dark shadow-sm border p-3 rounded-3 fw-bold">
+            <i class="fas fa-calendar-day me-2 text-primary"></i> <span id="current-date">Today</span>
+        </span>
+    </div>
+</div>
+
+<!-- Stats Summary Grid -->
+<div class="row g-4 mb-5">
+    <!-- Stat 1: Revenue -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card admin-card p-4 h-100 position-relative">
+            <!-- Period Filter Dropdown -->
+            <div class="position-absolute end-0 top-0 mt-3 me-3 dropdown">
+                <button class="btn btn-link text-muted p-0 border-0" type="button" id="revenueFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="box-shadow: none; outline: none;">
+                    <i class="fas fa-ellipsis-vertical fs-5"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end border-0 shadow rounded-3 py-2" aria-labelledby="revenueFilterDropdown" style="font-size: 0.85rem; min-width: 140px;">
+                    <li><a class="dropdown-item py-2 fw-semibold {% if revenue_days == '7' %}active bg-primary text-white{% endif %}" href="?revenue_days=7">Last 7 Days</a></li>
+                    <li><a class="dropdown-item py-2 fw-semibold {% if revenue_days == '14' %}active bg-primary text-white{% endif %}" href="?revenue_days=14">Last 14 Days</a></li>
+                    <li><a class="dropdown-item py-2 fw-semibold {% if revenue_days == '30' %}active bg-primary text-white{% endif %}" href="?revenue_days=30">Last 30 Days</a></li>
+                    <li><a class="dropdown-item py-2 fw-semibold {% if revenue_days == '90' %}active bg-primary text-white{% endif %}" href="?revenue_days=90">Last 90 Days</a></li>
+                    <li><hr class="dropdown-divider my-1"></li>
+                    <li><a class="dropdown-item py-2 fw-semibold {% if revenue_days == 'lifetime' or not revenue_days %}active bg-primary text-white{% endif %}" href="?revenue_days=lifetime">Lifetime Earnings</a></li>
+                </ul>
+            </div>
+            
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <span class="text-muted small text-uppercase fw-semibold d-block mb-1">Total Revenue</span>
+                    <h3 class="fw-bold m-0" style="font-family: 'Outfit', sans-serif;">₹{{ total_revenue }}</h3>
+                </div>
+            </div>
+            <div class="mt-2 text-success small fw-semibold">
+                <i class="fas fa-arrow-trend-up me-1"></i> {{ revenue_label }}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Stat 2: Active Rentals -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card admin-card p-4 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <span class="text-muted small text-uppercase fw-semibold d-block mb-1">Active Rentals</span>
+                    <h3 class="fw-bold m-0">{{ total_active_rentals }}</h3>
+                </div>
+                <div class="stat-icon" style="background-color: #e6f7ed; color: #1f8a4e;">
+                    <i class="fas fa-couch"></i>
+                </div>
+            </div>
+            <div class="mt-2 text-muted small">
+                Live subscriptions in homes
+            </div>
+        </div>
+    </div>
+    
+    <!-- Stat 3: Registered Customers -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card admin-card p-4 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <span class="text-muted small text-uppercase fw-semibold d-block mb-1">Total Users</span>
+                    <h3 class="fw-bold m-0">{{ total_users }}</h3>
+                </div>
+                <div class="stat-icon" style="background-color: #e6f0fa; color: #1f728a;">
+                    <i class="fas fa-users"></i>
+                </div>
+            </div>
+            <div class="mt-2 text-muted small">
+                Subscribed active accounts
+            </div>
+        </div>
+    </div>
+    
+    <!-- Stat 4: Support Tickets -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card admin-card p-4 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <span class="text-muted small text-uppercase fw-semibold d-block mb-1">Open Tickets</span>
+                    <h3 class="fw-bold m-0">{{ unresolved_tickets }}</h3>
+                </div>
+                <div class="stat-icon" style="background-color: #ffebe6; color: #cc3300;">
+                    <i class="fas fa-screwdriver-wrench"></i>
+                </div>
+            </div>
+            <div class="mt-2 text-danger small fw-semibold">
+                <i class="fas fa-triangle-exclamation me-1"></i> Requires Action
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js CDN Library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Analytics Graphs Section -->
+<div class="row g-4 mb-5">
+    <!-- Left: Monthly Revenue Line Chart -->
+    <div class="col-lg-8">
+        <div class="card admin-card p-4 shadow-sm border-0 h-100" style="background: #ffffff; border-radius: 16px;">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h5 class="fw-bold m-0" style="font-family: 'Outfit', sans-serif; color: #2c2c2c;">Monthly Revenue Trend</h5>
+                    <p class="text-muted small m-0 mt-1">Earnings compiled dynamically over the last 6 months</p>
+                </div>
+                <div class="badge px-3 py-2 rounded-pill fw-bold text-uppercase" style="background-color: #fcf6e8; color: #b18b5e; font-size: 0.75rem;">
+                    <i class="fas fa-chart-line me-1"></i> Revenue
+                </div>
+            </div>
+            
+            <div style="position: relative; height: 385px; width: 100%;">
+                <canvas id="revenueTrendChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right: Active Rentals Category Pie/Doughnut Chart -->
+    <div class="col-lg-4">
+        <div class="card admin-card p-4 shadow-sm border-0 h-100" style="background: #ffffff; border-radius: 16px;">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h5 class="fw-bold m-0" style="font-family: 'Outfit', sans-serif; color: #2c2c2c;">Active Rentals Split</h5>
+                    <p class="text-muted small m-0 mt-1">Distributions by furniture category</p>
+                </div>
+                <div class="badge px-3 py-2 rounded-pill fw-bold text-uppercase" style="background-color: #f6f6f6; color: #666666; font-size: 0.75rem;">
+                    <i class="fas fa-chart-pie me-1"></i> Inventory
+                </div>
+            </div>
+            
+            <div style="position: relative; height: 385px; width: 100%;">
+                <canvas id="categoryPieChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-5">
+    <!-- Left Panel: Recent Rentals -->
+    <div class="col-lg-7">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold m-0">Recent Rentals</h4>
+            <a href="{% url 'admin_rentals' %}" class="text-primary text-decoration-none small fw-bold">View All <i class="fas fa-arrow-right ms-1"></i></a>
+        </div>
+        <div class="admin-table-container">
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Furniture</th>
+                            <th>Duration</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if recent_rentals %}
+                            {% for rental in recent_rentals %}
+                            <tr>
+                                <td class="fw-bold text-dark">{{ rental.user.username }}</td>
+                                <td>{{ rental.product.name|truncatechars:20 }}</td>
+                                <td>{{ rental.rental_duration_months }} Mo</td>
+                                <td>
+                                    <span class="status-badge badge-{{ rental.status|lower }}">
+                                        {{ rental.status }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="4" class="text-center text-muted py-4">No recent rentals recorded.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Right Panel: Recent Support Tickets -->
+    <div class="col-lg-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold m-0">Support Tickets</h4>
+            <a href="{% url 'admin_tickets' %}" class="text-primary text-decoration-none small fw-bold">View All <i class="fas fa-arrow-right ms-1"></i></a>
+        </div>
+        <div class="admin-table-container">
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if recent_tickets %}
+                            {% for ticket in recent_tickets %}
+                            <tr>
+                                <td class="fw-bold text-dark">{{ ticket.user.username }}</td>
+                                <td>
+                                    <span class="status-badge {% if ticket.status == 'Resolved' %}badge-active{% else %}badge-pending{% endif %}">
+                                        {{ ticket.status }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if ticket.status != 'Resolved' %}
+                                    <form action="{% url 'admin_resolve_ticket' ticket.pk %}" method="post" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-outline-success btn-sm px-3 rounded-2 fw-semibold"><i class="fas fa-check"></i></button>
+                                    </form>
+                                    {% else %}
+                                    <span class="text-success small fw-semibold"><i class="fas fa-circle-check me-1"></i> Resolved</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="3" class="text-center text-muted py-4">No support tickets reported.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Additional Metrics & Actions Section -->
+<div class="row g-5 mt-4 mb-5">
+    <!-- Left Card: Recent Contact Queries -->
+    <div class="col-lg-7">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold m-0" style="font-family: 'Outfit', sans-serif;">Recent Contact Queries</h4>
+            <a href="{% url 'admin_queries' %}" class="text-primary text-decoration-none small fw-bold">View All <i class="fas fa-arrow-right ms-1"></i></a>
+        </div>
+        <div class="admin-table-container" style="overflow: hidden;">
+            <div class="table-responsive" style="overflow-x: hidden;">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Sender</th>
+                            <th>Inquiry Message</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if recent_queries %}
+                            {% for query in recent_queries %}
+                            <tr>
+                                <td class="fw-bold text-dark">
+                                    {{ query.first_name }} {{ query.last_name }}
+                                    <span class="d-block text-muted small fw-normal">{{ query.email }}</span>
+                                </td>
+                                <td class="text-muted small" style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                    {{ query.message }}
+                                </td>
+                                <td>
+                                    <span class="status-badge {% if query.is_resolved %}badge-active{% else %}badge-pending{% endif %}">
+                                        {% if query.is_resolved %}Resolved{% else %}Pending{% endif %}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="3" class="text-center text-muted py-4">No recent contact inquiries.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Card: Quick Administrative Tools -->
+    <div class="col-lg-5">
+        <h4 class="fw-bold mb-4" style="font-family: 'Outfit', sans-serif;">Quick Shortcuts</h4>
+        <div class="card admin-card p-4 shadow-sm border-0" style="background: #ffffff; border-radius: 16px;">
+            <div class="d-grid gap-3">
+                <a href="{% url 'admin_product_add' %}" class="btn btn-outline-primary d-flex align-items-center justify-content-between p-3 rounded-3 text-start text-decoration-none" style="transition: all 0.2s ease;">
+                    <span class="fw-semibold"><i class="fas fa-couch me-3"></i> Add New Product</span>
+                    <i class="fas fa-plus small"></i>
+                </a>
+                <a href="{% url 'admin_user_add' %}" class="btn btn-outline-primary d-flex align-items-center justify-content-between p-3 rounded-3 text-start text-decoration-none" style="transition: all 0.2s ease;">
+                    <span class="fw-semibold"><i class="fas fa-user-plus me-3"></i> Register Customer</span>
+                    <i class="fas fa-plus small"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedLang = localStorage.getItem('preferredLanguage') || 'en';
+        
+        // Render Date
+        const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        let dateStr = new Date().toLocaleDateString('en-US', dateOptions);
+        if (savedLang === 'hi') {
+            const days = {"Sunday":"रविवार","Monday":"सोमवार","Tuesday":"मंगलवार","Wednesday":"बुधवार","Thursday":"गुरुवार","Friday":"शुक्रवार","Saturday":"शनिवार"};
+            const months = {"January":"जनवरी","February":"फरवरी","March":"मार्च","April":"अप्रैल","May":"मई","June":"जून","July":"जुलाई","August":"अगस्त","September":"सितंबर","October":"अक्टूबर","November":"नवंबर","December":"दिसंबर"};
+            for (let eng in days) dateStr = dateStr.replace(eng, days[eng]);
+            for (let eng in months) dateStr = dateStr.replace(eng, months[eng]);
+        }
+        document.getElementById('current-date').textContent = dateStr;
+        
+        // 1. Line Chart: Monthly Revenue Trend
+        const monthlyLabels = {{ monthly_revenue_labels|safe }}.map(label => {
+            if (savedLang === 'hi' && typeof adminDict !== 'undefined') {
+                return adminDict[label] || label;
+            }
+            return label;
+        });
+        const monthlyData = {{ monthly_revenue_data|safe }};
+        
+        const lineCtx = document.getElementById('revenueTrendChart').getContext('2d');
+        const lineGradient = lineCtx.createLinearGradient(0, 0, 0, 300);
+        lineGradient.addColorStop(0, 'rgba(177, 139, 94, 0.35)');
+        lineGradient.addColorStop(1, 'rgba(177, 139, 94, 0.001)');
+        
+        new Chart(lineCtx, {
+            type: 'line',
+            data: {
+                labels: monthlyLabels,
+                datasets: [{
+                    label: savedLang === 'hi' ? 'मासिक राजस्व (₹)' : 'Monthly Revenue (₹)',
+                    data: monthlyData,
+                    borderColor: '#b18b5e',
+                    borderWidth: 3,
+                    backgroundColor: lineGradient,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#b18b5e',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: '#2c2c2c',
+                        titleFont: { family: 'Outfit', size: 13, weight: 'bold' },
+                        bodyFont: { family: 'Inter', size: 12 },
+                        padding: 12,
+                        cornerRadius: 8,
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                if (savedLang === 'hi') {
+                                    return 'राजस्व: ₹' + context.raw.toFixed(2);
+                                }
+                                return 'Revenue: ₹' + context.raw.toFixed(2);
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)',
+                        },
+                        ticks: {
+                            font: { family: 'Inter', size: 11 },
+                            color: '#888888',
+                            callback: function(value) {
+                                return '₹' + value;
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            font: { family: 'Inter', size: 11 },
+                            color: '#888888'
+                        }
+                    }
+                }
+            }
+        });
+
+        // 2. Pie/Doughnut Chart: Category Split
+        const categoryLabels = {{ category_labels|safe }}.map(label => {
+            if (savedLang === 'hi' && typeof adminDict !== 'undefined') {
+                return adminDict[label] || adminDict[label.toUpperCase()] || label;
+            }
+            return label;
+        });
+        const categoryData = {{ category_data|safe }};
+        
+        const pieCtx = document.getElementById('categoryPieChart').getContext('2d');
+        new Chart(pieCtx, {
+            type: 'doughnut',
+            data: {
+                labels: categoryLabels,
+                datasets: [{
+                    data: categoryData,
+                    backgroundColor: [
+                        '#b18b5e', // Gold
+                        '#2c2c2c', // Charcoal
+                        '#d9b48f', // Light Gold
+                        '#8b6d48', // Dark Gold
+                        '#e6c19a', // Sandy Beige
+                        '#544338'  // Deep Brown
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#ffffff',
+                    hoverOffset: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            boxWidth: 12,
+                            padding: 15,
+                            font: { family: 'Inter', size: 11, weight: '500' },
+                            color: '#444444'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#2c2c2c',
+                        titleFont: { family: 'Outfit', size: 13, weight: 'bold' },
+                        bodyFont: { family: 'Inter', size: 12 },
+                        padding: 12,
+                        cornerRadius: 8,
+                        displayColors: true,
+                        callbacks: {
+                            label: function(context) {
+                                if (savedLang === 'hi') {
+                                    return ' ' + context.label + ': ' + context.raw + ' सक्रिय किराए';
+                                }
+                                return ' ' + context.label + ': ' + context.raw + ' Active Rentals';
+                            }
+                        }
+                    }
+                },
+                cutout: '65%' // Doughnut styling for premium aesthetic
+            }
+        });
+    });
+</script>
+{% endblock %}

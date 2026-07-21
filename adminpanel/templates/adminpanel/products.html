@@ -1,0 +1,193 @@
+{% extends 'adminpanel/admin_base.html' %}
+
+{% block title %}Manage Products | FurniFlex Admin Portal{% endblock %}
+
+{% block admin_skeleton %}
+<div class="d-flex justify-content-between align-items-center mb-5">
+    <div>
+        <div class="skeleton-shimmer mb-2" style="width: 220px; height: 38px; border-radius: 6px;"></div>
+        <div class="skeleton-shimmer" style="width: 340px; height: 16px; border-radius: 4px;"></div>
+    </div>
+    <div class="skeleton-shimmer" style="width: 170px; height: 45px; border-radius: 8px;"></div>
+</div>
+
+<div class="card border-0 p-4 mb-4 shadow-sm rounded-4" style="background: white;">
+    <div class="row g-3 align-items-center">
+        <div class="col-lg-4 col-md-6">
+            <div class="skeleton-shimmer" style="width: 100%; height: 42px; border-radius: 8px;"></div>
+        </div>
+        <div class="col-lg-3 col-md-3">
+            <div class="skeleton-shimmer" style="width: 100%; height: 42px; border-radius: 8px;"></div>
+        </div>
+        <div class="col-lg-3 col-md-3">
+            <div class="skeleton-shimmer" style="width: 100%; height: 42px; border-radius: 8px;"></div>
+        </div>
+    </div>
+</div>
+
+<div class="card border-0 p-4 shadow-sm rounded-4" style="background: white;">
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th style="width: 80px;"><div class="skeleton-shimmer" style="width: 40px; height: 16px; border-radius: 4px;"></div></th>
+                    <th><div class="skeleton-shimmer" style="width: 120px; height: 16px; border-radius: 4px;"></div></th>
+                    <th><div class="skeleton-shimmer" style="width: 80px; height: 16px; border-radius: 4px;"></div></th>
+                    <th><div class="skeleton-shimmer" style="width: 60px; height: 16px; border-radius: 4px;"></div></th>
+                    <th><div class="skeleton-shimmer" style="width: 70px; height: 16px; border-radius: 4px;"></div></th>
+                    <th class="text-end"><div class="skeleton-shimmer ms-auto" style="width: 85px; height: 16px; border-radius: 4px;"></div></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in "12345" %}
+                <tr>
+                    <td><div class="skeleton-shimmer" style="width: 50px; height: 50px; border-radius: 8px;"></div></td>
+                    <td>
+                        <div class="skeleton-shimmer mb-1" style="width: 160px; height: 16px; border-radius: 4px;"></div>
+                        <div class="skeleton-shimmer" style="width: 90px; height: 12px; border-radius: 4px;"></div>
+                    </td>
+                    <td><div class="skeleton-shimmer" style="width: 70px; height: 16px; border-radius: 4px;"></div></td>
+                    <td><div class="skeleton-shimmer" style="width: 40px; height: 16px; border-radius: 4px;"></div></td>
+                    <td><div class="skeleton-shimmer" style="width: 60px; height: 22px; border-radius: 12px;"></div></td>
+                    <td class="text-end">
+                        <div class="d-flex justify-content-end gap-2">
+                            <div class="skeleton-shimmer" style="width: 32px; height: 32px; border-radius: 6px;"></div>
+                            <div class="skeleton-shimmer" style="width: 32px; height: 32px; border-radius: 6px;"></div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block admin_content %}
+<div class="d-flex justify-content-between align-items-center mb-5">
+    <div>
+        <h1 class="fw-bold m-0" style="font-family: 'Outfit', sans-serif;">Manage Inventory</h1>
+        <p class="text-muted m-0 mt-1">Add, update, or remove luxury items from your catalog</p>
+    </div>
+    <div>
+        <a href="{% url 'admin_product_add' %}" class="btn btn-brand">
+            <i class="fas fa-plus me-2"></i> Add New Product
+        </a>
+    </div>
+</div>
+
+<!-- Premium Filter & Search Bar -->
+<div class="admin-card mb-4 p-4">
+    <form method="get" class="row g-3 align-items-center">
+        <!-- Search Input -->
+        <div class="col-lg-4 col-md-6">
+            <div class="input-group">
+                <span class="input-group-text bg-white border-end-0 text-muted"><i class="fas fa-search"></i></span>
+                <input type="text" name="q" class="form-control border-start-0 ps-0" placeholder="Search product name..." value="{{ search_query }}">
+            </div>
+        </div>
+        <!-- Category Filter -->
+        <div class="col-lg-3 col-md-3">
+            <select name="category" class="form-select" onchange="this.form.submit()">
+                <option value="all" {% if category_filter == 'all' %}selected{% endif %}>All Categories</option>
+                {% for code, name in categories %}
+                <option value="{{ code }}" {% if category_filter == code %}selected{% endif %}>{{ name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <!-- Stock Filter -->
+        <div class="col-lg-3 col-md-3">
+            <select name="stock" class="form-select" onchange="this.form.submit()">
+                <option value="all" {% if stock_filter == 'all' %}selected{% endif %}>All Stock Status</option>
+                <option value="instock" {% if stock_filter == 'instock' %}selected{% endif %}>In Stock</option>
+                <option value="outofstock" {% if stock_filter == 'outofstock' %}selected{% endif %}>Currently Unavailable</option>
+            </select>
+        </div>
+        <!-- Action Buttons -->
+        <div class="col-lg-2 col-md-12 d-flex gap-2">
+            <button type="submit" class="btn btn-brand w-100 py-2">Filter</button>
+            <a href="{% url 'admin_products' %}" class="btn btn-outline-secondary w-100 py-2 d-flex align-items-center justify-content-center" title="Reset Filters"><i class="fas fa-rotate-left"></i></a>
+        </div>
+    </form>
+</div>
+
+<div class="admin-table-container">
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th style="width: 80px;">Image</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price / Mo</th>
+                    <th>Stock</th>
+                    <th style="width: 150px; text-align: right;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if products %}
+                    {% for product in products %}
+                    <tr>
+                        <td>
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" class="rounded-3 shadow-sm" style="width: 50px; height: 50px; object-fit: cover; border: 1px solid #eee;">
+                            {% else %}
+                                <div class="bg-light rounded-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 50px; height: 50px; border: 1px solid #eee;">
+                                    <i class="fas fa-couch text-muted"></i>
+                                </div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <span class="fw-bold text-dark d-block">{{ product.name }}</span>
+                            <span class="text-muted small">ID: #{{ product.id }}</span>
+                        </td>
+                        <td>
+                            <span class="badge bg-light text-dark border px-3 py-2 small text-uppercase">{{ product.category }}</span>
+                        </td>
+                        <td class="fw-bold text-primary">₹{{ product.price_per_month }}</td>
+                        <td>
+                            <span class="fw-bold {% if product.stock > 0 %}text-success{% else %}text-danger{% endif %}">
+                                {{ product.stock }} <span>items</span>
+                            </span>
+                        </td>
+                        <td style="text-align: right;">
+                            <a href="{% url 'admin_product_edit' product.pk %}" class="btn btn-outline-secondary btn-sm px-3 rounded-2 me-2"><i class="fas fa-pen"></i></a>
+                            <button type="button" class="btn btn-outline-danger btn-sm px-3 rounded-2" data-bs-toggle="modal" data-bs-target="#deleteModal{{ product.id }}"><i class="fas fa-trash"></i></button>
+                            
+                            <!-- Delete Confirmation Modal -->
+                            <div class="modal fade" id="deleteModal{{ product.id }}" tabindex="-1" aria-hidden="true" style="text-align: left;">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content border-0 shadow-lg">
+                                        <div class="modal-header border-0 pb-0">
+                                            <h5 class="modal-title fw-bold text-uppercase">Delete Product</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body py-4">
+                                            Are you sure you want to permanently delete <strong>{{ product.name }}</strong>? This action cannot be undone.
+                                        </div>
+                                        <div class="modal-footer border-0 pt-0">
+                                            <button type="button" class="btn btn-light px-4 py-2" data-bs-dismiss="modal">Cancel</button>
+                                            <form action="{% url 'admin_product_delete' product.pk %}" method="post" class="d-inline delete-form" data-name="{{ product.name }}">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-danger px-4 py-2">Delete Product</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-5">
+                            <i class="fas fa-couch fa-3x mb-3 text-light-emphasis d-block"></i>
+                            No products currently in inventory. Click <strong>Add New Product</strong> to start selling!
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

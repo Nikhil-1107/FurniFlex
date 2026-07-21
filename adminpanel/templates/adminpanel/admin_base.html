@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}FurniFlex Admin Portal{% endblock %}</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #b18b5e;
+            --secondary-color: #2c2c2c;
+            --sidebar-width: 280px;
+            --accent-color: #f4e9dc;
+            --light-bg: #fdfaf7;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--light-bg);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styling */
+        .admin-sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #ffffff;
+            color: var(--secondary-color);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            border-right: 1px solid rgba(0, 0, 0, 0.06);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .brand-logo-container {
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .menu-item {
+            margin-bottom: 8px;
+        }
+
+        .menu-link {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            color: var(--secondary-color);
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .menu-link i {
+            margin-right: 15px;
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .menu-link:hover, .menu-link.active {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .menu-link.text-danger:hover {
+            color: #dc3545 !important;
+            background-color: rgba(220, 53, 69, 0.08) !important;
+        }
+
+        .menu-link:hover i {
+            transform: scale(1.1);
+        }
+
+        /* Premium Logout Button Styling */
+        .btn-logout-premium {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #fdfaf7 0%, #f7f2eb 100%);
+            border: 1px solid rgba(177, 139, 94, 0.2);
+            color: #b18b5e !important;
+            font-weight: 600;
+            font-family: 'Outfit', sans-serif;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(177, 139, 94, 0.05);
+            cursor: pointer;
+            outline: none;
+        }
+
+        .btn-logout-premium i {
+            margin-right: 10px;
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-logout-premium:hover {
+            background: linear-gradient(135deg, #ffebee 0%, #fdf2f2 100%);
+            border-color: rgba(220, 53, 69, 0.25);
+            color: #dc3545 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 53, 69, 0.1);
+        }
+
+        .btn-logout-premium:hover i {
+            transform: translateX(-3px);
+        }
+
+        /* Main Content Styling */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 40px;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        /* Card Customizations */
+        .admin-card {
+            background: white;
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .admin-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Stats Cards */
+        .stat-icon {
+            width: 56px;
+            height: 56px;
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        /* Table Styling */
+        .admin-table-container {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+        }
+
+        .table {
+            margin: 0;
+        }
+
+        .table th {
+            font-weight: 600;
+            color: #888;
+            border-bottom: 2px solid #f5f5f5;
+            padding: 16px 20px;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+        }
+
+        .table td {
+            padding: 18px 20px;
+            vertical-align: middle;
+            border-bottom: 1px solid #f8f8f8;
+            font-size: 0.9rem;
+        }
+
+        /* Badges */
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-block;
+        }
+
+        .badge-pending { background-color: #fff9e6; color: #cc9900; }
+        .badge-active { background-color: #e6f7ed; color: #1f8a4e; }
+        .badge-completed { background-color: #e6f0fa; color: #1f728a; }
+        .badge-cancelled { background-color: #ffebe6; color: #cc3300; }
+
+        .btn-brand {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 10px 24px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--primary-color);
+        }
+
+        .btn-brand:hover {
+            background-color: #8e6f4a;
+            border-color: #8e6f4a;
+            color: white;
+        }
+
+        /* Alert Styling overrides */
+        .alert .btn-close:hover {
+            filter: grayscale(1) opacity(1) !important;
+            transform: scale(1.1);
+        }
+
+        /* Complete Bootstrap Blue Color Sanitizer Overrides */
+        a {
+            color: var(--primary-color);
+            transition: color 0.2s ease-in-out;
+        }
+        a:hover, a:focus {
+            color: #8e6f4a;
+        }
+        .text-primary {
+            color: var(--primary-color) !important;
+        }
+        .btn-primary {
+            background-color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+            color: #ffffff !important;
+        }
+        .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+            background-color: #8e6f4a !important;
+            border-color: #8e6f4a !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 0 0.25rem rgba(177, 139, 94, 0.25) !important;
+        }
+        .btn-outline-primary {
+            color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+        }
+        .btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active {
+            background-color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+            color: #ffffff !important;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color) !important;
+            box-shadow: 0 0 0 0.25rem rgba(177, 139, 94, 0.25) !important;
+        }
+        .bg-primary {
+            background-color: var(--primary-color) !important;
+        }
+        .page-item.active .page-link {
+            background-color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+            color: #ffffff !important;
+        }
+        .page-link {
+            color: var(--primary-color);
+        }
+        .page-link:hover {
+            color: #8e6f4a;
+        }
+        .dropdown-item.active, .dropdown-item:active {
+            background-color: var(--primary-color) !important;
+            color: #ffffff !important;
+        }
+
+        /* Global Reusable Skeleton Loader Styles for Admin Panel */
+        .global-skeleton-loader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #faf8f5;
+            opacity: 1;
+            pointer-events: auto;
+            overflow: hidden;
+            z-index: 1000;
+            transition: opacity 0.28s ease;
+            padding: 40px;
+        }
+
+        .global-content-hidden {
+            opacity: 0;
+            pointer-events: none;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .skeleton-shimmer {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(110deg, #ebe4d9 0%, #f8f3eb 42%, #ded2c0 76%);
+            background-size: 220% 100%;
+            animation: skeletonShimmerGlobal 1.15s ease-in-out infinite;
+        }
+
+        .skeleton-shimmer::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            transform: translateX(-100%);
+            animation: skeletonSweepGlobal 1.35s infinite;
+        }
+
+        @keyframes skeletonShimmerGlobal {
+            0% { background-position: -100% 0; }
+            100% { background-position: 100% 0; }
+        }
+
+        @keyframes skeletonSweepGlobal {
+            100% { transform: translateX(100%); }
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="admin-sidebar d-flex flex-column">
+        <div>
+            <div class="brand-logo-container text-center">
+                <a class="text-decoration-none d-flex align-items-center justify-content-center" href="{% url 'admin_dashboard' %}" style="font-family: 'Dancing Script', cursive; font-size: 2.2rem; font-weight: 700;">
+                    <img src="{{ MEDIA_URL }}logo.png" alt="FurniFlex Logo" style="height: 40px; margin-right: 8px; width: auto; object-fit: contain;">
+                    <span style="color: var(--secondary-color);">Furni</span><span class="text-primary" style="color: var(--primary-color) !important;">Flex</span>
+                </a>
+                <span class="text-muted small text-uppercase letter-spacing-1 d-block mt-1" style="font-size: 0.72rem; font-weight: 600;">Admin Portal</span>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li class="menu-item">
+                    <a href="{% url 'admin_dashboard' %}" class="menu-link {% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}">
+                        <i class="fas fa-chart-line"></i> Dashboard
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{% url 'admin_products' %}" class="menu-link {% if 'product' in request.resolver_match.url_name %}active{% endif %}">
+                        <i class="fas fa-couch"></i> Products
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{% url 'admin_rentals' %}" class="menu-link {% if 'rental' in request.resolver_match.url_name %}active{% endif %}">
+                        <i class="fas fa-receipt"></i> Rentals
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{% url 'admin_tickets' %}" class="menu-link {% if 'ticket' in request.resolver_match.url_name %}active{% endif %}">
+                        <i class="fas fa-screwdriver-wrench"></i> Support Tickets
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{% url 'admin_queries' %}" class="menu-link {% if 'query' in request.resolver_match.url_name %}active{% endif %}">
+                        <i class="fas fa-comment-dots"></i> Contact Queries
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{% url 'admin_users' %}" class="menu-link {% if 'user' in request.resolver_match.url_name %}active{% endif %}">
+                        <i class="fas fa-users"></i> Users
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <div>
+            <!-- Language Switcher -->
+            <div class="dropdown mb-3">
+                <button class="btn w-100 py-2 px-3 d-flex align-items-center justify-content-between" type="button" id="adminLangDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="background: var(--accent-color); border: 1px solid rgba(177, 139, 94, 0.2); border-radius: 12px; font-weight: 600; color: var(--primary-color); font-size: 0.85rem;">
+                    <span><i class="fas fa-globe me-2"></i> <span id="adminActiveLanguageLabel">EN</span></span>
+                    <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i>
+                </button>
+                <ul class="dropdown-menu shadow-lg border-0 w-100 p-2" style="border-radius: 12px;">
+                    <li><a class="dropdown-item rounded-2 py-2" href="#" onclick="changeAdminLanguage('en'); return false;">🇬🇧 English</a></li>
+                    <li><a class="dropdown-item rounded-2 py-2" href="#" onclick="changeAdminLanguage('hi'); return false;">🇮🇳 हिन्दी</a></li>
+                </ul>
+            </div>
+            <form action="{% url 'logout' %}" method="post" class="w-100 logout-form">
+                {% csrf_token %}
+                <button type="submit" class="btn-logout-premium">
+                    <i class="fas fa-sign-out-alt"></i> Sign Out
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" style="position: relative; min-height: 80vh;">
+        <div id="adminSkeletonLoader" class="global-skeleton-loader" role="status" aria-live="polite" aria-label="Loading content">
+            <span class="visually-hidden">Loading...</span>
+            {% block admin_skeleton %}
+            <!-- Fallback Generic Admin Layout skeleton: page header and card grids -->
+            <div class="py-2">
+                <div class="skeleton-shimmer mb-4" style="width: 280px; height: 42px; border-radius: 8px;"></div>
+                <div class="row g-4">
+                    <div class="col-md-8">
+                        <div class="p-4" style="background: white; border-radius: 16px; border: 1px solid rgba(0,0,0,0.02); box-shadow: 0 10px 30px rgba(0,0,0,0.01);">
+                            <div class="skeleton-shimmer mb-4" style="width: 100%; height: 250px; border-radius: 12px;"></div>
+                            <div class="skeleton-shimmer mb-2" style="width: 80%; height: 20px; border-radius: 4px;"></div>
+                            <div class="skeleton-shimmer" style="width: 50%; height: 16px; border-radius: 4px;"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-4" style="background: white; border-radius: 16px; border: 1px solid rgba(0,0,0,0.02); box-shadow: 0 10px 30px rgba(0,0,0,0.01);">
+                            <div class="skeleton-shimmer mb-3" style="width: 100%; height: 100px; border-radius: 12px;"></div>
+                            <div class="skeleton-shimmer mb-3" style="width: 100%; height: 100px; border-radius: 12px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endblock %}
+        </div>
+
+        <div id="adminContentWrapper" class="global-content-hidden" style="transition: opacity 0.28s ease;">
+            <!-- Toast / Alerts -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show mb-5 shadow-sm border-0 d-flex align-items-center justify-content-between" role="alert" 
+                         style="
+                            border-radius: 16px; 
+                            padding: 18px 24px; 
+                            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.04) !important;
+                            {% if message.tags == 'success' %}
+                                background-color: #ebf7f1 !important;
+                                color: #136c42 !important;
+                                border: 1px solid rgba(19, 108, 66, 0.08) !important;
+                            {% elif message.tags == 'error' or message.tags == 'danger' %}
+                                background-color: #fdf2f2 !important;
+                                color: #a91e1d !important;
+                                border: 1px solid rgba(169, 30, 29, 0.08) !important;
+                            {% else %}
+                                background-color: #fffbf0 !important;
+                                color: #8f5000 !important;
+                                border: 1px solid rgba(143, 80, 0, 0.08) !important;
+                            {% endif %}
+                         ">
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center me-3 shadow-sm" 
+                                 style="
+                                    width: 40px; 
+                                    height: 40px;
+                                    {% if message.tags == 'success' %}
+                                        background-color: rgba(19, 108, 66, 0.1) !important;
+                                        color: #136c42 !important;
+                                    {% elif message.tags == 'error' or message.tags == 'danger' %}
+                                        background-color: rgba(169, 30, 29, 0.1) !important;
+                                        color: #a91e1d !important;
+                                    {% else %}
+                                        background-color: rgba(143, 80, 0, 0.1) !important;
+                                        color: #8f5000 !important;
+                                    {% endif %}
+                                 ">
+                                <i class="fas {% if message.tags == 'error' or message.tags == 'danger' %}fa-circle-xmark{% elif message.tags == 'success' %}fa-circle-check{% else %}fa-circle-info{% endif %} fs-5"></i>
+                            </div>
+                            <span class="fw-semibold" style="letter-spacing: 0.2px; font-size: 0.95rem;">{{ message }}</span>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="position: relative; top: 0; right: 0; padding: 0; margin-left: 15px; filter: grayscale(1) opacity(0.5); transition: all 0.2s;"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% block admin_content %}{% endblock %}
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Premium admin skeleton transition
+            var loader = document.getElementById('adminSkeletonLoader');
+            var wrapper = document.getElementById('adminContentWrapper');
+            if (loader && wrapper) {
+                setTimeout(function() {
+                    loader.style.opacity = '0';
+                    loader.style.transition = 'opacity 0.28s ease';
+                    
+                    wrapper.style.opacity = '0';
+                    wrapper.classList.remove('global-content-hidden');
+                    wrapper.offsetHeight; // force reflow
+                    wrapper.style.opacity = '1';
+                    
+                    setTimeout(function() {
+                        if (loader.parentNode) {
+                            loader.parentNode.removeChild(loader);
+                        }
+                    }, 280);
+                }, 450); // Premium visual load duration
+            }
+
+            // Auto-dismiss alert notifications after 3 seconds
+            setTimeout(function() {
+                const alerts = document.querySelectorAll('.main-content .alert-dismissible');
+                alerts.forEach(function(alert) {
+                    const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                    if (bsAlert) {
+                        bsAlert.close();
+                    }
+                });
+            }, 3000);
+
+            // Intercept forms with class "delete-form" or "logout-form" to show premium SweetAlert2 confirmations
+            document.body.addEventListener('submit', function(e) {
+                const form = e.target;
+                if (form.classList.contains('delete-form')) {
+                    e.preventDefault(); // Stop default submission
+                    
+                    const entityName = form.dataset.name || "this item";
+                    
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: `You are about to permanently delete "${entityName}". This action cannot be undone!`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#dc3545',
+                        cancelButtonColor: '#2c2c2c',
+                        confirmButtonText: 'Yes, delete it!',
+                        cancelButtonText: 'Cancel',
+                        background: '#fdfaf7',
+                        color: '#2c2c2c',
+                        fontFamily: "'Outfit', sans-serif"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit(); // Submit real form
+                        }
+                    });
+                } else if (form.classList.contains('logout-form')) {
+                    e.preventDefault(); // Stop default submission
+                    
+                    Swal.fire({
+                        title: 'Confirm Sign Out',
+                        text: 'Are you sure you want to end your administrator session?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#b18b5e',
+                        cancelButtonColor: '#2c2c2c',
+                        confirmButtonText: 'Yes, Sign Out',
+                        cancelButtonText: 'Cancel',
+                        background: '#fdfaf7',
+                        color: '#2c2c2c',
+                        fontFamily: "'Outfit', sans-serif"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit(); // Submit real form
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    {% block extra_js %}{% endblock %}
+
+    <script type="text/javascript">
+        const adminDict = {
+            // Sidebar
+            "Admin Portal": "एडमिन पोर्टल",
+            "Dashboard": "डैशबोर्ड",
+            "Products": "उत्पाद",
+            "Rentals": "किराए",
+            "Support Tickets": "सहायता टिकट",
+            "Contact Queries": "संपर्क प्रश्न",
+            "Users": "उपयोगकर्ता",
+            "Sign Out": "साइन आउट",
+            "Confirm Sign Out": "साइन आउट की पुष्टि करें",
+            "Are you sure you want to end your administrator session?": "क्या आप निश्चित रूप से अपना एडमिन सत्र समाप्त करना चाहते हैं?",
+            "Yes, Sign Out": "हाँ, साइन आउट",
+            "Cancel": "रद्द करें",
+            "Are you sure?": "क्या आप निश्चित हैं?",
+            "Yes, delete it!": "हाँ, हटाएं!",
+
+            // Dashboard stats
+            "Total Revenue": "कुल राजस्व",
+            "Active Rentals": "सक्रिय किराए",
+            "Total Users": "कुल उपयोगकर्ता",
+            "Total Products": "कुल उत्पाद",
+            "Open Tickets": "खुले टिकट",
+            "Recent Rentals": "हाल के किराए",
+            "Revenue Overview": "राजस्व अवलोकन",
+            "Quick Stats": "त्वरित आंकड़े",
+            "Overview": "अवलोकन",
+            "Welcome back, Admin": "वापस स्वागत है, एडमिन",
+            "FurniFlex Admin Portal": "फर्नीफ्लेक्स एडमिन पोर्टल",
+
+            // Dashboard items
+            "System Overview": "सिस्टम अवलोकन",
+            "Real-time statistics and ecosystem activity": "वास्तविक समय के आंकड़े और पारिस्थितिकी तंत्र गतिविधि",
+            "Today": "आज",
+            "Lifetime Earnings": "लाइफटाइम कमाई",
+            "Last 7 Days": "पिछले 7 दिन",
+            "Last 14 Days": "पिछले 14 दिन",
+            "Last 30 Days": "पिछले 30 दिन",
+            "Last 90 Days": "पिछले 90 दिन",
+            "Live subscriptions in homes": "घरों में सक्रिय सदस्यताएँ",
+            "Subscribed active accounts": "सक्रिय सब्सक्राइबर खाते",
+            "Requires Action": "कार्रवाई की आवश्यकता है",
+            "Monthly Revenue Trend": "मासिक राजस्व प्रवृत्ति",
+            "Earnings compiled dynamically over the last 6 months": "पिछले 6 महीनों में गतिशील रूप से संकलित कमाई",
+            "REVENUE": "राजस्व",
+            "Active Rentals Split": "सक्रिय किराए का विभाजन",
+            "Distributions by furniture category": "फर्नीचर श्रेणी के अनुसार वितरण",
+            "INVENTORY": "इन्वेंटरी",
+            "Recent Rentals": "हाल के किराए",
+            "View All": "सभी देखें",
+            "Furniture": "फर्नीचर",
+            "No recent rentals recorded.": "कोई हालिया किराया रिकॉर्ड नहीं किया गया।",
+            "No support tickets reported.": "कोई सहायता टिकट रिपोर्ट नहीं किया गया।",
+            "Recent Contact Queries": "हाल के संपर्क प्रश्न",
+            "Inquiry Message": "पूछताछ संदेश",
+            "Sender": "प्रेषक",
+            "No recent contact inquiries.": "कोई हालिया संपर्क पूछताछ नहीं।",
+            "Quick Shortcuts": "त्वरित शॉर्टकट",
+            "Register Customer": "ग्राहक पंजीकृत करें",
+
+            // Categories
+            "Bed": "बेड",
+            "Table": "मेज",
+            "Appliances": "उपकरण",
+            "Living": "लिविंग",
+            "Office": "कार्यालय",
+            "Dining": "डाइनिंग",
+            "Sofa": "सोफा",
+            "BED": "बेड",
+            "TABLE": "मेज",
+            "APPLIANCES": "उपकरण",
+            "LIVING": "लिविंग",
+            "OFFICE": "कार्यालय",
+            "DINING": "डाइनिंग",
+            "SOFA": "सोफा",
+
+            // Months
+            "January": "जनवरी",
+            "February": "फरवरी",
+            "March": "मार्च",
+            "April": "अप्रैल",
+            "May": "मई",
+            "June": "जून",
+            "July": "जुलाई",
+            "August": "अगस्त",
+            "September": "सितंबर",
+            "October": "अक्टूबर",
+            "November": "नवंबर",
+            "December": "दिसंबर",
+
+            // Products page
+            "Manage Inventory": "इन्वेंटरी प्रबंधित करें",
+            "Add, update, or remove luxury items from your catalog": "अपने कैटलॉग से लक्जरी आइटम जोड़ें, अपडेट करें या हटाएं",
+            "Search product name...": "उत्पाद का नाम खोजें...",
+            "All Categories": "सभी श्रेणियां",
+            "All Stock Status": "सभी स्टॉक स्थिति",
+            "Filter": "फ़िल्टर",
+            "Add New Product": "नया उत्पाद जोड़ें",
+            "Edit Product": "उत्पाद संपादित करें",
+            "Product Name": "उत्पाद का नाम",
+            "Category": "श्रेणी",
+            "Price / Month": "कीमत / माह",
+            "Price": "कीमत",
+            "Stock": "स्टॉक",
+            "Actions": "कार्रवाइयां",
+            "Image": "छवि",
+            "Material": "सामग्री",
+            "Color": "रंग",
+            "Description": "विवरण",
+            "Save Product": "उत्पाद सहेजें",
+            "Update Product": "उत्पाद अपडेट करें",
+            "Back to Products": "उत्पादों पर वापस",
+            "Manage Products": "उत्पाद प्रबंधित करें",
+            "Product Management": "उत्पाद प्रबंधन",
+            "items": "आइटम",
+            "5 items": "5 आइटम",
+            "10 items": "10 आइटम",
+            "11 items": "11 आइटम",
+            "Price Per Month": "प्रति माह कीमत",
+
+            // Users page
+            "Registered Customers": "पंजीकृत ग्राहक",
+            "Review active subscriber accounts, loyalty achievements, and rental engagement": "सक्रिय सब्सक्राइबर खातों, लॉयल्टी उपलब्धियों और किराया सहभागिता की समीक्षा करें",
+            "Search customer username or email...": "ग्राहक का उपयोगकर्ता नाम या ईमेल खोजें...",
+            "Add New User": "नया उपयोगकर्ता जोड़ें",
+            "Add New Customer": "नया ग्राहक जोड़ें",
+            "Search customer or item...": "ग्राहक या आइटम खोजें...",
+            "Search sender, email, or message...": "प्रेषक, ईमेल या संदेश खोजें...",
+            "Edit User": "उपयोगकर्ता संपादित करें",
+            "Customer Name": "ग्राहक का नाम",
+            "Email Address": "ईमेल पता",
+            "Email ADDRESS": "ईमेल पता",
+            "Joined Date": "शामिल होने की तिथि",
+            "Active Rentals": "सक्रिय किराए",
+            "LOYALTY BALANCE": "लॉयल्टी बैलेंस",
+            "Loyalty Balance": "लॉयल्टी बैलेंस",
+            "EXPLORER MEMBER": "एक्सप्लोरर सदस्य",
+            "ELITE MEMBER": "एलीट सदस्य",
+            "STARTER MEMBER": "स्टार्टर सदस्य",
+            "Add User": "उपयोगकर्ता जोड़ें",
+            "Save User": "उपयोगकर्ता सहेजें",
+            "Update User": "उपयोगकर्ता अपडेट करें",
+            "Back to Users": "उपयोगकर्ताओं पर वापस",
+            "Manage Users": "उपयोगकर्ता प्रबंधित करें",
+            "User Management": "उपयोगकर्ता प्रबंधन",
+            "Username": "उपयोगकर्ता नाम",
+            "Password": "पासवर्ड",
+            "First Name": "पहला नाम",
+            "Last Name": "अंतिम नाम",
+            "Customer": "ग्राहक",
+            "Admin": "एडमिन",
+            "Staff": "स्टाफ",
+
+            // Table headers (exact)
+            "User": "उपयोगकर्ता",
+            "Product": "उत्पाद",
+            "Duration": "अवधि",
+            "Status": "स्थिति",
+            "Date": "तिथि",
+            "Action": "कार्रवाई",
+            "Active": "सक्रिय",
+            "Pending": "लंबित",
+            "Completed": "पूर्ण",
+            "Cancelled": "रद्द",
+            "Expired": "समाप्त",
+            "View": "देखें",
+            "Edit": "संपादित करें",
+            "Delete": "हटाएं",
+            "Search": "खोजें",
+            "Name": "नाम",
+            "Email": "ईमेल",
+            "Phone": "फ़ोन",
+            "Role": "भूमिका",
+            "Joined": "शामिल हुए",
+            "Available": "उपलब्ध",
+            "Save": "सहेजें",
+            "Save Changes": "परिवर्तन सहेजें",
+            "Back": "वापस",
+            "Created": "बनाया गया",
+            "Updated": "अपडेट किया गया",
+
+            // Rentals page
+            "Manage Rentals": "किराए प्रबंधित करें",
+            "All Rentals": "सभी किराए",
+            "All Products": "सभी उत्पाद",
+            "All Users": "सभी उपयोगकर्ता",
+            "Rental Management": "किराया प्रबंधन",
+            "Rental Details": "किराया विवरण",
+            "Start Date": "शुरू तिथि",
+            "End Date": "समाप्ति तिथि",
+            "Amount": "राशि",
+            "months": "माह",
+            "month": "माह",
+            "Previous": "पिछला",
+            "Next": "अगला",
+
+            // Tickets page
+            "Ticket ID": "टिकट आईडी",
+            "Subject": "विषय",
+            "Message": "संदेश",
+            "Priority": "प्राथमिकता",
+            "High": "उच्च",
+            "Medium": "मध्यम",
+            "In Progress": "प्रगति पर",
+            "Resolved": "हल किया गया",
+            "Closed": "बंद",
+            "Reply": "जवाब दें",
+            "Close Ticket": "टिकट बंद करें",
+            "Resolve": "हल करें",
+            "Ticket Management": "टिकट प्रबंधन",
+
+            // Contact Queries page
+            "Contact Queries Management": "संपर्क प्रश्न प्रबंधन",
+            "Query": "प्रश्न",
+            "Received": "प्राप्त",
+            "Unread": "अपठित",
+            "Mark as Read": "पढ़ा हुआ चिह्नित करें",
+            "Showing": "दिखा रहा है",
+            "results": "परिणाम"
+        };
+
+        const adminReverseDict = {};
+        const adminDictLower = {};
+        for (let k in adminDict) {
+            adminReverseDict[adminDict[k]] = k;
+            adminDictLower[k.toLowerCase()] = adminDict[k];
+        }
+
+        let adminIsTranslating = false;
+
+        function translateAdminDOM(lang) {
+            if (adminIsTranslating) return;
+            adminIsTranslating = true;
+
+            function walk(node) {
+                if (node.nodeType === Node.ELEMENT_NODE) {
+                    const tag = node.tagName.toLowerCase();
+                    if (tag === 'script' || tag === 'style') return;
+                    const ph = node.getAttribute('placeholder');
+                    if (ph) {
+                        if (lang === 'hi') {
+                            const val = adminDictLower[ph.toLowerCase()];
+                            if (val) node.setAttribute('placeholder', val);
+                        } else {
+                            const val = adminReverseDict[ph];
+                            if (val) node.setAttribute('placeholder', val);
+                        }
+                    }
+                    if (tag === 'textarea' || tag === 'input') return;
+                }
+                if (node.nodeType === Node.TEXT_NODE) {
+                    let t = node.nodeValue.trim();
+                    if (t) {
+                        if (lang === 'hi') {
+                            const val = adminDictLower[t.toLowerCase()];
+                            if (val) {
+                                node.nodeValue = node.nodeValue.replace(t, val);
+                            }
+                        } else {
+                            const val = adminReverseDict[t];
+                            if (val) {
+                                node.nodeValue = node.nodeValue.replace(t, val);
+                            }
+                        }
+                    }
+                } else {
+                    for (let i = 0; i < node.childNodes.length; i++) walk(node.childNodes[i]);
+                }
+            }
+
+            walk(document.body);
+            // Translate title tag safely
+            if (lang === 'hi') {
+                const exactVal = adminDictLower[document.title.toLowerCase()];
+                if (exactVal) {
+                    document.title = exactVal;
+                } else {
+                    let titleParts = document.title.split(' | ');
+                    let modified = false;
+                    for (let i = 0; i < titleParts.length; i++) {
+                        let part = titleParts[i].trim();
+                        const partVal = adminDictLower[part.toLowerCase()];
+                        if (partVal) {
+                            titleParts[i] = partVal;
+                            modified = true;
+                        }
+                    }
+                    if (modified) {
+                        document.title = titleParts.join(' | ');
+                    }
+                }
+            } else {
+                if (adminReverseDict[document.title]) {
+                    document.title = adminReverseDict[document.title];
+                } else {
+                    let titleParts = document.title.split(' | ');
+                    let modified = false;
+                    for (let i = 0; i < titleParts.length; i++) {
+                        let part = titleParts[i].trim();
+                        if (adminReverseDict[part]) {
+                            titleParts[i] = adminReverseDict[part];
+                            modified = true;
+                        }
+                    }
+                    if (modified) {
+                        document.title = titleParts.join(' | ');
+                    }
+                }
+            }
+            const lbl = document.getElementById('adminActiveLanguageLabel');
+            if (lbl) lbl.innerText = lang.toUpperCase();
+            document.documentElement.lang = lang;
+            adminIsTranslating = false;
+        }
+
+        function changeAdminLanguage(lang) {
+            localStorage.setItem('preferredLanguage', lang);
+            translateAdminDOM(lang);
+        }
+
+        (function() {
+            const lang = localStorage.getItem('preferredLanguage') || 'en';
+            document.addEventListener('DOMContentLoaded', function() {
+                setTimeout(function() { translateAdminDOM(lang); }, 500);
+            });
+            window.addEventListener('load', function() { translateAdminDOM(lang); });
+        })();
+    </script>
+</body>
+</html>

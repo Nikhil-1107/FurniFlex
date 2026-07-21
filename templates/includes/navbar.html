@@ -1,0 +1,229 @@
+<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}" style="font-family: 'Dancing Script', cursive; font-size: 2.2rem; font-weight: 700;">
+            <img src="{{ MEDIA_URL }}logo.png" alt="FurniFlex Logo" class="brand-logo me-1">
+            <span style="color: var(--secondary-color);">Furni</span><span class="text-primary">Flex</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link fs-5 mx-2" href="{% url 'home' %}">
+                        <i class="fas fa-house me-2 small"></i>Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fs-5 mx-2" href="{% url 'product_list' %}">
+                        <i class="fas fa-couch me-2 small"></i>Explore Furniture
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fs-5 mx-2" href="{% url 'about' %}">
+                        <i class="fas fa-circle-info me-2 small"></i>About Us
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fs-5 mx-2" href="{% url 'contact' %}">
+                        <i class="fas fa-envelope me-2 small"></i>Contact
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto align-items-center">
+                {% if user.is_authenticated and not user.is_staff and not user.is_superuser %}
+                <!-- Notifications Bell Dropdown -->
+                <li class="nav-item dropdown me-3" id="notificationDropdownContainer">
+                    <a class="nav-link position-relative d-flex align-items-center justify-content-center notification-bell-btn" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 42px; height: 42px; border-radius: 50%; background-color: #f4e9dc; color: #b18b5e; transition: all 0.3s ease;">
+                        <i class="fas fa-bell fs-5"></i>
+                        {% if notifications_unread_count > 0 %}
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-2 border-white animate-pulse" id="notificationUnreadBadge" style="font-size: 0.75rem; padding: 0.4em 0.55em; margin-top: 6px; margin-left: -6px;">
+                            {{ notifications_unread_count }}
+                        </span>
+                        {% endif %}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 animate-fade-in p-0" aria-labelledby="notificationDropdown" style="width: 340px; border-radius: 16px; overflow: hidden; background: #ffffff; margin-top: 10px;">
+                        <!-- Header -->
+                        <div class="px-4 py-3 bg-light border-bottom d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="fw-bold text-dark" style="font-family: 'Outfit', sans-serif; font-size: 0.95rem;">Notifications</span>
+                                {% if notifications_unread_count > 0 %}
+                                <span class="badge rounded-pill bg-danger-subtle text-danger fw-semibold px-2 py-1" id="notificationHeaderBadge" style="font-size: 0.7rem;">
+                                    {{ notifications_unread_count }} Alert{{ notifications_unread_count|pluralize }}
+                                </span>
+                                {% endif %}
+                            </div>
+                            {% if user_notifications %}
+                            <a href="#" class="text-decoration-none text-muted small fw-semibold" id="clearAllNotificationsBtn" style="font-size: 0.8rem; transition: color 0.2s ease;">
+                                Clear All
+                            </a>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Notifications List -->
+                        <div class="notifications-scroll" data-total-count="{{ user_notifications|length }}" style="max-height: 280px; overflow-y: auto;">
+                            {% if user_notifications %}
+                                {% for alert in user_notifications %}
+                                <a href="{{ alert.link }}" class="dropdown-item px-4 py-3 border-bottom d-flex align-items-start gap-3 text-wrap" style="transition: background-color 0.2s ease;">
+                                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 38px; height: 38px; min-width: 38px; background-color: #fdfaf7; border: 1px solid rgba(177, 139, 94, 0.15);">
+                                        <i class="fas {{ alert.icon }} {{ alert.color }} fs-5"></i>
+                                    </div>
+                                    <div class="d-flex flex-column gap-1">
+                                        <span class="fw-bold text-dark small">{{ alert.title }}</span>
+                                        <span class="text-muted small leading-relaxed">{{ alert.text|safe }}</span>
+                                    </div>
+                                </a>
+                                {% endfor %}
+                            {% else %}
+                                <div class="px-4 py-5 text-center text-muted">
+                                    <i class="fas fa-bell-slash fs-1 mb-3 opacity-25"></i>
+                                    <p class="small m-0">No new alerts at this moment.</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Footer -->
+                        <a href="{% url 'my_rentals' %}" class="dropdown-item text-center py-2.5 text-primary small fw-semibold bg-light border-top d-block text-decoration-none" style="color: #b18b5e !important; font-size: 0.8rem;">
+                            Go to My Rentals <i class="fas fa-arrow-right ms-1" style="font-size: 0.75rem;"></i>
+                        </a>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle profile-nav-btn d-flex align-items-center px-3 py-2" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                        <div class="avatar-circle me-2">
+                            <span class="initials">{{ user.username.0|upper }}</span>
+                        </div>
+                        <div class="user-info d-none d-md-block text-start">
+                            <span class="user-name d-block fw-bold small text-secondary">{{ user.username }}</span>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-2xl border-0 animate-fade-in p-0" style="min-width: 280px; border-radius: 12px; overflow: hidden; background: #fff;">
+                        <!-- Premium User Header -->
+                        <li class="px-4 py-4 bg-light border-bottom">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-circle me-3" style="width: 45px; height: 45px; font-size: 18px;">
+                                    {{ user.username.0|upper }}
+                                </div>
+                                <div class="user-details">
+                                    <h6 class="mb-0 fw-bold text-dark d-flex align-items-center flex-wrap gap-2">
+                                        {{ user.username }}
+                                        {% if user.profile.tier %}
+                                        <span class="badge" style="font-size: 0.6rem; background-color: {{ user.profile.tier.bg_color }} !important; color: {{ user.profile.tier.color }} !important; border: 1px solid {{ user.profile.tier.border }} !important; padding: 0.25em 0.5em; border-radius: 30px; font-weight: 700;">
+                                            <i class="fas {{ user.profile.tier.icon }}"></i> {{ user.profile.tier.name }}
+                                        </span>
+                                        {% endif %}
+                                    </h6>
+                                    <p class="mb-0 small text-muted mt-1">{{ user.email|default:"Member since 2026" }}</p>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <!-- Menu Items -->
+                        <li class="mt-2"><a class="dropdown-item px-4 py-2" href="{% url 'profile' %}"><i class="fas fa-user-circle me-2 opacity-75"></i>My Profile</a></li>
+                        <li><a class="dropdown-item px-4 py-2" href="{% url 'my_rentals' %}"><i class="fas fa-couch me-2 opacity-75"></i>My Rentals</a></li>
+                        <li><a class="dropdown-item px-4 py-2" href="{% url 'support_tickets' %}"><i class="fas fa-headset me-2 opacity-75"></i>Support Tickets</a></li>
+                        
+                        <li><hr class="dropdown-divider my-2 opacity-10"></li>
+                        
+                        <li class="pb-2">
+                            <form action="{% url 'logout' %}" method="post" class="px-3 logout-form">
+                                {% csrf_token %}
+                                <button type="submit" class="dropdown-item text-danger py-2 px-3 d-flex align-items-center justify-content-center bg-danger-subtle border-0" style="border-radius: 8px; font-weight: 600;">
+                                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold px-3" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-get-started ms-lg-2 px-4 shadow-sm" href="{% url 'register' %}">Get Started</a>
+                </li>
+                {% endif %}
+
+                <!-- Language Selector Dropdown -->
+                <li class="nav-item dropdown ms-lg-3 ms-2">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center justify-content-center language-selector-btn" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 80px; height: 42px; border-radius: 21px; padding: 0 16px; font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i class="fas fa-globe" style="font-size: 1rem;"></i>
+                        <span id="activeLanguageLabel">EN</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 animate-fade-in p-0" aria-labelledby="languageDropdown" style="border-radius: 12px; overflow: hidden; background: #ffffff; min-width: 140px; margin-top: 10px;">
+                        <li>
+                            <a class="dropdown-item px-4 py-2.5 d-flex align-items-center gap-2" href="#" onclick="changeLanguage('en'); return false;" style="font-weight: 500; font-size: 0.9rem;">
+                                <span style="font-size: 1.15rem;"></span> English
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item px-4 py-2.5 d-flex align-items-center gap-2" href="#" onclick="changeLanguage('hi'); return false;" style="font-weight: 500; font-size: 0.9rem;">
+                                <span style="font-size: 1.15rem;"></span> हिन्दी
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<style>
+    .profile-nav-btn {
+        background: rgba(177, 139, 94, 0.05);
+        border: 1px solid rgba(177, 139, 94, 0.1);
+        border-radius: 50px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .profile-nav-btn:hover {
+        background: rgba(177, 139, 94, 0.1);
+        border-color: var(--primary-color);
+        transform: translateY(-2px);
+    }
+
+    .avatar-circle {
+        width: 35px;
+        height: 35px;
+        background: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 14px;
+        box-shadow: 0 4px 10px rgba(177, 139, 94, 0.3);
+    }
+
+    .dropdown-item {
+        font-weight: 500;
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
+    }
+
+    .dropdown-item:hover {
+        background-color: var(--accent-color);
+        color: var(--primary-color);
+        padding-left: 28px !important;
+    }
+
+    .animate-fade-in {
+        animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .dropdown-toggle::after {
+        display: none; /* Hide default arrow */
+    }
+
+    #clearAllNotificationsBtn:hover {
+        color: var(--primary-color) !important;
+    }
+</style>
+

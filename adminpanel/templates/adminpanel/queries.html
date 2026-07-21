@@ -1,0 +1,195 @@
+{% extends 'adminpanel/admin_base.html' %}
+
+{% block title %}Contact Queries | FurniFlex Admin Portal{% endblock %}
+
+{% block admin_skeleton %}
+<div class="d-flex justify-content-between align-items-center mb-5">
+    <div>
+        <div class="skeleton-shimmer mb-2" style="width: 230px; height: 38px; border-radius: 6px;"></div>
+        <div class="skeleton-shimmer" style="width: 440px; height: 16px; border-radius: 4px;"></div>
+    </div>
+</div>
+
+<div class="card border-0 p-4 mb-4 shadow-sm rounded-4" style="background: white;">
+    <div class="row g-3 align-items-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="skeleton-shimmer" style="width: 100%; height: 42px; border-radius: 8px;"></div>
+        </div>
+    </div>
+</div>
+
+<div class="card border-0 p-4 shadow-sm rounded-4" style="background: white;">
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th><div class="skeleton-shimmer" style="width: 100px; height: 16px; border-radius: 4px;"></div></th>
+                    <th><div class="skeleton-shimmer" style="width: 120px; height: 16px; border-radius: 4px;"></div></th>
+                    <th><div class="skeleton-shimmer" style="width: 180px; height: 16px; border-radius: 4px;"></div></th>
+                    <th><div class="skeleton-shimmer" style="width: 100px; height: 16px; border-radius: 4px;"></div></th>
+                    <th class="text-end"><div class="skeleton-shimmer ms-auto" style="width: 85px; height: 16px; border-radius: 4px;"></div></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in "12345" %}
+                <tr>
+                    <td>
+                        <div class="skeleton-shimmer mb-1" style="width: 120px; height: 16px; border-radius: 4px;"></div>
+                        <div class="skeleton-shimmer" style="width: 80px; height: 12px; border-radius: 4px;"></div>
+                    </td>
+                    <td><div class="skeleton-shimmer" style="width: 130px; height: 16px; border-radius: 4px;"></div></td>
+                    <td>
+                        <div class="skeleton-shimmer mb-1" style="width: 250px; height: 16px; border-radius: 4px;"></div>
+                        <div class="skeleton-shimmer" style="width: 180px; height: 12px; border-radius: 4px;"></div>
+                    </td>
+                    <td><div class="skeleton-shimmer" style="width: 80px; height: 16px; border-radius: 4px;"></div></td>
+                    <td class="text-end"><div class="skeleton-shimmer ms-auto" style="width: 100px; height: 38px; border-radius: 8px;"></div></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block admin_content %}
+<div class="d-flex justify-content-between align-items-center mb-5">
+    <div>
+        <h1 class="fw-bold m-0" style="font-family: 'Outfit', sans-serif;">Contact Queries</h1>
+        <p class="text-muted m-0 mt-1">Review and manage general inquiries submitted via the Contact Us form</p>
+    </div>
+</div>
+
+<!-- Premium Filter & Search Bar -->
+<div class="admin-card mb-4 p-4">
+    <form method="get" class="row g-3 align-items-center">
+        <!-- Search Input -->
+        <div class="col-lg-6 col-md-6">
+            <div class="input-group">
+                <span class="input-group-text bg-white border-end-0 text-muted"><i class="fas fa-search"></i></span>
+                <input type="text" name="q" class="form-control border-start-0 ps-0" placeholder="Search sender, email, or message..." value="{{ search_query }}">
+            </div>
+        </div>
+        <!-- Status Filter -->
+        <div class="col-lg-4 col-md-4">
+            <select name="status" class="form-select" onchange="this.form.submit()">
+                <option value="all" {% if status_filter == 'all' %}selected{% endif %}>All Queries</option>
+                <option value="replied" {% if status_filter == 'replied' %}selected{% endif %}>Replied / Resolved</option>
+                <option value="unreplied" {% if status_filter == 'unreplied' %}selected{% endif %}>Pending / Unreplied</option>
+            </select>
+        </div>
+        <!-- Action Buttons -->
+        <div class="col-lg-2 col-md-12 d-flex gap-2">
+            <button type="submit" class="btn btn-brand w-100 py-2">Filter</button>
+            <a href="{% url 'admin_queries' %}" class="btn btn-outline-secondary w-100 py-2 d-flex align-items-center justify-content-center" title="Reset Filters"><i class="fas fa-rotate-left"></i></a>
+        </div>
+    </form>
+</div>
+
+<div class="admin-table-container">
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th style="width: 100px;">Query ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Message Details</th>
+                    <th>Submitted At</th>
+                    <th>Status</th>
+                    <th style="width: 180px; text-align: right;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if queries %}
+                    {% for query in queries %}
+                    <tr>
+                        <td class="fw-bold text-dark">#{{ query.id }}</td>
+                        <td>
+                            <span class="fw-bold text-dark d-block">{{ query.first_name }} {{ query.last_name }}</span>
+                        </td>
+                        <td class="fw-semibold">{{ query.email }}</td>
+                        <td>
+                            <div class="text-muted px-3 py-2 bg-light rounded-3" 
+                                 style="
+                                    max-width: 320px; 
+                                    max-height: 80px; 
+                                    overflow-y: auto; 
+                                    line-height: 1.5; 
+                                    font-size: 0.82rem;
+                                    border: 1px solid rgba(0, 0, 0, 0.04);
+                                 ">
+                                {{ query.message }}
+                            </div>
+                        </td>
+                        <td class="small text-muted">{{ query.created_at|date:"F d, Y H:i" }}</td>
+                        <td>
+                            <span class="status-badge {% if query.is_resolved %}badge-active{% else %}badge-pending{% endif %}">
+                                {% if query.is_resolved %}Resolved{% else %}Pending{% endif %}
+                            </span>
+                        </td>
+                        <td style="text-align: right;">
+                            {% if not query.is_resolved %}
+                            <button type="button" class="btn btn-primary btn-sm px-3 rounded-2 fw-semibold d-inline-flex align-items-center" data-bs-toggle="modal" data-bs-target="#replyModal{{ query.pk }}" style="font-size: 0.82rem; height: 36px; background-color: var(--primary-color); border-color: var(--primary-color);">
+                                <i class="fas fa-paper-plane me-1"></i> Send Message
+                            </button>
+
+                            <!-- Reply Modal -->
+                            <div class="modal fade" id="replyModal{{ query.pk }}" tabindex="-1" aria-labelledby="replyModalLabel{{ query.pk }}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" style="max-width: 550px;">
+                                    <div class="modal-content border-0 shadow-lg" style="border-radius: 16px;">
+                                        <div class="modal-header border-bottom-0 pb-0 pt-4 px-4 position-relative">
+                                            <h4 class="modal-title fw-bold" id="replyModalLabel{{ query.pk }}" style="font-family: 'Outfit', sans-serif; color: var(--secondary-color);">Reply to {{ query.first_name }}</h4>
+                                            <button type="button" class="btn-close position-absolute end-0 top-0 mt-4 me-4" data-bs-dismiss="modal" aria-label="Close" style="outline: none; box-shadow: none;"></button>
+                                        </div>
+                                        <form action="{% url 'admin_send_query_reply' query.pk %}" method="post">
+                                            {% csrf_token %}
+                                            <div class="modal-body p-4 text-start">
+                                                <!-- Shaded Customer Info -->
+                                                <div class="p-3 bg-light rounded-3 mb-3 border border-1 border-light-subtle">
+                                                    <span class="small text-muted d-block uppercase fw-bold tracking-wider mb-1" style="font-size: 0.7rem; letter-spacing: 0.5px;">CUSTOMER INQUIRY DETAILS</span>
+                                                    <span class="fw-bold text-dark d-block mb-1">{{ query.first_name }} {{ query.last_name }} &lt;{{ query.email }}&gt;</span>
+                                                    <p class="mb-0 text-muted small" style="line-height: 1.4; white-space: normal;">"{{ query.message }}"</p>
+                                                </div>
+                                                
+                                                <!-- Subject Field -->
+                                                <div class="mb-3">
+                                                    <label class="form-label small fw-bold text-uppercase text-secondary" style="font-size: 0.75rem;">Email Subject</label>
+                                                    <input type="text" name="subject" class="form-control rounded-3 py-2 px-3 border" value="Re: FurniFlex Support & Inquiry Response" required style="font-size: 0.9rem;">
+                                                </div>
+                                                
+                                                <!-- Reply Textarea -->
+                                                <div class="mb-2">
+                                                    <label class="form-label small fw-bold text-uppercase text-secondary" style="font-size: 0.75rem;">Your Reply Message</label>
+                                                    <textarea name="reply_message" class="form-control rounded-3 py-3 px-3 border" rows="6" placeholder="Type your professional response to this query here..." required style="font-size: 0.9rem; line-height: 1.5; resize: none;"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer border-top-0 pt-0 pb-4 px-4 d-flex justify-content-end">
+                                                <button type="button" class="btn btn-outline-secondary px-4 py-2 rounded-2 fw-semibold me-2" data-bs-dismiss="modal" style="font-size: 0.85rem; border-color: #ddd;">Cancel</button>
+                                                <button type="submit" class="btn btn-primary px-4 py-2 rounded-2 fw-bold text-uppercase border-0" style="font-size: 0.85rem; background-color: var(--primary-color);">
+                                                    <i class="fas fa-paper-plane me-1"></i> Send Reply
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            {% else %}
+                            <span class="text-success small fw-semibold"><i class="fas fa-circle-check me-1"></i> Replied</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="7" class="text-center text-muted py-5">
+                            <i class="fas fa-envelope-open-text fa-3x mb-3 text-light-emphasis d-block"></i>
+                            No contact inquiries currently logged.
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

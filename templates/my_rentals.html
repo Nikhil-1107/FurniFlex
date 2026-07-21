@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% load currency_filters %}
+
+{% block title %}My Rentals | FurniFlex{% endblock %}
+
+{% block page_skeleton %}
+<div class="container py-5">
+    <div class="row mb-5">
+        <div class="col-md-6">
+            <div class="skeleton-shimmer mb-2" style="width: 260px; height: 42px; border-radius: 8px;"></div>
+            <div class="skeleton-shimmer" style="width: 320px; height: 18px; border-radius: 4px;"></div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        {% for i in "12" %}
+        <div class="col-12">
+            <div class="card border-0 shadow-sm overflow-hidden" style="background: white;">
+                <div class="row g-0">
+                    <!-- Image shimmer -->
+                    <div class="col-md-3">
+                        <div class="skeleton-shimmer w-100" style="min-height: 220px;"></div>
+                    </div>
+                    <!-- Details shimmer -->
+                    <div class="col-md-9 p-4 d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <div class="skeleton-shimmer mb-2" style="width: 220px; height: 28px; border-radius: 4px;"></div>
+                                    <div class="skeleton-shimmer" style="width: 140px; height: 16px; border-radius: 4px;"></div>
+                                </div>
+                                <div class="skeleton-shimmer" style="width: 100px; height: 26px; border-radius: 20px;"></div>
+                            </div>
+                            
+                            <div class="row g-3 mb-4">
+                                <div class="col-sm-4">
+                                    <div class="skeleton-shimmer mb-1" style="width: 80px; height: 14px; border-radius: 4px;"></div>
+                                    <div class="skeleton-shimmer" style="width: 110px; height: 16px; border-radius: 4px;"></div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="skeleton-shimmer mb-1" style="width: 80px; height: 14px; border-radius: 4px;"></div>
+                                    <div class="skeleton-shimmer" style="width: 110px; height: 16px; border-radius: 4px;"></div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="skeleton-shimmer mb-1" style="width: 80px; height: 14px; border-radius: 4px;"></div>
+                                    <div class="skeleton-shimmer" style="width: 110px; height: 16px; border-radius: 4px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex gap-3">
+                            <span class="skeleton-shimmer" style="width: 120px; height: 42px; border-radius: 0;"></span>
+                            <span class="skeleton-shimmer" style="width: 140px; height: 42px; border-radius: 0;"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="py-5 bg-light">
+    <div class="container py-5">
+        <div class="row mb-5">
+            <div class="col-md-6">
+                <h1 class="fw-bold">My <span class="text-primary">Rentals</span></h1>
+                <p class="text-muted">Manage your active furniture subscriptions and renewals.</p>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            {% if rentals %}
+                {% for rental in rentals %}
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm overflow-hidden">
+                        <div class="row g-0">
+                            <div class="col-md-3">
+                                {% if rental.product.image %}
+                                    <img src="{{ rental.product.image.url }}" class="img-fluid h-100" alt="{{ rental.product.name }}" style="object-fit: cover; min-height: 200px;">
+                                {% else %}
+                                    <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="img-fluid h-100" alt="Default" style="object-fit: cover; min-height: 200px;">
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 p-4">
+                                <div class="d-flex align-items-center mb-2">
+                                    <h4 class="fw-bold mb-0 me-3">{{ rental.product.name }}</h4>
+                                    <span class="badge {% if rental.status == 'Active' %}bg-success-subtle text-success{% elif rental.status == 'Pending' %}bg-warning-subtle text-warning{% else %}bg-secondary-subtle text-secondary{% endif %} rounded-pill">
+                                        {{ rental.status }}
+                                    </span>
+                                </div>
+                                <p class="text-muted mb-4">{{ rental.product.category }} | Duration: {{ rental.rental_duration_months }} Months</p>
+                                
+                                <div class="row g-3">
+                                    <div class="col-sm-6">
+                                        <p class="small text-muted mb-1"><i class="far fa-calendar-alt me-1"></i> Start Date</p>
+                                        <p class="fw-semibold mb-0">{{ rental.start_date }}</p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <p class="small text-muted mb-1"><i class="far fa-clock me-1"></i> Next Renewal</p>
+                                        <p class="text-primary fw-bold mb-0">{{ rental.renewal_date }}</p>
+                                    </div>
+                                    {% if rental.payment_method %}
+                                    <div class="col-sm-6">
+                                        <p class="small text-muted mb-1"><i class="fas fa-wallet me-1"></i> Payment Method</p>
+                                        <p class="fw-semibold mb-0">{{ rental.get_payment_method_display }} ({{ rental.payment_status }})</p>
+                                    </div>
+                                    {% endif %}
+                                    {% if rental.address %}
+                                    <div class="col-sm-6">
+                                        <p class="small text-muted mb-1"><i class="fas fa-map-marker-alt me-1"></i> Delivery Address</p>
+                                        <p class="fw-semibold mb-0 text-truncate" title="{{ rental.address.street_address }}, {{ rental.address.city }}">{{ rental.address.street_address }}, {{ rental.address.city }}</p>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-3 p-4 bg-light d-flex flex-column justify-content-center border-start">
+                                <p class="text-center mb-1 small text-muted">Monthly Rent</p>
+                                <h3 class="text-center fw-bold mb-4">{{ rental.product.price_per_month|convert_currency:request }}</h3>
+                                <div class="d-grid gap-2">
+                                    {% if rental.status == 'Pending' %}
+                                        <a href="{% url 'checkout' rental.id %}" class="btn btn-primary btn-sm">Complete Checkout</a>
+                                    {% else %}
+                                        <a href="{% url 'create_repair_ticket' rental.id %}" class="btn btn-outline-primary btn-sm">Support / Repair</a>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#renewModal{{ rental.id }}">
+                                            Renew Subscription
+                                        </button>
+
+                                        <!-- Renew Modal -->
+                                        <div class="modal fade" id="renewModal{{ rental.id }}" tabindex="-1" aria-labelledby="renewModalLabel{{ rental.id }}" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
+                                                <div class="modal-content border-0 shadow-lg text-start" style="border-radius: 16px;">
+                                                    <div class="modal-header border-bottom-0 pb-0 pt-4 px-4 position-relative">
+                                                        <h4 class="modal-title fw-bold" id="renewModalLabel{{ rental.id }}" style="font-family: 'Outfit', sans-serif; color: var(--secondary-color);">Renew Subscription</h4>
+                                                        <button type="button" class="btn-close position-absolute end-0 top-0 mt-4 me-4" data-bs-dismiss="modal" aria-label="Close" style="outline: none; box-shadow: none;"></button>
+                                                    </div>
+                                                    <form action="{% url 'renew_rental' rental.id %}" method="post">
+                                                        {% csrf_token %}
+                                                        <div class="modal-body p-4">
+                                                            <div class="p-3 bg-light rounded-3 mb-3 border border-1 border-light-subtle">
+                                                                <span class="small text-muted d-block uppercase fw-bold tracking-wider mb-1" style="font-size: 0.7rem; letter-spacing: 0.5px; font-family: 'Outfit', sans-serif;">CURRENT RENTAL SUBSCRIPTION</span>
+                                                                <span class="fw-bold text-dark d-block mb-1 fs-5" style="font-family: 'Outfit', sans-serif;">{{ rental.product.name }}</span>
+                                                                <span class="text-muted small d-block mb-1">Monthly Rate: {{ rental.product.price_per_month|convert_currency:request }}<span>/mo</span></span>
+                                                                <span class="text-muted small d-block">Current Next Renewal: {{ rental.renewal_date }}</span>
+                                                            </div>
+                                                            
+                                                            <!-- Renewal Duration Selection -->
+                                                            <div class="mb-3">
+                                                                <label class="form-label small fw-bold text-uppercase text-secondary" style="font-size: 0.75rem;">Renewal Period</label>
+                                                                <select name="duration" class="form-select rounded-3 py-2 px-3 border" required style="font-size: 0.9rem;">
+                                                                    <option value="1">1 Month Extension</option>
+                                                                    <option value="3" selected>3 Months Extension</option>
+                                                                    <option value="6">6 Months Extension</option>
+                                                                    <option value="12">12 Months Extension</option>
+                                                                </select>
+                                                            </div>
+                                                            
+                                                            <!-- Payment Method (Online Only) -->
+                                                            <div class="mb-2">
+                                                                <label class="form-label small fw-bold text-uppercase text-secondary" style="font-size: 0.75rem;">Payment Mode</label>
+                                                                <div class="d-flex align-items-center p-3 bg-light rounded-3 border border-1 border-light-subtle">
+                                                                    <div class="me-3 text-primary">
+                                                                        <i class="fas fa-credit-card fa-lg"></i>
+                                                                    </div>
+                                                                    <div>
+                                                                        <span class="fw-bold d-block text-dark" style="font-size: 0.9rem; font-family: 'Outfit', sans-serif;">Online Secure Payment</span>
+                                                                        <span class="text-muted small d-block" style="font-size: 0.8rem;">Processed safely via Razorpay gateway</span>
+                                                                    </div>
+                                                                </div>
+                                                                <input type="hidden" name="payment_method" value="Online">
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer border-top-0 pt-0 pb-4 px-4 d-flex justify-content-end">
+                                                            <button type="button" class="btn btn-outline-secondary px-4 py-2 rounded-2 fw-semibold me-2" data-bs-dismiss="modal" style="font-size: 0.85rem; border-color: #ddd;">Cancel</button>
+                                                            <button type="submit" class="btn btn-primary px-4 py-2 rounded-2 fw-bold text-uppercase border-0" style="font-size: 0.85rem; background-color: var(--primary-color);">
+                                                                Proceed
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12 text-center py-5">
+                    <div class="mb-4">
+                        <i class="fas fa-box-open fa-4x text-light-emphasis"></i>
+                    </div>
+                    <h3>No active rentals found</h3>
+                    <p class="text-muted mb-4">Explore our catalog and find the perfect furniture for your space.</p>
+                    <a href="{% url 'product_list' %}" class="btn btn-primary px-5">Start Renting</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

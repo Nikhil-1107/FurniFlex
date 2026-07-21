@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}Processing Payment... | FurniFlex{% endblock %}
+
+{% block content %}
+<div class="py-5 my-5 text-center">
+    <div class="container py-5">
+        <div class="spinner-border text-primary mb-4" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <h2 class="fw-bold mb-2">Processing Secure Payment</h2>
+        <p class="text-muted mb-4">Please do not close this window or click the back button. Triggering Razorpay Secure Checkout...</p>
+        
+        <button id="pay-btn" class="btn btn-primary btn-lg rounded-3 px-5 py-3 shadow-sm">
+            OPEN PAYMENT POPUP AGAIN
+        </button>
+        
+        <!-- Hidden Form to submit to Payment Success view -->
+        <form action="{% if is_renewal %}{% url 'renewal_payment_success' %}{% else %}{% url 'payment_success' %}{% endif %}" method="POST" id="payment-success-form" style="display: none;">
+            {% csrf_token %}
+            <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
+            <input type="hidden" name="razorpay_order_id" id="razorpay_order_id">
+            <input type="hidden" name="razorpay_signature" id="razorpay_signature">
+            {% if is_renewal %}
+                <input type="hidden" name="rental_id" value="{{ order.id }}">
+                <input type="hidden" name="duration" value="{{ duration }}">
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    const options = {
+        "key": "{{ razorpay_key_id }}",
+        "amount": "{{ amount_paise }}",
+        "currency": "INR",
+        "name": "FurniFlex Rentals",
+        "description": "{% if is_renewal %}Subscription Renewal for {{ order.product.name }}{% else %}1st Month Rent for {{ order.product.name }}{% endif %}",
+        "image": "https://cdn-icons-png.flaticon.com/512/612/612739.png",
+        "order_id": "{{ razorpay_order_id }}",
+        "handler": function (response){
+            document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+            document.getElementById('razorpay_order_id').value = response.razorpay_order_id;
+            document.getElementById('razorpay_signature').value = response.razorpay_signature;
+            document.getElementById('payment-success-form').submit();
+        },
+        "prefill": {
+            "name": "{{ request.user.username }}",
+            "email": "{{ request.user.email }}",
+            "contact": "{{ user_profile.mobile_no|default:'' }}"
+        },
+        "theme": {
+            "color": "#b18b5e"
+        },
+        "modal": {
+            "ondismiss": function(){
+                // If dismissed, redirect back
+                alert("Payment was cancelled or closed.");
+                window.location.href = "{% if is_renewal %}{% url 'my_rentals' %}{% else %}{% url 'checkout' order.id %}{% endif %}";
+            }
+        }
+    };
+    
+    const rzp = new Razorpay(options);
+    
+    document.getElementById('pay-btn').onclick = function(e){
+        rzp.open();
+        e.preventDefault();
+    }
+    
+    // Auto-open on load
+    window.addEventListener('DOMContentLoaded', () => {
+        rzp.open();
+    });
+</script>
+{% endblock %}

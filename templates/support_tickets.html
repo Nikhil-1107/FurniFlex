@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Support Tickets | FurniFlex{% endblock %}
+
+{% block page_skeleton %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <div class="skeleton-shimmer mb-2" style="width: 280px; height: 42px; border-radius: 8px;"></div>
+            <div class="skeleton-shimmer" style="width: 340px; height: 18px; border-radius: 4px;"></div>
+        </div>
+        <div class="skeleton-shimmer" style="width: 180px; height: 42px; border-radius: 0;"></div>
+    </div>
+
+    <div class="row g-4">
+        {% for i in "12" %}
+        <div class="col-12">
+            <div class="card border-0 shadow-sm p-4" style="background: white;">
+                <div class="row align-items-center">
+                    <!-- Circular Icon Shimmer -->
+                    <div class="col-md-2 text-center">
+                        <div class="skeleton-shimmer mx-auto" style="width: 70px; height: 70px; border-radius: 50%; background: rgba(177, 139, 94, 0.05);"></div>
+                    </div>
+                    <!-- Details Shimmer -->
+                    <div class="col-md-7">
+                        <div class="skeleton-shimmer mb-2" style="width: 250px; height: 22px; border-radius: 4px;"></div>
+                        <div class="skeleton-shimmer mb-3" style="width: 120px; height: 14px; border-radius: 4px;"></div>
+                        <div class="skeleton-shimmer" style="width: 90%; height: 16px; border-radius: 4px;"></div>
+                    </div>
+                    <!-- Status Badge Shimmer -->
+                    <div class="col-md-3 text-md-end">
+                        <div class="skeleton-shimmer d-inline-block" style="width: 90px; height: 28px; border-radius: 4px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="py-5 bg-light">
+    <div class="container py-5">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <div>
+                <h1 class="fw-bold">Support <span class="text-primary">Tickets</span></h1>
+                <p class="text-muted">Track your furniture repair and maintenance requests.</p>
+            </div>
+            <a href="{% url 'my_rentals' %}" class="btn btn-outline-primary">New Repair Request</a>
+        </div>
+
+        <div class="row g-4">
+            {% if tickets %}
+                {% for ticket in tickets %}
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm p-4">
+                        <div class="row align-items-center">
+                            <div class="col-md-2 text-center">
+                                <div class="bg-primary-subtle text-primary p-3 rounded-circle d-inline-block">
+                                    <i class="fas fa-tools fa-2x"></i>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <h5 class="fw-bold mb-1">Ticket #{{ ticket.id }} - {{ ticket.product.name }}</h5>
+                                <p class="text-muted mb-2 small">{{ ticket.created_at }}</p>
+                                <p class="mb-0 text-dark">{{ ticket.description }}</p>
+                            </div>
+                            <div class="col-md-3 text-md-end">
+                                <span class="badge {% if ticket.status == 'Open' %}bg-warning{% elif ticket.status == 'In Progress' %}bg-info{% else %}bg-success{% endif %} px-3 py-2">
+                                    {{ ticket.status }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12 text-center py-5">
+                    <i class="fas fa-clipboard-list fa-4x text-light-emphasis mb-3"></i>
+                    <h3>No tickets found</h3>
+                    <p class="text-muted">Need help with your furniture? Create a ticket from your rentals page.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Repair Ticket | FurniFlex{% endblock %}
+
+{% block content %}
+<div class="py-5 bg-light" style="min-height: 80vh;">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-7">
+                <div class="card border-0 shadow-lg p-5">
+                    <h2 class="fw-bold mb-4">Request <span class="text-primary">Repair</span></h2>
+                    <p class="text-muted mb-4">Tell us what's wrong with your <strong>{{ rental.product.name }}</strong>. Our team will schedule a visit shortly.</p>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label class="form-label fw-bold small text-uppercase">Issue Description</label>
+                            <textarea name="description" class="form-control rounded-0 border-0 bg-light p-3" rows="6" placeholder="Please describe the issue in detail..." required></textarea>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="{% url 'my_rentals' %}" class="text-muted text-decoration-none small"><i class="fas fa-arrow-left me-1"></i> Back to Rentals</a>
+                            <button type="submit" class="btn btn-primary px-5 py-3">Submit Request</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

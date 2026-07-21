@@ -1,0 +1,45 @@
+<footer class="bg-white text-dark pt-5 pb-4">
+    <div class="container text-center text-md-start">
+        <div class="row">
+            <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+                <a class="navbar-brand d-flex align-items-center mb-4 text-decoration-none" href="{% url 'home' %}" style="font-family: 'Dancing Script', cursive; font-size: 2rem; font-weight: 700;">
+                    <img src="{{ MEDIA_URL }}logo.png" alt="FurniFlex Logo" style="height: 40px;" class="me-1">
+                    <span style="color: var(--secondary-color);">Furni</span><span class="text-primary">Flex</span>
+                </a>
+                <p class="text-muted mb-4">Modern furniture rental for modern homes. Quality, style, and flexibility at your fingertips.</p>
+                <div class="social-links d-flex gap-3 justify-content-center justify-content-md-start">
+                    <a href="#" class="social-icon text-muted" style="font-size: 20px;"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-icon text-muted" style="font-size: 20px;"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon text-muted" style="font-size: 20px;"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+                <h5 class="text-uppercase mb-4 font-weight-bold">Quick Links</h5>
+                <p><a href="{% url 'home' %}" class="text-muted text-decoration-none hover-primary">Home</a></p>
+                <p><a href="{% url 'product_list' %}" class="text-muted text-decoration-none hover-primary">Products</a></p>
+                <p><a href="{% url 'about' %}" class="text-muted text-decoration-none hover-primary">About</a></p>
+            </div>
+            <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+                <h5 class="text-uppercase mb-4 font-weight-bold">Contact</h5>
+                <p class="text-muted"><i class="fas fa-home me-3 text-primary"></i> 123 Furniture St, NY</p>
+                <p class="text-muted"><i class="fas fa-envelope me-3 text-primary"></i> info@furniflex.com</p>
+                <p class="text-muted"><i class="fas fa-phone me-3 text-primary"></i> +01 234 567 88</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<style>
+    .hover-primary:hover {
+        color: var(--primary-color) !important;
+    }
+    .social-icon {
+        transition: all 0.3s ease;
+    }
+    .social-icon:hover {
+        color: var(--primary-color) !important;
+        transform: translateY(-3px);
+        display: inline-block;
+    }
+</style>
+

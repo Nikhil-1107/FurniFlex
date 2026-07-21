@@ -1,0 +1,406 @@
+{% extends 'base.html' %}
+{% load currency_filters %}
+
+{% block title %}Checkout | FurniFlex{% endblock %}
+
+{% block page_skeleton %}
+<div class="container py-5">
+    <div class="row g-5">
+        <!-- Left Side Shimmers (Address, Duration, Payment) -->
+        <div class="col-lg-8">
+            <div class="p-4 p-md-5" style="background: white; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.02);">
+                <div class="skeleton-shimmer mb-4" style="width: 280px; height: 38px; border-radius: 6px;"></div>
+                
+                <!-- Section 1 Shimmer -->
+                <div class="mb-5">
+                    <div class="d-flex align-items-center mb-4 gap-3">
+                        <div class="skeleton-shimmer" style="width: 32px; height: 32px; border-radius: 50%;"></div>
+                        <div class="skeleton-shimmer" style="width: 220px; height: 24px; border-radius: 4px;"></div>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="p-3 border rounded-3" style="background: #faf8f5;">
+                                <div class="skeleton-shimmer mb-2" style="width: 140px; height: 18px; border-radius: 4px;"></div>
+                                <div class="skeleton-shimmer mb-2" style="width: 90%; height: 14px; border-radius: 4px;"></div>
+                                <div class="skeleton-shimmer" style="width: 60%; height: 14px; border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 border rounded-3" style="background: #faf8f5;">
+                                <div class="skeleton-shimmer mb-2" style="width: 140px; height: 18px; border-radius: 4px;"></div>
+                                <div class="skeleton-shimmer mb-2" style="width: 90%; height: 14px; border-radius: 4px;"></div>
+                                <div class="skeleton-shimmer" style="width: 60%; height: 14px; border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2 Shimmer -->
+                <div class="mb-5">
+                    <div class="d-flex align-items-center mb-4 gap-3">
+                        <div class="skeleton-shimmer" style="width: 32px; height: 32px; border-radius: 50%;"></div>
+                        <div class="skeleton-shimmer" style="width: 200px; height: 24px; border-radius: 4px;"></div>
+                    </div>
+                    <div class="skeleton-shimmer" style="width: 100%; height: 50px; border-radius: 0;"></div>
+                </div>
+
+                <!-- Section 3 Shimmer -->
+                <div class="mb-4">
+                    <div class="d-flex align-items-center mb-4 gap-3">
+                        <div class="skeleton-shimmer" style="width: 32px; height: 32px; border-radius: 50%;"></div>
+                        <div class="skeleton-shimmer" style="width: 180px; height: 24px; border-radius: 4px;"></div>
+                    </div>
+                    <div class="skeleton-shimmer" style="width: 100%; height: 50px; border-radius: 0;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side Shimmers (Order Summary) -->
+        <div class="col-lg-4">
+            <div class="p-4" style="background: white; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.02);">
+                <div class="skeleton-shimmer mb-4" style="width: 160px; height: 28px; border-radius: 4px;"></div>
+                
+                <div class="d-flex gap-3 mb-4">
+                    <div class="skeleton-shimmer" style="width: 80px; height: 80px; border-radius: 12px;"></div>
+                    <div style="flex: 1;">
+                        <div class="skeleton-shimmer mb-2" style="width: 150px; height: 18px; border-radius: 4px;"></div>
+                        <div class="skeleton-shimmer" style="width: 100px; height: 14px; border-radius: 4px;"></div>
+                    </div>
+                </div>
+                
+                <hr class="my-4">
+                
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="skeleton-shimmer" style="width: 80px; height: 16px; border-radius: 4px;"></span>
+                    <span class="skeleton-shimmer" style="width: 60px; height: 16px; border-radius: 4px;"></span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="skeleton-shimmer" style="width: 100px; height: 16px; border-radius: 4px;"></span>
+                    <span class="skeleton-shimmer" style="width: 50px; height: 16px; border-radius: 4px;"></span>
+                </div>
+                <div class="d-flex justify-content-between mb-4">
+                    <span class="skeleton-shimmer" style="width: 60px; height: 16px; border-radius: 4px;"></span>
+                    <span class="skeleton-shimmer" style="width: 70px; height: 16px; border-radius: 4px;"></span>
+                </div>
+                
+                <hr class="my-4">
+                
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <span class="skeleton-shimmer" style="width: 120px; height: 22px; border-radius: 4px;"></span>
+                    <span class="skeleton-shimmer" style="width: 100px; height: 28px; border-radius: 4px;"></span>
+                </div>
+                
+                <div class="skeleton-shimmer" style="width: 100%; height: 50px; border-radius: 0;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="py-5">
+    <div class="container py-5">
+        <div class="row g-5">
+            <!-- Left Side: Address & Payment Methods -->
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white">
+                    <h2 class="display-6 fw-bold mb-4" style="color: var(--secondary-color);">Checkout Information</h2>
+                    
+                    <form action="{% url 'checkout' order.id %}" method="post" id="checkout-form">
+                        {% csrf_token %}
+                        
+                        <!-- Section 1: Delivery Address -->
+                        <div class="mb-5">
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px; font-weight: 600;">1</span>
+                                <h4 class="m-0 fw-bold">Select Delivery Address</h4>
+                            </div>
+                            
+                            <!-- Address Selection -->
+                            <div class="row g-3 mb-4">
+                                {% for addr in addresses %}
+                                <div class="col-md-6">
+                                    <div class="address-card p-3 border rounded-3 position-relative {% if addr.is_default %}active border-primary{% endif %}" onclick="selectAddress('{{ addr.id }}')">
+                                        <input type="radio" name="address_id" id="addr_{{ addr.id }}" value="{{ addr.id }}" class="position-absolute top-3 end-3" {% if addr.is_default or forloop.first %}checked{% endif %}>
+                                        <label for="addr_{{ addr.id }}" class="w-100 cursor-pointer">
+                                            <span class="d-block fw-bold mb-1"><i class="fas fa-home me-2 text-primary"></i><span>Address</span> {{ forloop.counter }}</span>
+                                            <span class="d-block small text-muted">{{ addr.street_address }}</span>
+                                            <span class="d-block small text-muted">{{ addr.city }}, {{ addr.state }} - {{ addr.pincode }}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                {% empty %}
+                                <div class="col-12">
+                                    <div class="alert alert-info py-3 border-0 bg-light rounded-3">
+                                        <i class="fas fa-info-circle me-2 text-primary"></i>No saved addresses found. Please add a new address below.
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                
+                                <div class="col-md-6">
+                                    <div class="address-card p-3 border rounded-3 text-center d-flex flex-column align-items-center justify-content-center cursor-pointer {% if not addresses %}active border-primary{% endif %}" onclick="selectAddress('new')" id="new-addr-card">
+                                        <input type="radio" name="address_id" id="addr_new" value="new" class="position-absolute top-3 end-3" {% if not addresses %}checked{% endif %}>
+                                        <i class="fas fa-plus-circle text-primary fs-3 mb-2"></i>
+                                        <span class="fw-bold">Add New Address</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- New Address Form (Collapsible/Hidden by default if there are existing addresses) -->
+                            <div class="card border-0 bg-light p-4 rounded-4 mt-3" id="new-address-form-container" style="{% if addresses %}display: none;{% endif %}">
+                                <h5 class="fw-bold mb-3"><i class="fas fa-map-marker-alt me-2 text-primary"></i>Enter New Address Details</h5>
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label class="form-label small fw-bold text-uppercase">Street Address</label>
+                                        <textarea class="form-control rounded-3" name="new_address" rows="2" placeholder="House/Flat No., Building, Street Name"></textarea>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label small fw-bold text-uppercase">City</label>
+                                        <input type="text" class="form-control rounded-3" name="city" placeholder="City">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label small fw-bold text-uppercase">State</label>
+                                        <input type="text" class="form-control rounded-3" name="state" placeholder="State">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label small fw-bold text-uppercase">Pincode</label>
+                                        <input type="text" class="form-control rounded-3" name="pincode" placeholder="Pincode">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <hr class="my-4 opacity-10">
+                        
+                        <!-- Section 2: Payment Options -->
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center mb-4">
+                                <span class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px; font-weight: 600;">2</span>
+                                <h4 class="m-0 fw-bold">Choose Payment Option</h4>
+                            </div>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="payment-card p-3 border rounded-3 position-relative cursor-pointer text-center d-flex flex-column align-items-center active border-primary" onclick="selectPayment('COD')">
+                                        <input type="radio" name="payment_method" id="pay_cod" value="COD" class="position-absolute top-3 end-3" checked>
+                                        <i class="fas fa-hand-holding-usd text-primary fs-3 mb-2"></i>
+                                        <span class="fw-bold">Cash on Delivery (COD)</span>
+                                        <span class="small text-muted mt-1">Pay when item is delivered</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="payment-card p-3 border rounded-3 position-relative cursor-pointer text-center d-flex flex-column align-items-center" onclick="selectPayment('Online')">
+                                        <input type="radio" name="payment_method" id="pay_online" value="Online" class="position-absolute top-3 end-3">
+                                        <i class="fas fa-credit-card text-primary fs-3 mb-2"></i>
+                                        <span class="fw-bold">Online Payment</span>
+                                        <span class="small text-muted mt-1">Pay securely via Razorpay</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid mt-5">
+                            <button type="submit" class="btn btn-primary btn-lg py-3 fw-bold rounded-3 shadow-sm border-0">
+                                CONFIRM & CONTINUE
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Right Side: Order Summary -->
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white position-sticky" style="top: 100px;">
+                    <h4 class="fw-bold mb-4" style="color: var(--secondary-color);">Order Summary</h4>
+                    
+                    <div class="d-flex align-items-center mb-4">
+                        {% if order.product.image %}
+                            <img src="{{ order.product.image.url }}" alt="{{ order.product.name }}" class="rounded-3 me-3" style="width: 80px; height: 80px; object-fit: cover;">
+                        {% else %}
+                            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Default Image" class="rounded-3 me-3" style="width: 80px; height: 80px; object-fit: cover;">
+                        {% endif %}
+                        <div>
+                            <h6 class="fw-bold mb-1">{{ order.product.name }}</h6>
+                            <span class="badge bg-light text-secondary rounded-pill">{{ order.rental_duration_months }} <span>Months Tenure</span></span>
+                        </div>
+                    </div>
+                    
+                    <hr class="opacity-10">
+                    
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Monthly Rent</span>
+                        <span class="fw-bold">{{ monthly_amount|convert_currency:request }}<span>/mo</span></span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Tenure Duration</span>
+                        <span class="fw-bold">{{ order.rental_duration_months }} <span>Months</span></span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="text-muted">Delivery</span>
+                        <span class="text-success fw-bold">FREE</span>
+                    </div>
+                    {% if discount_amount > 0 %}
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-success fw-semibold">New User Discount (20% Off 1st Month)</span>
+                        <span class="text-success fw-bold">-{{ discount_amount|convert_currency:request }}</span>
+                    </div>
+                    {% endif %}
+                    
+                    <hr class="opacity-10">
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <span class="fw-bold d-block">Total Amount to Paid</span>
+                            <small class="text-muted">For {{ order.rental_duration_months }} <span>months tenure subscription</span></small>
+                        </div>
+                        <span class="fs-4 fw-bold text-primary">{{ total_amount|convert_currency:request }}</span>
+                    </div>
+                    
+                    <div class="bg-light p-3 rounded-3 text-center small text-muted">
+                        <i class="fas fa-shield-alt text-primary me-2"></i>Secure Transaction. Your details are safe with us.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .address-card, .payment-card {
+        background-color: white;
+        transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        border: 1.5px solid #e1e1e1 !important;
+        cursor: pointer;
+    }
+    
+    .address-card:hover, .payment-card:hover {
+        border-color: var(--primary-color) !important;
+        transform: translateY(-2px);
+    }
+    
+    .address-card.active, .payment-card.active {
+        border-color: var(--primary-color) !important;
+        background-color: rgba(177, 139, 94, 0.05);
+        box-shadow: 0 4px 15px rgba(177, 139, 94, 0.1);
+    }
+    
+    .address-card input[type="radio"], .payment-card input[type="radio"] {
+        accent-color: var(--primary-color);
+        transform: scale(1.2);
+    }
+    
+    .cursor-pointer {
+        cursor: pointer;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function selectAddress(addressId) {
+        // Uncheck all other inputs and deactivate all cards
+        document.querySelectorAll('.address-card').forEach(card => {
+            card.classList.remove('active', 'border-primary');
+        });
+        
+        const radio = document.getElementById('addr_' + addressId);
+        if (radio) {
+            radio.checked = true;
+            // Activate the parent card
+            radio.closest('.address-card').classList.add('active', 'border-primary');
+        }
+        
+        // Show/hide new address form container
+        const formContainer = document.getElementById('new-address-form-container');
+        if (addressId === 'new') {
+            formContainer.style.display = 'block';
+            // Make address fields required
+            formContainer.querySelectorAll('textarea, input').forEach(el => el.setAttribute('required', 'true'));
+        } else {
+            formContainer.style.display = 'none';
+            // Remove required
+            formContainer.querySelectorAll('textarea, input').forEach(el => el.removeAttribute('required'));
+        }
+    }
+    
+    function selectPayment(method) {
+        document.querySelectorAll('.payment-card').forEach(card => {
+            card.classList.remove('active', 'border-primary');
+        });
+        
+        const radio = document.getElementById('pay_' + method.toLowerCase());
+        if (radio) {
+            radio.checked = true;
+            radio.closest('.payment-card').classList.add('active', 'border-primary');
+        }
+    }
+    
+    // Trigger initial select to set required attributes correctly
+    document.addEventListener('DOMContentLoaded', () => {
+        const checkedAddress = document.querySelector('input[name="address_id"]:checked');
+        if (checkedAddress) {
+            selectAddress(checkedAddress.value);
+        }
+        const checkedPayment = document.querySelector('input[name="payment_method"]:checked');
+        if (checkedPayment) {
+            selectPayment(checkedPayment.value);
+        }
+        
+        // Add Cash on Delivery Confirmation Alert before placing order
+        const form = document.getElementById('checkout-form');
+        if (form) {
+            let confirmed = false;
+            form.addEventListener('submit', function(e) {
+                if (confirmed) return; // Allow submission if already confirmed
+                
+                const selectedPayment = document.querySelector('input[name="payment_method"]:checked').value;
+                if (selectedPayment === 'COD') {
+                    e.preventDefault(); // Cancel form submission first
+                    
+                    const savedLang = localStorage.getItem('preferredLanguage') || 'en';
+                    const swalTitle = savedLang === 'hi' ? 'कैश ऑन डिलीवरी की पुष्टि करें' : 'Confirm Cash on Delivery';
+                    const swalHtml = savedLang === 'hi' ? `
+                            <div class="text-center py-2">
+                                <i class="fas fa-hand-holding-usd text-primary fs-1 mb-3"></i>
+                                <p class="mb-3 fs-6">आपने <strong>कैश ऑन डिलीवरी (सीओडी)</strong> चुना है।</p>
+                                <p class="mb-4 fs-6">आपको अपने पते पर डिलीवरी के समय नकद <strong class="text-primary fs-5">{{ total_amount|convert_currency:request }}</strong> का भुगतान करना होगा।</p>
+                                <p class="text-muted small">क्या आप इस ऑर्डर की पुष्टि करना और इसे प्लेस करना चाहते हैं?</p>
+                            </div>
+                        ` : `
+                            <div class="text-center py-2">
+                                <i class="fas fa-hand-holding-usd text-primary fs-1 mb-3"></i>
+                                <p class="mb-3 fs-6">You have selected <strong>Cash on Delivery (COD)</strong>.</p>
+                                <p class="mb-4 fs-6">You will need to pay the total amount of <strong class="text-primary fs-5">{{ total_amount|convert_currency:request }}</strong> in cash upon delivery to your address.</p>
+                                <p class="text-muted small">Do you want to confirm and place this order?</p>
+                            </div>
+                        `;
+                    const confirmText = savedLang === 'hi' ? 'हाँ, ऑर्डर की पुष्टि करें' : 'Yes, Confirm Order';
+                    const cancelText = savedLang === 'hi' ? 'रद्द करें' : 'Cancel';
+                    
+                    Swal.fire({
+                        title: swalTitle,
+                        html: swalHtml,
+                        showCancelButton: true,
+                        confirmButtonText: confirmText,
+                        cancelButtonText: cancelText,
+                        confirmButtonColor: '#b18b5e',
+                        cancelButtonColor: '#2c2c2c',
+                        focusConfirm: false,
+                        customClass: {
+                            popup: 'rounded-4 shadow-lg border-0',
+                            confirmButton: 'btn btn-primary px-4 py-2 fw-bold text-uppercase border-0 shadow-sm',
+                            cancelButton: 'btn btn-secondary px-4 py-2 fw-bold text-uppercase border-0 shadow-sm'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            confirmed = true;
+                            form.submit(); // Submit the form programmatically
+                        }
+                    });
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Verify OTP | FurniFlex{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center py-5">
+        <div class="col-md-5">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <div class="bg-primary-subtle text-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                            <i class="fas fa-user-shield fa-2x"></i>
+                        </div>
+                        <h2 class="fw-bold">Verify OTP</h2>
+                        <p class="text-muted">We've sent a 6-digit verification code to <span class="fw-bold text-dark">{{ email }}</span>.</p>
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label for="otp" class="form-label fw-semibold">Enter OTP</label>
+                            <input type="text" name="otp" id="otp" class="form-control bg-light border-0 py-3 text-center fs-4 fw-bold letter-spacing-5" maxlength="6" placeholder="000000" required autofocus>
+                        </div>
+
+                        <div class="d-grid mb-4">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill py-3 fw-bold shadow-sm">Verify OTP</button>
+                        </div>
+
+                        <div class="text-center">
+                            <p class="text-muted small">Didn't receive code? 
+                                <a href="{% url 'forgot_password' %}" class="text-primary text-decoration-none fw-bold">Resend OTP</a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .letter-spacing-5 {
+        letter-spacing: 12px;
+    }
+</style>
+{% endblock %}

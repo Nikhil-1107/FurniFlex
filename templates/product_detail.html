@@ -1,0 +1,282 @@
+{% extends 'base.html' %}
+{% load currency_filters %}
+
+{% block title %}{{ product.name }} | FurniFlex{% endblock %}
+
+{% block page_skeleton %}
+<div class="container py-5">
+    <div class="row g-5">
+        <!-- Image block shimmer -->
+        <div class="col-lg-7">
+            <div class="skeleton-shimmer rounded-4 mb-4" style="width: 100%; aspect-ratio: 3/2;"></div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="p-4" style="background: white; border-radius: 16px; border: 1px solid rgba(0,0,0,0.01);">
+                        <div class="skeleton-shimmer mb-2" style="width: 40px; height: 40px; border-radius: 50%;"></div>
+                        <div class="skeleton-shimmer" style="width: 80%; height: 16px; border-radius: 4px;"></div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-4" style="background: white; border-radius: 16px; border: 1px solid rgba(0,0,0,0.01);">
+                        <div class="skeleton-shimmer mb-2" style="width: 40px; height: 40px; border-radius: 50%;"></div>
+                        <div class="skeleton-shimmer" style="width: 80%; height: 16px; border-radius: 4px;"></div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-4" style="background: white; border-radius: 16px; border: 1px solid rgba(0,0,0,0.01);">
+                        <div class="skeleton-shimmer mb-2" style="width: 40px; height: 40px; border-radius: 50%;"></div>
+                        <div class="skeleton-shimmer" style="width: 80%; height: 16px; border-radius: 4px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Info block shimmers -->
+        <div class="col-lg-5">
+            <div class="skeleton-shimmer mb-3" style="width: 120px; height: 24px; border-radius: 4px;"></div>
+            <div class="skeleton-shimmer mb-3" style="width: 90%; height: 48px; border-radius: 8px;"></div>
+            <div class="skeleton-shimmer mb-4" style="width: 60%; height: 28px; border-radius: 4px;"></div>
+            
+            <hr class="my-4" style="border-top: 1px dashed #eee;">
+            
+            <div class="skeleton-shimmer mb-2" style="width: 100%; height: 16px; border-radius: 4px;"></div>
+            <div class="skeleton-shimmer mb-2" style="width: 95%; height: 16px; border-radius: 4px;"></div>
+            <div class="skeleton-shimmer mb-4" style="width: 80%; height: 16px; border-radius: 4px;"></div>
+            
+            <div class="skeleton-shimmer mb-3" style="width: 140px; height: 24px; border-radius: 4px;"></div>
+            <div class="skeleton-shimmer mb-5" style="width: 100%; height: 50px; border-radius: 8px;"></div>
+            
+            <div class="skeleton-shimmer" style="width: 100%; height: 55px; border-radius: 0;"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="py-5">
+    <div class="container py-5">
+        <div class="row g-5">
+            <!-- Product Image & Highlights -->
+            <div class="col-lg-7">
+                <div class="product-gallery mb-5">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" class="img-fluid w-100 shadow-sm rounded-4" alt="{{ product.name }}" style="aspect-ratio: 3/2; object-fit: cover;">
+                    {% else %}
+                        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" class="img-fluid w-100 shadow-sm rounded-4" alt="Default Image" style="aspect-ratio: 3/2; object-fit: cover;">
+                    {% endif %}
+                </div>
+
+                <!-- Product Features/Benefits Section -->
+                <div class="row g-4 mt-2">
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start p-3 bg-white rounded-3 shadow-sm border-start border-primary border-4">
+                            <div class="icon-box me-3"><i class="fas fa-shield-alt text-primary"></i></div>
+                            <div>
+                                <h6 class="mb-1 fw-bold">Quality Guarantee</h6>
+                                <p class="small text-muted mb-0">Every piece is sanitized and inspected for premium quality.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start p-3 bg-white rounded-3 shadow-sm border-start border-primary border-4">
+                            <div class="icon-box me-3"><i class="fas fa-tools text-primary"></i></div>
+                            <div>
+                                <h6 class="mb-1 fw-bold">Free Maintenance</h6>
+                                <p class="small text-muted mb-0">Zero-cost repairs and maintenance for the entire rental period.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start p-3 bg-white rounded-3 shadow-sm border-start border-primary border-4">
+                            <div class="icon-box me-3"><i class="fas fa-truck-moving text-primary"></i></div>
+                            <div>
+                                <h6 class="mb-1 fw-bold">Easy Relocation</h6>
+                                <p class="small text-muted mb-0">Moving houses? We'll relocate your furniture for free within the city.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start p-3 bg-white rounded-3 shadow-sm border-start border-primary border-4">
+                            <div class="icon-box me-3"><i class="fas fa-sync-alt text-primary"></i></div>
+                            <div>
+                                <h6 class="mb-1 fw-bold">Upgrade Anytime</h6>
+                                <p class="small text-muted mb-0">Swap your furniture for a new design at any point in your tenure.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product Info -->
+            <div class="col-lg-5">
+                <nav aria-label="breadcrumb" class="mb-4">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-muted">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'product_list' %}" class="text-decoration-none text-muted">Products</a></li>
+                        <li class="breadcrumb-item active text-primary">{{ product.category }}</li>
+                    </ol>
+                </nav>
+                
+                <h1 class="display-5 fw-bold mb-3">{{ product.name }}</h1>
+                <p class="text-primary fs-3 fw-bold mb-4">{{ product.price_per_month|convert_currency:request }} <small class="text-muted fs-6 fw-normal">/ month</small></p>
+                
+                <!-- Product Specs Grid -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4 col-6">
+                        <div class="p-3 bg-white border border-light-subtle shadow-sm h-100 text-center rounded-3">
+                            <span class="text-muted small text-uppercase fw-bold d-block mb-1">Availability</span>
+                            <span class="fw-bold {% if product.stock > 0 %}text-success{% else %}text-danger{% endif %}">
+                                {% if product.stock > 0 %}{{ product.stock }} In Stock{% else %}Currently Unavailable{% endif %}
+                            </span>
+                        </div>
+                    </div>
+                    {% if product.material %}
+                    <div class="col-md-4 col-6">
+                        <div class="p-3 bg-white border border-light-subtle shadow-sm h-100 text-center rounded-3">
+                            <span class="text-muted small text-uppercase fw-bold d-block mb-1">Material</span>
+                            <span class="fw-bold">{{ product.material }}</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if product.color %}
+                    <div class="col-md-4 col-6">
+                        <div class="p-3 bg-white border border-light-subtle shadow-sm h-100 text-center rounded-3">
+                            <span class="text-muted small text-uppercase fw-bold d-block mb-1">Color</span>
+                            <span class="fw-bold">{{ product.color }}</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="mb-4">
+                    <h5 class="fw-bold mb-3 text-uppercase small letter-spacing-1" style="color: var(--secondary-color);">Description</h5>
+                    <p class="text-muted leading-relaxed">{{ product.description }}</p>
+                </div>
+                
+                <hr class="my-4 opacity-10">
+                
+                <!-- Rental Form -->
+                <div class="bg-white p-4 shadow-sm rounded-4 border border-light-subtle">
+                    {% if already_rented %}
+                        <div class="text-center py-3">
+                            <span class="d-inline-flex align-items-center justify-content-center bg-primary-subtle rounded-circle mb-3" style="width: 60px; height: 60px;">
+                                <i class="fas fa-check-double fs-4 text-primary"></i>
+                            </span>
+                            <h5 class="fw-bold text-dark mb-2">Currently Active Rental</h5>
+                            <p class="text-muted small mb-4 px-2" style="line-height: 1.6;">You already have an active subscription for this premium piece. Enjoy styling your dream home!</p>
+                            <div class="d-grid gap-2">
+                                <a href="{% url 'my_rentals' %}" class="btn btn-primary btn-lg shadow-sm py-3 fw-bold">
+                                    VIEW MY RENTALS
+                                </a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <form action="{% url 'rent_product' product.pk %}" method="post">
+                            {% csrf_token %}
+                            <h5 class="fw-bold mb-4 small text-uppercase">Select Rental Duration</h5>
+                            <div class="row g-2 mb-4">
+                                {% if durations %}
+                                    {% for duration in durations %}
+                                    <div class="col-4">
+                                        <input type="radio" class="btn-check" name="duration" id="d{{ forloop.counter }}" value="{{ duration }}" {% if forloop.first %}checked{% endif %}>
+                                        <label class="btn btn-duration-theme w-100 py-3" for="d{{ forloop.counter }}">{{ duration }} Mo</label>
+                                    </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="col-4">
+                                        <input type="radio" class="btn-check" name="duration" id="d1" value="1" checked>
+                                        <label class="btn btn-duration-theme w-100 py-3" for="d1">1 Mo</label>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-lg shadow-sm py-3 fw-bold" {% if product.stock <= 0 %}disabled{% endif %}>
+                                    {% if product.stock > 0 %}RENT THIS ITEM{% else %}CURRENTLY UNAVAILABLE{% endif %}
+                                </button>
+                                <p class="text-center small text-muted mt-3 mb-0"><i class="fas fa-truck me-2"></i>Free delivery within 2-3 business days</p>
+                            </div>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+
+        {% if related_products %}
+        <!-- Related Products Section -->
+        <div class="mt-5 pt-5 border-top">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="fw-bold m-0">You Might Also Like</h3>
+                <a href="{% url 'product_list' %}?category={{ product.category }}" class="text-primary text-decoration-none fw-bold">View All <i class="fas fa-arrow-right ms-1"></i></a>
+            </div>
+            <div class="row g-4">
+                {% for related in related_products %}
+                <div class="col-md-3">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden product-card-hover">
+                        {% if related.image %}
+                        <img src="{{ related.image.url }}" class="card-img-top" alt="{{ related.name }}" style="height: 200px; object-fit: cover;">
+                        {% endif %}
+                        <div class="card-body p-3">
+                            <h6 class="fw-bold mb-1">{{ related.name }}</h6>
+                            <p class="text-primary fw-bold mb-0">{{ related.price_per_month|convert_currency:request }}<span>/mo</span></p>
+                            <a href="{% url 'product_detail' related.pk %}" class="stretched-link"></a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .product-card-hover {
+        transition: all 0.3s ease;
+    }
+    .product-card-hover:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+    }
+</style>
+
+<style>
+    .letter-spacing-1 { letter-spacing: 1.5px; }
+    .leading-relaxed { line-height: 1.8; }
+    
+    .btn-duration-theme {
+        background-color: white;
+        border: 1.5px solid #e1e1e1;
+        color: var(--secondary-color);
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border-radius: 8px;
+    }
+
+    .btn-check:checked + .btn-duration-theme {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+        color: white;
+        box-shadow: 0 4px 12px rgba(177, 139, 94, 0.3);
+        transform: translateY(-2px);
+    }
+
+    .btn-duration-theme:hover {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+        background-color: rgba(177, 139, 94, 0.05);
+    }
+
+    .icon-box {
+        width: 40px;
+        height: 40px;
+        background: var(--accent-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border-radius: 50%;
+    }
+</style>
+{% endblock %}

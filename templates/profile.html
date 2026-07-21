@@ -1,0 +1,403 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Profile | FurniFlex{% endblock %}
+
+{% block extra_css %}
+<!-- intl-tel-input CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css">
+<style>
+    .profile-header {
+        background: linear-gradient(135deg, var(--secondary-color) 0%, #444 100%);
+        color: white;
+        padding: 80px 0;
+        margin-bottom: -60px;
+        position: relative;
+    }
+
+    .profile-card {
+        background: white;
+        border: none;
+        border-radius: 0;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        position: relative;
+        z-index: 2;
+    }
+
+    .avatar-large {
+        width: 120px;
+        height: 120px;
+        background: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        font-weight: 700;
+        border: 5px solid white;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        margin-top: -60px;
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #666;
+        margin-bottom: 10px;
+    }
+
+    .form-control {
+        height: 55px;
+        border-radius: 0;
+        border: 1px solid #eee;
+        padding: 0 20px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: none;
+        background-color: #fdfaf7;
+    }
+
+    textarea.form-control {
+        height: auto;
+        padding: 15px 20px;
+    }
+
+    .btn-update {
+        height: 55px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        border-radius: 0;
+        text-transform: uppercase;
+    }
+
+    .info-item {
+        padding: 20px;
+        border-bottom: 1px solid #f8f9fa;
+    }
+
+    .info-item:last-child {
+        border-bottom: none;
+    }
+
+    .info-label {
+        font-size: 0.75rem;
+        color: #999;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .info-value {
+        font-weight: 600;
+        color: var(--secondary-color);
+    }
+    .iti__flag {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+
+    .iti {
+        width: 100%;
+    }
+</style>
+{% endblock %}
+
+{% block page_skeleton %}
+<!-- Header Shimmer -->
+<div class="profile-header text-center py-5 d-flex flex-column align-items-center justify-content-center" style="background: linear-gradient(135deg, var(--secondary-color) 0%, #444 100%);">
+    <div class="skeleton-shimmer mb-2" style="width: 320px; height: 42px; border-radius: 8px; background: rgba(255, 255, 255, 0.1);"></div>
+    <div class="skeleton-shimmer" style="width: 250px; height: 16px; border-radius: 4px; background: rgba(255, 255, 255, 0.05);"></div>
+</div>
+
+<div class="container mb-5" style="margin-top: -30px; position: relative; z-index: 10;">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="p-4 p-md-5" style="background: white; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.03);">
+                <!-- Avatar Shimmer -->
+                <div class="d-flex flex-column align-items-center mb-5">
+                    <div class="skeleton-shimmer mb-3" style="width: 110px; height: 110px; border-radius: 50%;"></div>
+                    <div class="skeleton-shimmer mb-2" style="width: 160px; height: 28px; border-radius: 4px;"></div>
+                    <div class="skeleton-shimmer" style="width: 100px; height: 20px; border-radius: 4px;"></div>
+                </div>
+
+                <div class="row g-5">
+                    <!-- Form Columns -->
+                    <div class="col-md-7 border-end">
+                        <div class="skeleton-shimmer mb-4" style="width: 180px; height: 28px; border-radius: 4px;"></div>
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="skeleton-shimmer" style="width: 100%; height: 55px; border-radius: 0;"></div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="skeleton-shimmer" style="width: 100%; height: 55px; border-radius: 0;"></div>
+                            </div>
+                            <div class="col-12 mb-4">
+                                <div class="skeleton-shimmer" style="width: 100%; height: 55px; border-radius: 0;"></div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="skeleton-shimmer" style="width: 100%; height: 55px; border-radius: 0;"></div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="skeleton-shimmer" style="width: 100%; height: 55px; border-radius: 0;"></div>
+                            </div>
+                        </div>
+                        <div class="skeleton-shimmer" style="width: 140px; height: 45px; border-radius: 0;"></div>
+                    </div>
+
+                    <!-- Right Column: Account Overview -->
+                    <div class="col-md-5">
+                        <div class="skeleton-shimmer mb-4" style="width: 220px; height: 28px; border-radius: 4px;"></div>
+                        <div class="p-4 mb-4" style="background: #fdfaf7; border-radius: 16px; border: 1px solid rgba(0,0,0,0.01);">
+                            <div class="skeleton-shimmer mb-3" style="width: 120px; height: 18px; border-radius: 4px;"></div>
+                            <div class="skeleton-shimmer mb-4" style="width: 150px; height: 24px; border-radius: 4px;"></div>
+                            
+                            <div class="skeleton-shimmer mb-3" style="width: 120px; height: 18px; border-radius: 4px;"></div>
+                            <div class="skeleton-shimmer mb-4" style="width: 180px; height: 24px; border-radius: 4px;"></div>
+
+                            <div class="skeleton-shimmer mb-3" style="width: 120px; height: 18px; border-radius: 4px;"></div>
+                            <div class="skeleton-shimmer" style="width: 100px; height: 24px; border-radius: 4px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="profile-header">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold">Account Settings</h1>
+        <p class="opacity-75">Manage your personal information and preferences</p>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="profile-card p-4 p-md-5">
+                <div class="d-flex flex-column align-items-center mb-5">
+                    <div class="avatar-large">
+                        {{ user.username.0|upper }}
+                    </div>
+                    <h2 class="fw-bold mb-1">{{ user.username }}</h2>
+                    {% if profile.tier %}
+                    <span class="badge px-3 py-2 text-uppercase tracking-wider shadow-sm d-flex align-items-center gap-1.5" 
+                          style="
+                            font-size: 0.75rem; 
+                            background-color: {{ profile.tier.bg_color }} !important; 
+                            color: {{ profile.tier.color }} !important; 
+                            border: 1px solid {{ profile.tier.border }} !important;
+                            border-radius: 50px;
+                            font-weight: 700;
+                          ">
+                        <i class="fas {{ profile.tier.icon }}"></i>
+                        {{ profile.tier.name }}
+                    </span>
+                    {% endif %}
+                </div>
+
+                <div class="row g-5">
+                    <!-- Left Column: Form -->
+                    <div class="col-md-7 border-end">
+                        <h4 class="fw-bold mb-4">Edit Profile</h4>
+                        <form method="post" id="profileForm">
+                            {% csrf_token %}
+                            <div class="row">
+                                {% for field in form %}
+                                <div class="{% if field.name == 'address' %}col-12{% else %}col-md-6{% endif %} mb-4">
+                                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                                    {{ field }}
+                                    {% for error in field.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                            
+                            <!-- Hidden input to store full international number -->
+                            <input type="hidden" name="full_mobile" id="full_mobile">
+
+                            <div class="d-grid mt-2">
+                                <button type="submit" class="btn btn-primary btn-update shadow-sm">Save Changes</button>
+                            </div>
+                            <div class="text-center mt-3">
+                                <a href="{% url 'change_password' %}" class="text-primary small fw-bold text-decoration-none">
+                                    <i class="fas fa-key me-1"></i> Change Password
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Right Column: Quick Stats/Info -->
+                    <div class="col-md-5">
+                        <h4 class="fw-bold mb-4">Account Overview</h4>
+                        <div class="bg-light p-4" style="border-radius: 12px;">
+                            <div class="info-item">
+                                <span class="info-label">Member Since</span>
+                                <span class="info-value">{{ user.date_joined|date:"F d, Y" }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Last Login</span>
+                                <span class="info-value" id="last-login-time" data-utc="{{ user.last_login|date:'c' }}">
+                                    {{ user.last_login|date:"F d, Y H:i" }} UTC
+                                </span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Active Rentals</span>
+                                <span class="info-value">{{ active_rentals_count }} Active</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Loyalty Points</span>
+                                <span class="info-value">{{ loyalty_points }} PTS</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-5">
+                            <h4 class="fw-bold mb-4">Account Security</h4>
+                            <div class="d-grid gap-3">
+                                <button type="button" class="btn btn-outline-danger border-2 fw-bold text-uppercase py-3 small" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+                                    Delete Account
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Account Confirmation Modal -->
+<div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 0;">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold text-uppercase tracking-wider" id="deleteAccountModalLabel">Confirm Account Deletion</h5>
+                <button type="button" class="btn-close" data-bs-toggle="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body py-4">
+                <div class="text-center mb-4 text-danger">
+                    <i class="fas fa-exclamation-triangle fs-1"></i>
+                </div>
+                <p class="text-center mb-0">Are you sure you want to delete your account? This action is <strong>permanent</strong> and cannot be undone. All your rental history and preferences will be lost.</p>
+            </div>
+            <div class="modal-footer border-0 pt-0 flex-column g-2">
+                <form action="{% url 'delete_account' %}" method="post" class="w-100">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger w-100 py-3 fw-bold text-uppercase tracking-wider" style="border-radius: 0;">Yes, Permanently Delete My Account</button>
+                </form>
+                <button type="button" class="btn btn-outline-secondary w-100 py-3 fw-bold text-uppercase tracking-wider" style="border-radius: 0;" data-bs-dismiss="modal">Cancel, Keep My Account</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- intl-tel-input JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add form-control class to all inputs
+        document.querySelectorAll('.profile-card input, .profile-card textarea, .profile-card select').forEach(el => {
+            el.classList.add('form-control');
+        });
+
+        // Strict numeric-only restriction for mobile number and pincode
+        const phoneInput = document.querySelector('input[name="mobile_no"]');
+        const pincodeInput = document.querySelector('input[name="pincode"]');
+
+        if (phoneInput) {
+            phoneInput.addEventListener('input', function() {
+                // Instantly strip all non-digit characters
+                this.value = this.value.replace(/\D/g, '');
+            });
+        }
+
+        if (pincodeInput) {
+            pincodeInput.addEventListener('input', function() {
+                // Instantly strip all non-digit characters
+                this.value = this.value.replace(/\D/g, '');
+            });
+        }
+
+        if (phoneInput) {
+            const iti = window.intlTelInput(phoneInput, {
+                initialCountry: "auto",
+                geoIpLookup: function(success, failure) {
+                    fetch("https://ipapi.co/json")
+                        .then(res => res.json())
+                        .then(data => success(data.country_code))
+                        .catch(() => success("US"));
+                },
+                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+                separateDialCode: true,
+                preferredCountries: ["us", "gb", "in", "ae"]
+            });
+
+            // Auto-sync flag picker with country dropdown
+            phoneInput.addEventListener('countrychange', function() {
+                const countryData = iti.getSelectedCountryData();
+                if (countryData && countryData.iso2) {
+                    const isoToCountry = {
+                        'in': 'India',
+                        'us': 'United States',
+                        'gb': 'United Kingdom',
+                        'ae': 'UAE'
+                    };
+                    const europeanIsos = ['fr', 'de', 'es', 'it', 'nl', 'be', 'ch', 'se', 'no', 'dk', 'fi', 'ie', 'pl', 'pt', 'gr', 'cz', 'at'];
+                    const mapped = isoToCountry[countryData.iso2.toLowerCase()];
+                    const countrySelect = document.querySelector('select[name="country"]');
+                    if (countrySelect) {
+                        if (mapped) {
+                            countrySelect.value = mapped;
+                        } else if (europeanIsos.includes(countryData.iso2.toLowerCase())) {
+                            countrySelect.value = 'Europe';
+                        }
+                    }
+                }
+            });
+
+            // Handle form submission
+            const form = document.getElementById('profileForm');
+            form.addEventListener('submit', function() {
+                const fullNumber = iti.getNumber();
+                document.getElementById('full_mobile').value = fullNumber;
+            });
+
+            // Localize last login time to user selected country/browser timezone
+            const lastLoginEl = document.getElementById('last-login-time');
+            if (lastLoginEl) {
+                const utcStr = lastLoginEl.getAttribute('data-utc');
+                if (utcStr) {
+                    const date = new Date(utcStr);
+                    const options = { 
+                        month: 'long', 
+                        day: 'numeric', 
+                        year: 'numeric', 
+                        hour: '2-digit', 
+                        minute: '2-digit', 
+                        hour12: false 
+                    };
+                    try {
+                        const formattedDate = date.toLocaleString('en-US', options);
+                        const shortTz = date.toLocaleTimeString('en-US', { timeZoneName: 'short' }).split(' ').pop();
+                        lastLoginEl.textContent = `${formattedDate} (${shortTz})`;
+                    } catch(e) {
+                        lastLoginEl.textContent = date.toLocaleString();
+                    }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

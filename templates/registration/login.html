@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login | FurniFlex{% endblock %}
+
+{% block extra_css %}
+<style>
+    .auth-wrapper {
+        min-height: calc(100vh - 80px);
+        display: flex;
+        background-color: #fff;
+        overflow: hidden;
+    }
+
+    .auth-image {
+        flex: 1;
+        background-image: url('{{ MEDIA_URL }}sofa.jpeg');
+        background-size: cover;
+        background-position: center;
+        display: none;
+        position: relative;
+    }
+
+    @media (min-width: 992px) {
+        .auth-image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px;
+        }
+    }
+
+    .auth-image-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.3) 100%);
+    }
+
+    .auth-image-content {
+        position: relative;
+        z-index: 2;
+        color: white;
+        max-width: 500px;
+        text-shadow: 0 2px 15px rgba(0,0,0,0.5);
+    }
+
+    .auth-image-content h1 {
+        font-size: 3.5rem;
+        font-weight: 900;
+        margin-bottom: 20px;
+        line-height: 1.1;
+        text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .auth-image-content p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        font-weight: 300;
+        letter-spacing: 0.5px;
+    }
+
+    .auth-form-container {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+        background-color: var(--light-bg);
+    }
+
+    .auth-card {
+        width: 100%;
+        max-width: 450px;
+        background: transparent;
+    }
+
+    .form-control {
+        height: 55px;
+        background-color: white;
+        border: 1px solid #e1e1e1;
+        border-radius: 0;
+        padding: 0 20px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: none;
+        background-color: #fff;
+    }
+
+    .auth-header {
+        margin-bottom: 40px;
+    }
+
+    .auth-header h2 {
+        font-size: 2.5rem;
+        color: var(--secondary-color);
+        margin-bottom: 10px;
+    }
+
+    .btn-login {
+        height: 55px;
+        font-size: 1rem;
+        letter-spacing: 2px;
+        margin-top: 10px;
+    }
+
+    .brand-accent {
+        font-family: 'Dancing Script', cursive;
+        color: var(--primary-color);
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        display: block;
+    }
+</style>
+{% endblock %}
+
+{% block page_skeleton %}
+<div class="auth-wrapper d-flex" style="min-height: calc(100vh - 80px);">
+    <!-- Left Side Image Shimmer (Desktop only) -->
+    <div class="auth-image d-none d-lg-flex skeleton-shimmer align-items-center justify-content-center" style="flex: 1; background: #2c2c2c;">
+        <div class="text-center p-5">
+            <div class="skeleton-shimmer mb-3 mx-auto" style="width: 140px; height: 35px; border-radius: 4px; background: rgba(177, 139, 94, 0.2);"></div>
+            <div class="skeleton-shimmer mb-3 mx-auto" style="width: 320px; height: 55px; border-radius: 8px; background: rgba(255, 255, 255, 0.1);"></div>
+            <div class="skeleton-shimmer mx-auto" style="width: 250px; height: 18px; border-radius: 4px; background: rgba(255, 255, 255, 0.05);"></div>
+        </div>
+    </div>
+    <!-- Right Side Form Shimmer -->
+    <div class="auth-form-container d-flex align-items-center justify-content-center" style="flex: 1; padding: 40px; background-color: var(--light-bg);">
+        <div class="auth-card" style="width: 100%; max-width: 450px;">
+            <div class="auth-header mb-5">
+                <div class="skeleton-shimmer mb-2" style="width: 150px; height: 24px; border-radius: 4px;"></div>
+                <div class="skeleton-shimmer mb-3" style="width: 240px; height: 48px; border-radius: 8px;"></div>
+                <div class="skeleton-shimmer" style="width: 180px; height: 16px; border-radius: 4px;"></div>
+            </div>
+            <div class="mb-4">
+                <div class="skeleton-shimmer" style="width: 100%; height: 55px; border-radius: 0;"></div>
+            </div>
+            <div class="mb-4">
+                <div class="skeleton-shimmer" style="width: 100%; height: 55px; border-radius: 0;"></div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="skeleton-shimmer" style="width: 110px; height: 18px; border-radius: 4px;"></div>
+                <div class="skeleton-shimmer" style="width: 130px; height: 18px; border-radius: 4px;"></div>
+            </div>
+            <div class="skeleton-shimmer mb-4" style="width: 100%; height: 55px; border-radius: 0;"></div>
+            <div class="skeleton-shimmer mx-auto" style="width: 180px; height: 18px; border-radius: 4px;"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-image">
+        <div class="auth-image-overlay"></div>
+        <div class="auth-image-content">
+            <span class="brand-accent">Exclusive Living</span>
+            <h1>Elegance in Every Corner</h1>
+            <p>Access your curated selection of premium furniture rentals and transform your space today.</p>
+        </div>
+    </div>
+    
+    <div class="auth-form-container">
+        <div class="auth-card fade-in-up">
+            <div class="auth-header">
+                <h2 class="fw-bold">Welcome Back</h2>
+                <p class="text-muted">Enter your credentials to access your account</p>
+            </div>
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-danger border-0 rounded-3 mb-4 p-3 d-flex align-items-center" role="alert" style="background-color: rgba(220, 53, 69, 0.08); color: #dc3545; font-size: 0.9rem;">
+                        <i class="fas fa-exclamation-circle me-3 fs-5"></i>
+                        <div>{{ message }}</div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <label for="id_username" class="form-label small fw-bold text-uppercase tracking-wider">Username or Email</label>
+                    <input type="text" name="username" class="form-control" id="id_username" placeholder="Enter your username" required>
+                </div>
+                <div class="mb-2">
+                    <label for="id_password" class="form-label small fw-bold text-uppercase tracking-wider">Password</label>
+                    <input type="password" name="password" class="form-control" id="id_password" placeholder="••••••••" required>
+                </div>
+                
+                <div class="d-flex justify-content-end mb-4">
+                    <a href="{% url 'forgot_password' %}" class="text-primary small text-decoration-none fw-bold">Forgot Password?</a>
+                </div>
+                
+                <div class="d-grid mb-4">
+                    <button type="submit" class="btn btn-primary btn-login shadow-sm">LOG IN</button>
+                </div>
+                
+                <div class="text-center">
+                    <p class="text-muted small mb-0">New to FurniFlex? <a href="{% url 'register' %}" class="text-primary fw-bold text-decoration-none">Create an account</a></p>
+                </div>
+                
+                <div class="text-center mt-4 pt-3" style="border-top: 1px dashed rgba(0,0,0,0.1) !important;">
+                    <a href="{% url 'admin_login' %}" class="text-muted small fw-semibold text-decoration-none" style="letter-spacing: 0.5px; transition: color 0.3s ease;" onmouseover="this.style.color='var(--primary-color)'" onmouseout="this.style.color='#6c757d'">
+                        <i class="fas fa-user-tie me-1"></i> Administrator Access
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

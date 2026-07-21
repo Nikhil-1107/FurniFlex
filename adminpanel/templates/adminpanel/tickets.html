@@ -1,0 +1,164 @@
+{% extends 'adminpanel/admin_base.html' %}
+
+{% block title %}Support Tickets | FurniFlex Admin Portal{% endblock %}
+
+{% block admin_skeleton %}
+<div class="d-flex justify-content-between align-items-center mb-5">
+    <div>
+        <div class="skeleton-shimmer mb-2" style="width: 230px; height: 38px; border-radius: 6px;"></div>
+        <div class="skeleton-shimmer" style="width: 440px; height: 16px; border-radius: 4px;"></div>
+    </div>
+</div>
+
+<div class="card border-0 p-4 mb-4 shadow-sm rounded-4" style="background: white;">
+    <div class="row g-3 align-items-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="skeleton-shimmer" style="width: 100%; height: 42px; border-radius: 8px;"></div>
+        </div>
+        <div class="col-md-4 col-lg-3">
+            <div class="skeleton-shimmer" style="width: 100%; height: 42px; border-radius: 8px;"></div>
+        </div>
+    </div>
+</div>
+
+<div class="card border-0 p-4 shadow-sm rounded-4" style="background: white;">
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th><div class="skeleton-shimmer" style="width: 60px; height: 16px; border-radius: 4px;"></div></th>
+                    <th><div class="skeleton-shimmer" style="width: 120px; height: 16px; border-radius: 4px;"></div></th>
+                    <th><div class="skeleton-shimmer" style="width: 100px; height: 16px; border-radius: 4px;"></div></th>
+                    <th><div class="skeleton-shimmer" style="width: 120px; height: 16px; border-radius: 4px;"></div></th>
+                    <th><div class="skeleton-shimmer" style="width: 70px; height: 16px; border-radius: 4px;"></div></th>
+                    <th><div class="skeleton-shimmer" style="width: 60px; height: 16px; border-radius: 4px;"></div></th>
+                    <th class="text-end"><div class="skeleton-shimmer ms-auto" style="width: 85px; height: 16px; border-radius: 4px;"></div></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in "12345" %}
+                <tr>
+                    <td><div class="skeleton-shimmer" style="width: 60px; height: 16px; border-radius: 4px;"></div></td>
+                    <td>
+                        <div class="skeleton-shimmer mb-1" style="width: 140px; height: 16px; border-radius: 4px;"></div>
+                        <div class="skeleton-shimmer" style="width: 80px; height: 12px; border-radius: 4px;"></div>
+                    </td>
+                    <td>
+                        <div class="skeleton-shimmer mb-1" style="width: 120px; height: 16px; border-radius: 4px;"></div>
+                        <div class="skeleton-shimmer" style="width: 90px; height: 12px; border-radius: 4px;"></div>
+                    </td>
+                    <td><div class="skeleton-shimmer" style="width: 110px; height: 16px; border-radius: 4px;"></div></td>
+                    <td><div class="skeleton-shimmer" style="width: 70px; height: 22px; border-radius: 12px;"></div></td>
+                    <td><div class="skeleton-shimmer" style="width: 70px; height: 16px; border-radius: 4px;"></div></td>
+                    <td class="text-end"><div class="skeleton-shimmer ms-auto" style="width: 100px; height: 38px; border-radius: 8px;"></div></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block admin_content %}
+<div class="d-flex justify-content-between align-items-center mb-5">
+    <div>
+        <h1 class="fw-bold m-0" style="font-family: 'Outfit', sans-serif;">Support Tickets</h1>
+        <p class="text-muted m-0 mt-1">Review and manage maintenance or repair requests from your active subscribers</p>
+    </div>
+</div>
+
+<!-- Premium Filter & Search Bar -->
+<div class="admin-card mb-4 p-4">
+    <form method="get" class="row g-3 align-items-center">
+        <!-- Search Input -->
+        <div class="col-lg-6 col-md-6">
+            <div class="input-group">
+                <span class="input-group-text bg-white border-end-0 text-muted"><i class="fas fa-search"></i></span>
+                <input type="text" name="q" class="form-control border-start-0 ps-0" placeholder="Search customer or item..." value="{{ search_query }}">
+            </div>
+        </div>
+        <!-- Status Filter -->
+        <div class="col-lg-4 col-md-4">
+            <select name="status" class="form-select" onchange="this.form.submit()">
+                <option value="all" {% if status_filter == 'all' %}selected{% endif %}>All Ticket Statuses</option>
+                <option value="Open" {% if status_filter == 'Open' %}selected{% endif %}>Open</option>
+                <option value="In Progress" {% if status_filter == 'In Progress' %}selected{% endif %}>In Progress</option>
+                <option value="Resolved" {% if status_filter == 'Resolved' %}selected{% endif %}>Resolved</option>
+            </select>
+        </div>
+        <!-- Action Buttons -->
+        <div class="col-lg-2 col-md-12 d-flex gap-2">
+            <button type="submit" class="btn btn-brand w-100 py-2">Filter</button>
+            <a href="{% url 'admin_tickets' %}" class="btn btn-outline-secondary w-100 py-2 d-flex align-items-center justify-content-center" title="Reset Filters"><i class="fas fa-rotate-left"></i></a>
+        </div>
+    </form>
+</div>
+
+<div class="admin-table-container">
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th style="width: 100px;">Ticket ID</th>
+                    <th>Customer</th>
+                    <th>Furniture</th>
+                    <th>Issue Description</th>
+                    <th>Created At</th>
+                    <th>Status</th>
+                    <th style="width: 150px; text-align: right;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if tickets %}
+                    {% for ticket in tickets %}
+                    <tr>
+                        <td class="fw-bold text-dark">#{{ ticket.id }}</td>
+                        <td>
+                            <span class="fw-bold text-dark d-block">{{ ticket.user.username }}</span>
+                            <span class="text-muted small">{{ ticket.user.email }}</span>
+                        </td>
+                        <td>{{ ticket.product.name }}</td>
+                        <td>
+                            <div class="text-muted px-3 py-2 bg-light rounded-3" 
+                                 style="
+                                    max-width: 320px; 
+                                    max-height: 80px; 
+                                    overflow-y: auto; 
+                                    line-height: 1.5; 
+                                    font-size: 0.82rem;
+                                    border: 1px solid rgba(0, 0, 0, 0.04);
+                                 ">
+                                {{ ticket.description }}
+                            </div>
+                        </td>
+                        <td class="small text-muted">{{ ticket.created_at|date:"F d, Y H:i" }}</td>
+                        <td>
+                            <span class="status-badge {% if ticket.status == 'Resolved' %}badge-active{% else %}badge-pending{% endif %}">
+                                {{ ticket.status }}
+                            </span>
+                        </td>
+                        <td style="text-align: right;">
+                            {% if ticket.status != 'Resolved' %}
+                            <form action="{% url 'admin_resolve_ticket' ticket.pk %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success btn-sm px-3 rounded-2 fw-semibold"><i class="fas fa-check me-1"></i> Resolve</button>
+                            </form>
+                            {% else %}
+                            <span class="text-success small fw-semibold"><i class="fas fa-circle-check me-1"></i> Completed</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="7" class="text-center text-muted py-5">
+                            <i class="fas fa-screwdriver-wrench fa-3x mb-3 text-light-emphasis d-block"></i>
+                            No maintenance tickets currently logged.
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

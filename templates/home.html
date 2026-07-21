@@ -1,0 +1,943 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load currency_filters %}
+
+{% block title %}Home | FurniFlex{% endblock %}
+
+{% block content %}
+<style>
+    .home-skeleton-loader {
+        position: fixed;
+        top: 82px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1020;
+        display: flex;
+        flex-direction: column;
+        background: #faf8f5;
+        overflow-y: auto;
+        pointer-events: auto;
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 0.36s ease, visibility 0s linear 0.36s;
+    }
+
+    .home-skeleton-loader.is-hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+
+    body.home-loader-active {
+        cursor: default;
+    }
+
+    .skeleton-shimmer {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(110deg, #ebe4d9 0%, #f8f3eb 42%, #ded2c0 76%);
+        background-size: 220% 100%;
+        animation: skeletonShimmer 1.15s ease-in-out infinite;
+    }
+
+    .skeleton-shimmer::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+        transform: translateX(-100%);
+        animation: skeletonSweep 1.15s ease-in-out infinite;
+    }
+
+    .home-skeleton-hero {
+        position: relative;
+        width: 100%;
+        height: calc(100vh - 82px);
+        min-height: 500px;
+        overflow: hidden;
+        background: #fdfaf7;
+    }
+
+    .skeleton-hero-copy {
+        position: absolute;
+        z-index: 2;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: clamp(24px, 5vw, 80px);
+        text-align: center;
+        transform: translateY(-2vh);
+    }
+
+    .skeleton-kicker {
+        width: 250px;
+        height: 38px;
+        border-radius: 0;
+        margin-bottom: 54px;
+        background: linear-gradient(110deg, #b18b5e 0%, #d3b588 48%, #9e794f 100%);
+    }
+
+    .skeleton-title {
+        display: block;
+        height: clamp(52px, 7vw, 96px);
+        border-radius: 12px;
+        background: linear-gradient(110deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.98), rgba(226, 216, 204, 0.82));
+        margin-bottom: 20px;
+    }
+
+    .skeleton-title-line-1 {
+        width: min(560px, 72vw);
+    }
+
+    .skeleton-title-line-2 {
+        width: min(650px, 78vw);
+        margin-bottom: 48px;
+    }
+
+    .skeleton-copy-line {
+        width: min(820px, 82vw);
+        height: 28px;
+        border-radius: 999px;
+        background: linear-gradient(110deg, rgba(255, 255, 255, 0.56), rgba(255, 255, 255, 0.88), rgba(226, 216, 204, 0.5));
+        margin-bottom: 70px;
+    }
+
+    .skeleton-cta {
+        width: 400px;
+        max-width: 72vw;
+        height: 72px;
+        border-radius: 0;
+        background: linear-gradient(110deg, #b18b5e 0%, #d3b588 48%, #9e794f 100%);
+        box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22);
+    }
+
+    @keyframes skeletonShimmer {
+        0% { background-position: 180% 0; }
+        100% { background-position: -80% 0; }
+    }
+
+    @keyframes skeletonSweep {
+        0% { transform: translateX(-120%); }
+        100% { transform: translateX(120%); }
+    }
+
+    @media (max-width: 576px) {
+        .skeleton-kicker {
+            width: 190px;
+            height: 32px;
+            margin-bottom: 38px;
+        }
+
+        .skeleton-title {
+            height: 50px;
+            margin-bottom: 14px;
+        }
+
+        .skeleton-title-line-2 {
+            margin-bottom: 34px;
+        }
+
+        .skeleton-copy-line {
+            height: 22px;
+            margin-bottom: 46px;
+        }
+
+        .skeleton-cta {
+            height: 58px;
+            width: 280px;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .skeleton-shimmer,
+        .skeleton-shimmer::after {
+            animation: none;
+        }
+
+        .home-skeleton-loader {
+            transition: opacity 0.18s ease;
+        }
+    }
+</style>
+
+<script>
+    (function() {
+        document.body.classList.add('home-loader-active');
+        window.FurniFlexHomeLoader = { done: false };
+
+        function finishHomeLoader() {
+            var loader = document.getElementById('homeSkeletonLoader');
+
+            window.FurniFlexHomeLoader.done = true;
+            document.body.classList.remove('home-loader-active');
+            document.body.classList.add('home-loader-done');
+            window.dispatchEvent(new CustomEvent('furniflex:home-loader-complete'));
+
+            if (!loader) return;
+            loader.classList.add('is-hidden');
+            loader.setAttribute('aria-hidden', 'true');
+
+            setTimeout(function() {
+                if (loader.parentNode) {
+                    loader.parentNode.removeChild(loader);
+                }
+            }, 420);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(finishHomeLoader, 800);
+        });
+    })();
+</script>
+
+<noscript>
+    <style>
+        .home-skeleton-loader {
+            display: none !important;
+        }
+    </style>
+</noscript>
+
+<div id="homeSkeletonLoader" class="home-skeleton-loader" role="status" aria-live="polite" aria-label="Loading FurniFlex home page">
+    <span class="visually-hidden">Loading FurniFlex home page</span>
+    
+    <!-- 1. Hero Section Skeleton -->
+    <div class="home-skeleton-hero" aria-hidden="true">
+        <div class="skeleton-hero-copy">
+            <span class="skeleton-kicker skeleton-shimmer"></span>
+            <span class="skeleton-title skeleton-title-line-1 skeleton-shimmer"></span>
+            <span class="skeleton-title skeleton-title-line-2 skeleton-shimmer"></span>
+            <span class="skeleton-copy-line skeleton-shimmer"></span>
+            <span class="skeleton-cta skeleton-shimmer"></span>
+        </div>
+    </div>
+
+    <!-- 2. Features Section Skeleton -->
+    <div class="container py-5" aria-hidden="true" style="pointer-events: none;">
+        <div class="text-center mb-5 d-flex flex-column align-items-center">
+            <span class="skeleton-shimmer mb-3" style="width: 320px; height: 38px; border-radius: 8px;"></span>
+            <span class="skeleton-shimmer" style="width: 480px; height: 18px; border-radius: 4px;"></span>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="p-5 text-center" style="background: white; border-radius: 24px; border: 1px solid rgba(0,0,0,0.02); box-shadow: 0 10px 30px rgba(0,0,0,0.01);">
+                    <div class="skeleton-shimmer mb-4 mx-auto" style="width: 80px; height: 80px; border-radius: 20px; background: rgba(177, 139, 94, 0.05);"></div>
+                    <div class="skeleton-shimmer mb-3 mx-auto" style="width: 140px; height: 24px; border-radius: 4px;"></div>
+                    <div class="skeleton-shimmer mb-2 mx-auto" style="width: 90%; height: 14px; border-radius: 4px;"></div>
+                    <div class="skeleton-shimmer mx-auto" style="width: 80%; height: 14px; border-radius: 4px;"></div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-5 text-center" style="background: white; border-radius: 24px; border: 1px solid rgba(0,0,0,0.02); box-shadow: 0 10px 30px rgba(0,0,0,0.01);">
+                    <div class="skeleton-shimmer mb-4 mx-auto" style="width: 80px; height: 80px; border-radius: 20px; background: rgba(177, 139, 94, 0.05);"></div>
+                    <div class="skeleton-shimmer mb-3 mx-auto" style="width: 140px; height: 24px; border-radius: 4px;"></div>
+                    <div class="skeleton-shimmer mb-2 mx-auto" style="width: 90%; height: 14px; border-radius: 4px;"></div>
+                    <div class="skeleton-shimmer mx-auto" style="width: 80%; height: 14px; border-radius: 4px;"></div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-5 text-center" style="background: white; border-radius: 24px; border: 1px solid rgba(0,0,0,0.02); box-shadow: 0 10px 30px rgba(0,0,0,0.01);">
+                    <div class="skeleton-shimmer mb-4 mx-auto" style="width: 80px; height: 80px; border-radius: 20px; background: rgba(177, 139, 94, 0.05);"></div>
+                    <div class="skeleton-shimmer mb-3 mx-auto" style="width: 140px; height: 24px; border-radius: 4px;"></div>
+                    <div class="skeleton-shimmer mb-2 mx-auto" style="width: 90%; height: 14px; border-radius: 4px;"></div>
+                    <div class="skeleton-shimmer mx-auto" style="width: 80%; height: 14px; border-radius: 4px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Featured Products Section Skeleton -->
+    <div class="bg-light py-5" aria-hidden="true" style="pointer-events: none;">
+        <div class="container py-3">
+            <div class="d-flex justify-content-between align-items-center mb-5">
+                <span class="skeleton-shimmer" style="width: 240px; height: 32px; border-radius: 6px;"></span>
+                <span class="skeleton-shimmer" style="width: 80px; height: 20px; border-radius: 4px;"></span>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="card border-0 w-100 animate-pulse" style="background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
+                        <div class="skeleton-shimmer" style="width: 100%; height: 260px;"></div>
+                        <div class="card-body p-4 d-flex flex-column">
+                            <span class="skeleton-shimmer mb-2" style="width: 180px; height: 24px; border-radius: 4px;"></span>
+                            <span class="skeleton-shimmer mb-3" style="width: 100%; height: 14px; border-radius: 4px;"></span>
+                            <span class="skeleton-shimmer mb-4" style="width: 80%; height: 14px; border-radius: 4px;"></span>
+                            <div class="d-flex gap-3 mb-4">
+                                <span class="skeleton-shimmer" style="width: 80px; height: 16px; border-radius: 4px;"></span>
+                                <span class="skeleton-shimmer" style="width: 60px; height: 16px; border-radius: 4px;"></span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                <span class="skeleton-shimmer" style="width: 90px; height: 28px; border-radius: 4px;"></span>
+                                <span class="skeleton-shimmer" style="width: 80px; height: 36px; border-radius: 6px;"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card border-0 w-100 animate-pulse" style="background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
+                        <div class="skeleton-shimmer" style="width: 100%; height: 260px;"></div>
+                        <div class="card-body p-4 d-flex flex-column">
+                            <span class="skeleton-shimmer mb-2" style="width: 180px; height: 24px; border-radius: 4px;"></span>
+                            <span class="skeleton-shimmer mb-3" style="width: 100%; height: 14px; border-radius: 4px;"></span>
+                            <span class="skeleton-shimmer mb-4" style="width: 80%; height: 14px; border-radius: 4px;"></span>
+                            <div class="d-flex gap-3 mb-4">
+                                <span class="skeleton-shimmer" style="width: 80px; height: 16px; border-radius: 4px;"></span>
+                                <span class="skeleton-shimmer" style="width: 60px; height: 16px; border-radius: 4px;"></span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                <span class="skeleton-shimmer" style="width: 90px; height: 28px; border-radius: 4px;"></span>
+                                <span class="skeleton-shimmer" style="width: 80px; height: 36px; border-radius: 6px;"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card border-0 w-100 animate-pulse" style="background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
+                        <div class="skeleton-shimmer" style="width: 100%; height: 260px;"></div>
+                        <div class="card-body p-4 d-flex flex-column">
+                            <span class="skeleton-shimmer mb-2" style="width: 180px; height: 24px; border-radius: 4px;"></span>
+                            <span class="skeleton-shimmer mb-3" style="width: 100%; height: 14px; border-radius: 4px;"></span>
+                            <span class="skeleton-shimmer mb-4" style="width: 80%; height: 14px; border-radius: 4px;"></span>
+                            <div class="d-flex gap-3 mb-4">
+                                <span class="skeleton-shimmer" style="width: 80px; height: 16px; border-radius: 4px;"></span>
+                                <span class="skeleton-shimmer" style="width: 60px; height: 16px; border-radius: 4px;"></span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                <span class="skeleton-shimmer" style="width: 90px; height: 28px; border-radius: 4px;"></span>
+                                <span class="skeleton-shimmer" style="width: 80px; height: 36px; border-radius: 6px;"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card border-0 w-100 animate-pulse" style="background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
+                        <div class="skeleton-shimmer" style="width: 100%; height: 260px;"></div>
+                        <div class="card-body p-4 d-flex flex-column">
+                            <span class="skeleton-shimmer mb-2" style="width: 180px; height: 24px; border-radius: 4px;"></span>
+                            <span class="skeleton-shimmer mb-3" style="width: 100%; height: 14px; border-radius: 4px;"></span>
+                            <span class="skeleton-shimmer mb-4" style="width: 80%; height: 14px; border-radius: 4px;"></span>
+                            <div class="d-flex gap-3 mb-4">
+                                <span class="skeleton-shimmer" style="width: 80px; height: 16px; border-radius: 4px;"></span>
+                                <span class="skeleton-shimmer" style="width: 60px; height: 16px; border-radius: 4px;"></span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                <span class="skeleton-shimmer" style="width: 90px; height: 28px; border-radius: 4px;"></span>
+                                <span class="skeleton-shimmer" style="width: 80px; height: 36px; border-radius: 6px;"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hero Slider Section -->
+<section class="hero-slider-section p-0">
+    <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-pause="false">
+        <!-- Indicators -->
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="3"></button>
+        </div>
+
+        <div class="carousel-inner">
+            <!-- Slide 1: Living Room -->
+            <div class="carousel-item active" data-bs-interval="4000">
+                <div class="hero-slide-bg" style="background-image: url('{{ MEDIA_URL }}1.jpeg');"></div>
+                <div class="hero-overlay"></div>
+                <div class="carousel-caption d-flex align-items-center h-100">
+                    <div class="container text-center">
+                        <div class="hero-text-wrap">
+                            <span class="badge bg-primary px-3 py-2 rounded-0 mb-4 animate-item slide-down">LUXURY COLLECTION 2024</span>
+                            <h1 class="display-1 fw-bold mb-4 animate-item slide-up">Elevate Your <br> Living Space</h1>
+                            <p class="lead mb-5 fs-4 animate-item slide-up-delayed">Discover premium sofas that redefine comfort and style in your home.</p>
+                            <div class="animate-item slide-up-extra">
+                                <a href="{% url 'product_list' %}" class="btn btn-primary btn-lg px-5 shadow-lg">Shop Living Room</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2: Bedroom -->
+            <div class="carousel-item" data-bs-interval="4000">
+                <div class="hero-slide-bg" style="background-image: url('{{ MEDIA_URL }}2.jpeg');"></div>
+                <div class="hero-overlay"></div>
+                <div class="carousel-caption d-flex align-items-center h-100">
+                    <div class="container text-center">
+                        <div class="hero-text-wrap">
+                            <span class="badge bg-primary px-3 py-2 rounded-0 mb-4 animate-item slide-down">EXCLUSIVE DESIGNS</span>
+                            <h1 class="display-1 fw-bold mb-4 animate-item slide-up">Rest in <br> Pure Luxury</h1>
+                            <p class="lead mb-5 fs-4 animate-item slide-up-delayed">Transform your bedroom into a sanctuary with our designer bed collections.</p>
+                            <div class="animate-item slide-up-extra">
+                                <a href="{% url 'product_list' %}" class="btn btn-primary btn-lg px-5 shadow-lg">Explore Bedrooms</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: Dining -->
+            <div class="carousel-item" data-bs-interval="4000">
+                <div class="hero-slide-bg" style="background-image: url('{{ MEDIA_URL }}3.jpeg');"></div>
+                <div class="hero-overlay"></div>
+                <div class="carousel-caption d-flex align-items-center h-100">
+                    <div class="container text-center">
+                        <div class="hero-text-wrap">
+                            <span class="badge bg-primary px-3 py-2 rounded-0 mb-4 animate-item slide-down">MODERN DINING</span>
+                            <h1 class="display-1 fw-bold mb-4 animate-item slide-up">Dine with <br> Elegance</h1>
+                            <p class="lead mb-5 fs-4 animate-item slide-up-delayed">Curated dining sets designed for memorable moments and sophisticated hosting.</p>
+                            <div class="animate-item slide-up-extra">
+                                <a href="{% url 'product_list' %}" class="btn btn-primary btn-lg px-5 shadow-lg">View Dining Sets</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4: Office -->
+            <div class="carousel-item" data-bs-interval="4000">
+                <div class="hero-slide-bg" style="background-image: url('{{ MEDIA_URL }}4.jpeg');"></div>
+                <div class="hero-overlay"></div>
+                <div class="carousel-caption d-flex align-items-center h-100">
+                    <div class="container text-center">
+                        <div class="hero-text-wrap">
+                            <span class="badge bg-primary px-3 py-2 rounded-0 mb-4 animate-item slide-down">SMART WORKSPACE</span>
+                            <h1 class="display-1 fw-bold mb-4 animate-item slide-up">Power Your <br> Productivity</h1>
+                            <p class="lead mb-5 fs-4 animate-item slide-up-delayed">Premium office furniture that blends ergonomic comfort with executive style.</p>
+                            <div class="animate-item slide-up-extra">
+                                <a href="{% url 'product_list' %}" class="btn btn-primary btn-lg px-5 shadow-lg">Setup Office</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</section>
+
+<style>
+    .hero-slider-section {
+        height: 100vh;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .carousel, .carousel-inner, .carousel-item {
+        height: 100%;
+    }
+
+    .hero-slide-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        transition: transform 4s ease;
+    }
+
+    /* Ken Burns Effect */
+    .carousel-item.active .hero-slide-bg {
+        transform: scale(1.08);
+    }
+
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.7) 100%);
+        z-index: 1;
+    }
+
+    .carousel-caption {
+        z-index: 2;
+        bottom: 0;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 0;
+    }
+
+    /* Text Animations */
+    .animate-item {
+        opacity: 0;
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .carousel-item.active .animate-item.animated {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+
+    .slide-down {
+        transform: translateY(-30px);
+        transition-delay: 0.1s;
+    }
+
+    .slide-up {
+        transform: translateY(30px);
+        transition-delay: 0.25s;
+    }
+
+    .slide-up-delayed {
+        transform: translateY(30px);
+        transition-delay: 0.4s;
+    }
+
+    .slide-up-extra {
+        transform: translateY(30px);
+        transition-delay: 0.55s;
+    }
+
+    .carousel-indicators [data-bs-target] {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        margin: 0 8px;
+        background-color: rgba(255, 255, 255, 0.5);
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+    }
+
+    .carousel-indicators .active {
+        background-color: var(--primary-color);
+        transform: scale(1.3);
+        border-color: white;
+    }
+
+    @media (max-width: 768px) {
+        .display-1 {
+            font-size: 3rem;
+        }
+        .hero-slider-section {
+            height: 80vh;
+        }
+    }
+
+    /* Features Section Styles */
+    .features-section {
+        background: linear-gradient(to bottom, #ffffff, #fcfaf8);
+        position: relative;
+    }
+
+    .feature-card {
+        background: white;
+        border-radius: 24px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.03);
+        transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+        height: 100%;
+        border: 1px solid rgba(0,0,0,0.03);
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-12px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+        border-color: rgba(0,0,0,0.05);
+    }
+
+    .feature-icon-wrap {
+        width: 80px;
+        height: 80px;
+        background: rgba(177, 139, 94, 0.08);
+        color: var(--primary-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 20px;
+        margin: 0 auto;
+        font-size: 2.2rem;
+        transition: all 0.5s ease;
+    }
+
+    .feature-card:hover .feature-icon-wrap {
+        background: var(--primary-color);
+        color: white;
+        transform: scale(1.1) rotate(10deg);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    /* Scroll Animation Styles */
+    .reveal-item {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: opacity 1s ease, transform 1s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    .reveal-item.revealed {
+        opacity: 1;
+        transform: translateY(0);
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var heroCarousel = document.getElementById('heroCarousel');
+    if (!heroCarousel) return;
+
+    function animateActiveSlide() {
+        requestAnimationFrame(function() {
+            var activeSlide = heroCarousel.querySelector('.carousel-item.active');
+            if (activeSlide) {
+                activeSlide.querySelectorAll('.animate-item').forEach(function(el) {
+                    el.classList.add('animated');
+                });
+            }
+        });
+    }
+
+    if (window.FurniFlexHomeLoader && !window.FurniFlexHomeLoader.done) {
+        window.addEventListener('furniflex:home-loader-complete', animateActiveSlide, { once: true });
+    } else {
+        animateActiveSlide();
+    }
+
+    // On slide transition: reset outgoing, animate incoming
+    heroCarousel.addEventListener('slide.bs.carousel', function(e) {
+        var allSlides = heroCarousel.querySelectorAll('.carousel-item');
+        allSlides.forEach(function(slide) {
+            slide.querySelectorAll('.animate-item').forEach(function(el) {
+                el.classList.remove('animated');
+            });
+        });
+    });
+
+    heroCarousel.addEventListener('slid.bs.carousel', function(e) {
+        // Add animated class to the new active slide
+        var activeSlide = heroCarousel.querySelector('.carousel-item.active');
+        if (activeSlide) {
+            // Small delay to allow CSS to reset before re-triggering
+            animateActiveSlide();
+        }
+    });
+
+    // Reveal on Scroll Logic
+    const revealItems = document.querySelectorAll('.reveal-item');
+    
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('revealed');
+                // Optional: stop observing after reveal
+                // revealObserver.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.15,
+        rootMargin: '0px 0px -50px 0px'
+    });
+
+    revealItems.forEach(item => {
+        revealObserver.observe(item);
+    });
+});
+</script>
+
+<!-- Features Section -->
+<section class="py-5 features-section overflow-hidden">
+    <div class="container py-4">
+        <div class="text-center mb-5 reveal-item">
+            <h2 class="display-5 fw-bold mb-3">Why Choose <span class="text-primary">FurniFlex</span>?</h2>
+            <p class="text-muted lead mx-auto" style="max-width: 600px;">Experience the freedom of flexible furniture rental with premium service at every step.</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card text-center p-5 reveal-item">
+                    <div class="feature-icon-wrap mb-4">
+                        <i class="fas fa-truck-fast"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Free Delivery</h4>
+                    <p class="text-muted mb-0">We bring your chosen furniture right to your doorstep at no extra cost, with professional setup.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card text-center p-5 reveal-item">
+                    <div class="feature-icon-wrap mb-4">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Flexible Plans</h4>
+                    <p class="text-muted mb-0">Choose monthly or yearly plans that fit your lifestyle. Swap or return whenever you need.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card text-center p-5 reveal-item">
+                    <div class="feature-icon-wrap mb-4">
+                        <i class="fas fa-shield-halved"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Premium Quality</h4>
+                    <p class="text-muted mb-0">Every piece is curated for style and durability, ensuring a luxurious experience in your home.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sample Products Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <h2 class="fw-bold">Featured Collections</h2>
+            <a href="{% url 'product_list' %}" class="text-primary fw-semibold text-decoration-none">View All <i class="fas fa-arrow-right ms-1"></i></a>
+        </div>
+        
+        <div class="row g-4">
+            {% if products %}
+                {% for product in products %}
+                <div class="col-lg-3 col-md-6 d-flex">
+                    <div class="card premium-product-card w-100 border-0">
+                        <!-- Image Container -->
+                        <div class="premium-card-img-wrap">
+                            <a href="{% url 'product_detail' product.pk %}" class="text-decoration-none">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                            {% else %}
+                                <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Default Image">
+                            {% endif %}
+                            </a>
+                            <!-- Category Badge -->
+                            <span class="premium-category-badge">{{ product.category }}</span>
+                            <!-- Stock Indicator -->
+                            {% if product.stock > 0 %}
+                            <span class="premium-stock-badge"><i class="fas fa-check-circle me-1"></i>In Stock</span>
+                            {% else %}
+                            <span class="premium-stock-badge out-of-stock"><i class="fas fa-times-circle me-1"></i>Currently Unavailable</span>
+                            {% endif %}
+                        </div>
+
+                        <!-- Card Body -->
+                        <div class="card-body d-flex flex-column p-4">
+                            <a href="{% url 'product_detail' product.pk %}" class="text-decoration-none text-dark">
+                                <h5 class="card-title fw-bold mb-2" style="min-height: 48px; line-height: 1.4;">{{ product.name }}</h5>
+                            </a>
+                            <p class="card-text text-muted small mb-3" style="min-height: 40px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{{ product.description }}</p>
+
+                            <!-- Product Specs -->
+                            <div class="premium-specs mb-3">
+                                {% if product.material %}
+                                <div class="spec-item">
+                                    <i class="fas fa-layer-group"></i>
+                                    <span>{{ product.material }}</span>
+                                </div>
+                                {% endif %}
+                                {% if product.color %}
+                                <div class="spec-item">
+                                    <i class="fas fa-palette"></i>
+                                    <span>{{ product.color }}</span>
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Price & Action -->
+                            <div class="mt-auto">
+                                <div class="premium-price-row">
+                                    <div>
+                                        <span class="premium-price">{{ product.price_per_month|convert_currency:request }}</span>
+                                        <span class="premium-price-period">/month</span>
+                                    </div>
+                                    <a href="{% url 'product_detail' product.pk %}" class="btn btn-primary btn-sm px-4 py-2">
+                                        Rent <i class="fas fa-arrow-right ms-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12 text-center py-5">
+                    <i class="fas fa-couch fa-4x text-light-emphasis mb-3"></i>
+                    <h3>No products found yet!</h3>
+                    <p class="text-muted">Check back later or add some from the admin panel.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Premium Product Card (shared) */
+    .premium-product-card {
+        background: #fff;
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    }
+
+    .premium-product-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+    }
+
+    .premium-card-img-wrap {
+        position: relative;
+        overflow: hidden;
+        height: 240px;
+    }
+
+    .premium-card-img-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+
+    .premium-product-card:hover .premium-card-img-wrap img {
+        transform: scale(1.06);
+    }
+
+    .premium-category-badge {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        background: rgba(255, 255, 255, 0.95);
+        color: var(--primary-color);
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        padding: 5px 14px;
+        border-radius: 30px;
+    }
+
+    .premium-stock-badge {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        background: rgba(25, 135, 84, 0.9);
+        color: #fff;
+        font-size: 0.65rem;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 20px;
+    }
+
+    .premium-stock-badge.out-of-stock {
+        background: rgba(220, 53, 69, 0.9);
+    }
+
+    .premium-specs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .spec-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.75rem;
+        color: #777;
+        background: #f8f7f5;
+        padding: 4px 10px;
+        border-radius: 6px;
+    }
+
+    .spec-item i {
+        color: var(--primary-color);
+        font-size: 0.65rem;
+    }
+
+    .premium-price-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 12px;
+        border-top: 1px solid #f0eeeb;
+    }
+
+    .premium-price {
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: var(--secondary-color);
+    }
+
+    .premium-price-period {
+        font-size: 0.78rem;
+        color: #999;
+        font-weight: 400;
+    }
+
+    .premium-deposit {
+        font-size: 0.7rem;
+        color: #999;
+        margin-top: 2px;
+    }
+</style>
+
+<!-- Call to Action -->
+<section class="cta-premium-card position-relative overflow-hidden">
+    <div class="cta-bg-overlay"></div>
+    <div class="container position-relative z-index-1 py-5 text-center">
+        <div class="cta-content py-5">
+            <span class="text-uppercase tracking-wider fw-semibold text-primary mb-3 d-block">Limited Time Offer</span>
+            <h2 class="display-3 fw-bold text-white mb-4">Ready to furnish your <br> dream home?</h2>
+            <p class="lead text-white-50 mb-5 mx-auto fs-4" style="max-width: 700px;">Experience the perfect blend of luxury and flexibility. Join the FurniFlex community today and get 20% off your first month's rental.</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="{% url 'register' %}" class="btn btn-primary btn-lg px-5 shadow-lg hover-up">Get Started Today</a>
+                <a href="{% url 'product_list' %}" class="btn btn-outline-light btn-lg px-5">View Collection</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .cta-premium-card {
+        background-image: url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+        background-size: cover;
+        background-position: center;
+        min-height: 500px;
+        display: flex;
+        align-items: center;
+    }
+
+    .cta-bg-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.6) 100%);
+    }
+
+    .z-index-1 {
+        z-index: 1;
+    }
+
+    .hover-up {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .hover-up:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .tracking-wider {
+        letter-spacing: 3px;
+    }
+</style>
+
+
+{% endblock %}

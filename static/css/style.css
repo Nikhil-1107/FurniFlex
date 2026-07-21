@@ -1,0 +1,294 @@
+/* 
+    FurniFlex Custom Styles
+    Startup-level modern design for furniture rental platform
+*/
+
+:root {
+    --primary-color: #b18b5e; /* Warm Earthy Brown */
+    --secondary-color: #2c2c2c; /* Deep Charcoal */
+    --accent-color: #f4e9dc; /* Cream/Beige */
+    --dark-bg: #1a1a1a;
+    --light-bg: #fdfaf7;
+    --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    --hover-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+body {
+    padding-top: 82px;
+}
+
+/* Navbar */
+.navbar {
+    padding: 0.9rem 0;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    transition: padding 0.4s ease, box-shadow 0.4s ease;
+}
+
+.navbar.scrolled {
+    padding: 0.4rem 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.brand-logo {
+    height: 42px;
+    width: auto;
+    transition: height 0.4s ease;
+}
+
+.navbar.scrolled .brand-logo {
+    height: 34px;
+}
+
+.nav-link {
+    position: relative;
+    font-weight: 500;
+    font-size: 1.1rem;
+    padding: 0.5rem 1.2rem !important;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--primary-color) !important;
+}
+
+.nav-link i {
+    font-size: 0.85em;
+    opacity: 0.8;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -2px;
+    left: 50%;
+    background-color: var(--primary-color);
+    transition: width 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+    width: 30px;
+}
+
+/* Auth Buttons */
+.btn-get-started {
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 0;
+    padding: 10px 25px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.85rem;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border: 1px solid var(--primary-color);
+}
+
+.btn-get-started:hover {
+    background-color: transparent;
+    color: var(--primary-color) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    border-radius: 0;
+    padding: 12px 30px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.btn-primary:hover {
+    background-color: #8e6f4a;
+    border-color: #8e6f4a;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.btn-outline-primary {
+    border-width: 2px;
+}
+
+/* Cards */
+.card {
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.product-card .card-img-top {
+    transition: all 0.5s ease;
+}
+
+.product-card:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+/* Footer Links */
+footer a {
+    transition: color 0.2s ease;
+}
+
+footer a:hover {
+    color: var(--primary-color) !important;
+}
+
+/* Custom Scrollbar for better UX */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
+}
+
+/* Font Loading Visibility Fix */
+.navbar-brand {
+    visibility: hidden;
+}
+
+.fonts-loaded .navbar-brand,
+.fonts-loaded footer h5 {
+    visibility: visible;
+}
+
+footer h5.d-flex {
+    visibility: hidden;
+}
+
+/* Complete Bootstrap Blue Removal & Brand Color Mapping Overrides */
+.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.border-primary {
+    border-color: var(--primary-color) !important;
+}
+
+.btn-primary {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    color: white !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.show > .btn-primary.dropdown-toggle {
+    background-color: #8e6f4a !important;
+    border-color: #8e6f4a !important;
+    color: white !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.btn-outline-primary {
+    color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    background-color: transparent !important;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-outline-primary:active,
+.btn-outline-primary.active {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    color: white !important;
+}
+
+.bg-primary-subtle {
+    background-color: rgba(177, 139, 94, 0.1) !important;
+}
+
+.text-primary-subtle {
+    color: #8e6f4a !important;
+}
+
+/* Form Check / Radio & Focus inputs Overrides (No more Bootstrap Blue) */
+.form-check-input:checked {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 0.25rem rgba(177, 139, 94, 0.25) !important;
+}
+
+/* Accordion Active Overrides */
+.accordion-button:not(.collapsed) {
+    background-color: rgba(177, 139, 94, 0.1) !important;
+    color: var(--primary-color) !important;
+}
+
+.accordion-button:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 0.25rem rgba(177, 139, 94, 0.25) !important;
+}
+
+/* Premium Breadcrumbs */
+.breadcrumb-item a {
+    color: var(--secondary-color) !important;
+    text-decoration: none !important;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.breadcrumb-item a:hover {
+    color: var(--primary-color) !important;
+    text-decoration: none !important;
+}
+
+.breadcrumb-item.active {
+    color: #999 !important;
+    font-weight: 400;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    color: #ccc !important;
+}

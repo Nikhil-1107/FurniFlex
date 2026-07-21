@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+{% load currency_filters %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Your FurniFlex Rental Invoice</title>
+    <style>
+        body {
+            font-family: 'Outfit', -apple-system, sans-serif;
+            background-color: #fdfaf7;
+            margin: 0;
+            padding: 0;
+            color: #333333;
+        }
+        .invoice-container {
+            max-width: 600px;
+            margin: 30px auto;
+            background-color: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid #f4e9dc;
+        }
+        .header {
+            background-color: #2c2c2c;
+            padding: 40px 30px;
+            text-align: center;
+            border-bottom: 4px solid #b18b5e;
+        }
+        .header h1 {
+            color: #b18b5e;
+            margin: 0;
+            font-size: 28px;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+        .header p {
+            color: #ffffff;
+            margin: 5px 0 0 0;
+            font-size: 14px;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .content {
+            padding: 40px 30px;
+        }
+        .intro {
+            margin-bottom: 30px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .intro h2 {
+            margin: 0 0 10px 0;
+            color: #2c2c2c;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .meta-grid {
+            display: table;
+            width: 100%;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #f4e9dc;
+            padding-bottom: 20px;
+        }
+        .meta-col {
+            display: table-cell;
+            width: 50%;
+            vertical-align: top;
+        }
+        .meta-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #b18b5e;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        .meta-value {
+            font-size: 14px;
+            color: #2c2c2c;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+        .table-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2c2c2c;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #b18b5e;
+            padding-bottom: 5px;
+        }
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        .invoice-table th {
+            text-align: left;
+            padding: 12px 10px;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #b18b5e;
+            border-bottom: 1px solid #f4e9dc;
+        }
+        .invoice-table td {
+            padding: 15px 10px;
+            font-size: 14px;
+            border-bottom: 1px solid #f4e9dc;
+            color: #333333;
+        }
+        .invoice-table .total-row td {
+            border-bottom: none;
+            font-weight: 700;
+            color: #2c2c2c;
+            font-size: 16px;
+            padding-top: 25px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge-paid {
+            background-color: #e6f7ed;
+            color: #1f8a4e;
+        }
+        .badge-pending {
+            background-color: #fef6e7;
+            color: #b86b14;
+        }
+        .footer {
+            background-color: #fdfaf7;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #f4e9dc;
+        }
+        .footer p {
+            margin: 0 0 10px 0;
+            font-size: 12px;
+            color: #777777;
+            line-height: 1.5;
+        }
+        .footer a {
+            color: #b18b5e;
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice-container">
+        <!-- Header banner -->
+        <div class="header">
+            <h1>FurniFlex</h1>
+            <p>Rental Order Invoice</p>
+        </div>
+        
+        <!-- Main content -->
+        <div class="content">
+            <div class="intro">
+                <h2>Thank you for your order, {{ order.user.username }}!</h2>
+                <p>We are excited to help you style your home. Below are the details of your active furniture subscription and transaction.</p>
+            </div>
+            
+            <!-- Metadata columns -->
+            <div class="meta-grid">
+                <div class="meta-col">
+                    <div class="meta-label">INVOICE TO</div>
+                    <div class="meta-value">{{ order.user.username }}</div>
+                    <div class="meta-value" style="font-weight: 400; color: #555555;">{{ order.user.email }}</div>
+                    <div class="meta-value" style="font-weight: 400; color: #777777; margin-top: 5px; font-size: 13px;">
+                        {{ order.address.street_address }}<br>
+                        {{ order.address.city }}, {{ order.address.pincode }}
+                    </div>
+                </div>
+                <div class="meta-col">
+                    <div class="meta-label">INVOICE DETAILS</div>
+                    <div class="meta-value">Order ID: #{{ order.id }}</div>
+                    <div class="meta-value" style="font-weight: 400; color: #555555;">Date: {{ order.created_at|date:"F d, Y" }}</div>
+                    <div class="meta-value" style="font-weight: 400; color: #555555; margin-top: 5px;">
+                        Payment: {{ order.payment_method }}
+                    </div>
+                    <div class="meta-value" style="margin-top: 8px;">
+                        {% if order.payment_status == 'Paid' %}
+                            <span class="badge badge-paid">PAID</span>
+                        {% else %}
+                            <span class="badge badge-pending">PENDING</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Itemized Table -->
+            <div class="table-title">Order Items</div>
+            <table class="invoice-table">
+                <thead>
+                    <tr>
+                        <th style="width: 50%;">Furniture Item</th>
+                        <th style="text-align: right;">Monthly Rate</th>
+                        <th style="text-align: right;">Duration</th>
+                        <th style="text-align: right;">Total Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="font-weight: 600; color: #2c2c2c;">{{ order.product.name }}</td>
+                        <td style="text-align: right; color: #555555;">{{ order.product.price_per_month|convert_currency:order.user }}/mo</td>
+                        <td style="text-align: right; color: #555555;">{{ order.rental_duration_months }} Months</td>
+                        <td style="text-align: right; font-weight: 600; color: #2c2c2c;">{{ item_total|convert_currency:order.user }}</td>
+                    </tr>
+                    {% if discount_amount > 0 %}
+                    <tr>
+                        <td colspan="2"></td>
+                        <td style="text-align: right; color: #1f8a4e; font-weight: 600;">New User Discount (20% Off 1st Month):</td>
+                        <td style="text-align: right; color: #1f8a4e; font-weight: 600;">-{{ discount_amount|convert_currency:order.user }}</td>
+                    </tr>
+                    {% endif %}
+                    <tr class="total-row">
+                        <td colspan="2"></td>
+                        <td style="text-align: right; color: #b18b5e; font-weight: 700;">Grand Total:</td>
+                        <td style="text-align: right; color: #b18b5e; font-weight: 700; font-size: 18px;">{{ total_amount|convert_currency:order.user }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>If you have any questions about this invoice or your active rental, please contact hello@furniflex.com or visit your user dashboard.</p>
+            <p>&copy; 2026 <a href="#">FurniFlex Inc.</a> All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
