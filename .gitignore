@@ -1,7 +1,7 @@
 venv/
 .env
 # db.sqlite3 (removed to allow committing to git for Vercel deployment)
-media/
+# media/ (removed to allow committing media files to git for Vercel)
 # staticfiles/ (removed to allow committing pre-collected static files to git for Vercel)
 __pycache__/
 *.pyc
