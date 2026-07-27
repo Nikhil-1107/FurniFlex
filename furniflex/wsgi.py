@@ -14,13 +14,19 @@ from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "furniflex.settings")
 
-# Path to original database in the project bundle
-BASE_DIR = Path(__file__).resolve().parent.parent
-original_db = BASE_DIR / "db.sqlite3"
-target_db = Path("/tmp/db.sqlite3")
+# 1. Initialize Django WSGI application first to populate app registry
+application = get_wsgi_application()
 
-# Copy the pre-populated SQLite DB to /tmp if running on Vercel
+# Vercel looks for `app` variable
+app = application
+
+# 2. Perform Vercel-specific setup after Django is loaded
 if os.environ.get("VERCEL"):
+    BASE_DIR = Path(__file__).resolve().parent.parent
+    original_db = BASE_DIR / "db.sqlite3"
+    target_db = Path("/tmp/db.sqlite3")
+
+    # Copy the pre-populated SQLite DB to /tmp if it doesn't exist yet
     if original_db.exists() and not target_db.exists():
         try:
             shutil.copy2(original_db, target_db)
@@ -37,8 +43,3 @@ if os.environ.get("VERCEL"):
             print("Successfully collected static files to /tmp/staticfiles")
     except Exception as e:
         print("Failed to run collectstatic on startup:", e)
-
-application = get_wsgi_application()
-
-# Vercel looks for `app` variable
-app = application

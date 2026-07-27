@@ -28,9 +28,9 @@ SECRET_KEY = config("SECRET_KEY", default="django-insecure-x5)a&6-46gnn*ebx^#o^7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=True, cast=bool)
 
-ALLOWED_HOSTS = config(
+ALLOWED_HOSTS = ["*"] if os.environ.get("VERCEL") else config(
     "ALLOWED_HOSTS",
-    default="127.0.0.1,localhost,.vercel.app,furni-flex-pied.vercel.app",
+    default="127.0.0.1,localhost,.vercel.app,furni-flex-steel.vercel.app,furni-flex-pied.vercel.app",
     cast=lambda v: [h.strip() for h in v.split(",")]
 )
 
