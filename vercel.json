@@ -11,5 +11,10 @@
             "src": "/(.*)",
             "dest": "furniflex/wsgi.py"
         }
-    ]
+    ],
+    "functions": {
+        "furniflex/wsgi.py": {
+            "includeFiles": "db.sqlite3"
+        }
+    }
 }
