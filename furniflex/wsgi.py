@@ -17,3 +17,8 @@ application = get_wsgi_application()
 
 # Vercel looks for `app` variable
 app = application
+
+# On Vercel, auto-run migrations since DB is in ephemeral /tmp
+if os.environ.get("VERCEL"):
+    from django.core.management import call_command
+    call_command("migrate", "--run-syncdb", verbosity=0)
