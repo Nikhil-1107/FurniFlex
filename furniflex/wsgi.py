@@ -20,26 +20,15 @@ application = get_wsgi_application()
 # Vercel looks for `app` variable
 app = application
 
-# 2. Perform Vercel-specific setup after Django is loaded
+# 2. Copy pre-populated SQLite DB to writable /tmp directory if running on Vercel
 if os.environ.get("VERCEL"):
     BASE_DIR = Path(__file__).resolve().parent.parent
     original_db = BASE_DIR / "db.sqlite3"
     target_db = Path("/tmp/db.sqlite3")
 
-    # Copy the pre-populated SQLite DB to /tmp if it doesn't exist yet
     if original_db.exists() and not target_db.exists():
         try:
             shutil.copy2(original_db, target_db)
             print("Successfully copied db.sqlite3 to /tmp")
         except Exception as e:
             print("Failed to copy db.sqlite3 to /tmp:", e)
-
-    # Run collectstatic at runtime to populate the writable /tmp/staticfiles directory
-    try:
-        from django.core.management import call_command
-        static_dir = Path("/tmp/staticfiles")
-        if not static_dir.exists() or not any(static_dir.iterdir()):
-            call_command("collectstatic", "--noinput", verbosity=0)
-            print("Successfully collected static files to /tmp/staticfiles")
-    except Exception as e:
-        print("Failed to run collectstatic on startup:", e)
