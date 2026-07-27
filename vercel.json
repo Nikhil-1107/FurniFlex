@@ -2,18 +2,18 @@
     "version": 2,
     "builds": [
         {
-            "src": "furniflex/wsgi.py",
+            "src": "index.py",
             "use": "@vercel/python"
         }
     ],
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "furniflex/wsgi.py"
+            "dest": "index.py"
         }
     ],
     "functions": {
-        "furniflex/wsgi.py": {
+        "index.py": {
             "includeFiles": "db.sqlite3"
         }
     }
