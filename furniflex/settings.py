@@ -162,4 +162,17 @@ DEFAULT_FROM_EMAIL = config("EMAIL_HOST_USER", default="webmaster@localhost")
 RAZORPAY_KEY_ID = config("RAZORPAY_KEY_ID", default="")
 RAZORPAY_KEY_SECRET = config("RAZORPAY_KEY_SECRET", default="")
 
-
+# ── Vercel Serverless Session & Cookie Configuration ──
+# SQLite on Vercel is ephemeral — each instance has its own /tmp.
+# Signed-cookie sessions store data in the browser cookie itself,
+# so login persists across cold starts and different instances.
+if os.environ.get("VERCEL"):
+    SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SECURE = True          # Vercel always serves over HTTPS
+    SESSION_COOKIE_SAMESITE = "Lax"
+    CSRF_COOKIE_SECURE = True
+    CSRF_TRUSTED_ORIGINS = [
+        "https://*.vercel.app",
+        "https://furni-flex-steel.vercel.app",
+    ]
