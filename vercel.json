@@ -2,25 +2,11 @@
     "version": 2,
     "builds": [
         {
-            "src": "build_files.sh",
-            "use": "@vercel/static-build",
-            "config": {
-                "distDir": "staticfiles"
-            }
-        },
-        {
             "src": "furniflex/wsgi.py",
-            "use": "@vercel/python",
-            "config": {
-                "runtime": "python3.12"
-            }
+            "use": "@vercel/python"
         }
     ],
     "routes": [
-        {
-            "src": "/static/(.*)",
-            "dest": "/static/$1"
-        },
         {
             "src": "/(.*)",
             "dest": "furniflex/wsgi.py"
