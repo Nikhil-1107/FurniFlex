@@ -1,5 +1,14 @@
 {
-    "rewrites": [
-        { "source": "/(.*)", "destination": "/index.py" }
+    "builds": [
+        {
+            "src": "index.py",
+            "use": "@vercel/python",
+            "config": {
+                "includeFiles": "{db.sqlite3,media/**,staticfiles/**,templates/**,static/**,furniflex/**,app1/**,adminpanel/**}"
+            }
+        }
+    ],
+    "routes": [
+        { "src": "/(.*)", "dest": "index.py" }
     ]
 }
