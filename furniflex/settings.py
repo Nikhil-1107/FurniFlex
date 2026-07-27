@@ -136,7 +136,7 @@ STORAGES = {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage" if os.environ.get("VERCEL") else "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
 

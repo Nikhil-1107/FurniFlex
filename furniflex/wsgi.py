@@ -20,5 +20,8 @@ app = application
 
 # On Vercel, auto-run migrations since DB is in ephemeral /tmp
 if os.environ.get("VERCEL"):
-    from django.core.management import call_command
-    call_command("migrate", "--run-syncdb", verbosity=0)
+    try:
+        from django.core.management import call_command
+        call_command("migrate", "--run-syncdb", verbosity=0)
+    except Exception as e:
+        print("Auto-migration during startup failed:", e)
