@@ -43,22 +43,22 @@ body {
     padding: 0.9rem 0;
     background: white;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
-    transition: padding 0.4s ease, box-shadow 0.4s ease;
+    border-radius: 0;
+    top: 0;
+    transition: top 0.4s ease, left 0.4s ease, right 0.4s ease, border-radius 0.4s ease, box-shadow 0.4s ease;
 }
 
 .navbar.scrolled {
-    padding: 0.4rem 0;
+    top: clamp(8px, 0.7vw, 12px);
+    left: clamp(12px, 5.3vw, 88px);
+    right: clamp(12px, 5.3vw, 88px);
+    border-radius: 999px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
 }
 
 .brand-logo {
     height: 42px;
     width: auto;
-    transition: height 0.4s ease;
-}
-
-.navbar.scrolled .brand-logo {
-    height: 34px;
 }
 
 .nav-link {

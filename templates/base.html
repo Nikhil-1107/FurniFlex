@@ -407,14 +407,19 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <script>
-        window.addEventListener('scroll', function() {
+        function updateNavbarState() {
             const navbar = document.querySelector('.navbar');
+            if (!navbar) return;
+
             if (window.scrollY > 100) {
                 navbar.classList.add('scrolled');
             } else {
                 navbar.classList.remove('scrolled');
             }
-        });
+        }
+
+        window.addEventListener('scroll', updateNavbarState, { passive: true });
+        updateNavbarState();
     </script>
     <script>
         // Prevent font flicker for brand text
