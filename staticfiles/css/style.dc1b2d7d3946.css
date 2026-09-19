@@ -43,26 +43,26 @@ body {
     padding: 0.9rem 0;
     background: white;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
-    transition: height 0.45s cubic-bezier(0.4, 0, 0.2, 1), padding 0.45s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.45s ease, border-radius 0.45s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.45s ease;
+    border-radius: 0;
+    top: 0;
+    transition: top 0.45s cubic-bezier(0.4, 0, 0.2, 1), left 0.45s cubic-bezier(0.4, 0, 0.2, 1), right 0.45s cubic-bezier(0.4, 0, 0.2, 1), height 0.45s cubic-bezier(0.4, 0, 0.2, 1), padding 0.45s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.45s ease, border-radius 0.45s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.45s ease;
 }
 
 .navbar.scrolled {
     height: 90px;
     padding: 0 !important;
+    top: clamp(8px, 0.7vw, 12px);
+    left: clamp(12px, 5.3vw, 88px);
+    right: clamp(12px, 5.3vw, 88px);
     background: rgba(255, 255, 255, 0.92);
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
+    border-radius: 999px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
 }
 
 .navbar.scrolled > .container {
     height: 100%;
-}
-
-.brand-logo {
-    height: 42px;
-    width: auto;
-    transition: height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .navbar.scrolled .brand-logo {
@@ -76,6 +76,21 @@ body {
     margin-top: 0;
     margin-bottom: 0;
     line-height: 1;
+}
+
+.brand-logo {
+    height: 70px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+    align-self: center;
+    transition: height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (max-width: 575.98px) {
+    .brand-logo {
+        height: 65px;
+    }
 }
 
 .nav-link {
